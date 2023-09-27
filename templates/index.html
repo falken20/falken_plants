@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+
+{% block content %}
+<table class="table table-danger table-striped" style="width: 90%">
+    <thead>
+    </thead>
+    <tbody>
+        <tr>
+            <th scope="row"><img src="/static/assets/user.png" class="iconData"></th>
+            <td title="User" colspan="2" class="appData">{{ user }}</td>
+        </tr>
+        <tr>
+            <th scope="row"><img src="/static/assets/calendar.png" class="iconData"></th>
+            <td title="Date from" colspan="2" class="appData" style="font-size: 50% !important">{{ date_from }}</td>
+        </tr>
+        <tr>
+            <th scope="row"><img src="/static/assets/home.png" class="iconData"></th>
+            <td title="Home days" colspan="2" class="appData">{{ count_home }}</td>
+        </tr>
+        <tr>
+            <th scope="row"><img src="/static/assets/office.png" class="iconData"></th>
+            <td title="Office days" colspan="2" class="appData">{{ count_office }}</td>
+        </tr>
+        <tr>
+            <th scope="row" class="appData">Office</th>
+            <td title="Percent" colspan="2" class="appData">{{ percent }}%</td>
+        </tr>
+        <form method="POST">
+            <!--
+            <tr>
+                <td scope="col" class="todayDate" colspan="2">{{ day }}</td>
+            </tr>  
+            -->
+            <tr>
+                <th scope="row"><img src="/static/assets/calendar.png" class="iconData"></th>
+                <td><input style="font-size: 50% !important; color: red !important;"  type="date" name="date" value="{{ day }}" class="appData"></td>
+            </tr>
+            <tr>
+                <td scope="col" style="width: 25%; text-align: left !important;">
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input radioButtonApp" type="radio" name="work_home" id="placeWork1" value="True" {{ checked_home }}>
+                        <label class="form-check-label appData" for="placeWork1">Home</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input radioButtonApp" type="radio" name="work_home" id="placeWork2" value="False" {{ checked_office }}>
+                        <label class="form-check-label appData" for="placeWork2">Office</label>
+                    </div>                         
+                </td>
+                <td scope="col" style="width: 25%; vertical-align: middle;">
+                    <button type="submit" class="btn btn-primary btn-lg btn-block buttonApp">Save</button>
+                </td>
+            </tr>                      
+        </form>
+    </tbody>
+</table>
+
+{% endblock %}
