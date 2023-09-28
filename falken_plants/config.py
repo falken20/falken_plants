@@ -9,7 +9,7 @@ from pydantic.v1 import BaseSettings
 # Library to cache the data
 from functools import lru_cache
 
-__title__ = 'Falken Teleworking'
+__title__ = 'Falken Plants'
 __version__ = '1.0.0'
 __author__ = 'Falken'
 __url_github__ = 'https://github.com/falken20/'
