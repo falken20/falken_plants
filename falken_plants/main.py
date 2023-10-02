@@ -19,4 +19,5 @@ previous_cache = datetime.now()
 @main.route("/home", methods=('GET', 'POST'))
 @login_required
 def index():
-    pass      
+    Log.info("Index page")
+    Log.debug(f"Current user: {current_user}")  
