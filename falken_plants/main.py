@@ -7,12 +7,10 @@ from datetime import datetime
 from functools import lru_cache
 
 from .logger import Log
-from .models import Teleworking, User
-from .config import get_settings
+from .models import User
+from .app import settings
 
 main = Blueprint('main', __name__)
-
-previous_cache = datetime.now()
 
 
 @main.route("/", methods=('GET', 'POST'))
@@ -20,4 +18,6 @@ previous_cache = datetime.now()
 @login_required
 def index():
     Log.info("Index page")
-    Log.debug(f"Current user: {current_user}")  
+    Log.debug(f"Current user: {current_user}")
+
+    return render_template('index.html')

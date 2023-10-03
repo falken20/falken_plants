@@ -13,6 +13,8 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_login import UserMixin
 
 from .logger import Log
+from . import settings
+
 
 db = SQLAlchemy()
 
@@ -64,7 +66,18 @@ logging.basicConfig(level=logging.INFO, format=FORMAT)
 if __name__ == '__main__':
     logging.info("Preparing app vars...")
     app = Flask(__name__)
-    app.config['SQLALCHEMY_DATABASE_URI'] = os.environ['DATABASE_URL'].replace(
-        "://", "ql://", 1)
+
+    if settings.ENV_PRO == "N":
+        basedir = os.path.abspath(os.path.dirname(__file__))
+        Log.info("Running in development mode with sqlite DB")
+        app.config['DEBUG'] = True
+        app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + \
+            os.path.join(basedir, 'database.db')
+    else:
+        Log.info("Running in production mode with postgres DB")
+        app.config['DEBUG'] = False
+        app.config['SQLALCHEMY_DATABASE_URI'] = os.environ['DATABASE_URL'].replace(
+            "://", "ql://", 1)
+
     db.init_app(app)
     init_db(app)
