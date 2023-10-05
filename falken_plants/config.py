@@ -21,19 +21,6 @@ __features__ = [
 ]
 
 
-SETUP_DATA = {
-    'title': __title__,
-    'version': __version__,
-    'author': __author__,
-    'url_github': __url_github__,
-    'url_twitter': __url_twitter__,
-    'url_linkedin': __url_linkedin__,
-    'license': __license__,
-    'copyrigth': __copyright__,
-    'features': __features__,
-}
-
-
 class Settings(BaseSettings):
     # pydantic will automatically assume those default values if it doesn’t
     # find the corresponding environment variables.
@@ -44,6 +31,17 @@ class Settings(BaseSettings):
     LEVEL_LOG: list = []
     DATABASE_URL: str = ""
     DB_SQLITE_URL: str = ""
+    SETUP_DATA = {
+        'title': __title__,
+        'version': __version__,
+        'author': __author__,
+        'url_github': __url_github__,
+        'url_twitter': __url_twitter__,
+        'url_linkedin': __url_linkedin__,
+        'license': __license__,
+        'copyrigth': __copyright__,
+        'features': __features__,
+    }
 
     class Config:
         # When you add the Config class with the path to your env_file to your
