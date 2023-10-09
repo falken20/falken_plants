@@ -5,24 +5,23 @@ from flask import Flask
 import os
 from dotenv import load_dotenv, find_dotenv
 from flask_login import LoginManager
+from flask_sqlalchemy import SQLAlchemy
 
-from .models import db
 from .logger import Log, console
 from .config import get_settings
-from .main import check_cache
+from .cache import check_cache
 
 console.rule("Falken Teleworking")
 # Set environment vars
 load_dotenv(find_dotenv())
 settings = get_settings()
-Log.info(f"Settings: \n env_name: {settings.env_name}\
-         \n ENV_PRO: {settings.ENV_PRO}\
-         \n LEVEL_LOG: {settings.LEVEL_LOG}")
 
 # Cache info
 check_cache()
 
 basedir = os.path.abspath(os.path.dirname(__file__))
+
+db = SQLAlchemy()
 
 
 def create_app():

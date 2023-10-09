@@ -54,4 +54,11 @@ class Settings(BaseSettings):
 def get_settings() -> Settings:
     settings = Settings()
     print(f"Loading settings for: {settings.env_name}")
+    print_settings(settings)
     return settings
+
+def print_settings(settings: Settings) -> None:
+    print(f"Settings: \
+            \n env_name: {settings.env_name}\
+            \n ENV_PRO: {settings.ENV_PRO}\
+            \n LEVEL_LOG: {settings.LEVEL_LOG}")

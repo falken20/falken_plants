@@ -9,14 +9,10 @@ import os
 import logging
 from datetime import date
 from flask import Flask
-from flask_sqlalchemy import SQLAlchemy
 from flask_login import UserMixin
 
 from .logger import Log
-from . import settings
-
-
-db = SQLAlchemy()
+from .app import settings, db
 
 
 # Flask-Login can manage user sessions. UserMixin will add Flask-Login attributes
@@ -32,6 +28,10 @@ class User(UserMixin, db.Model):
     @staticmethod
     def get_user_date(user_id: int):
         return User.query.filter_by(id=user_id).first()
+
+    @staticmethod
+    def get_user_email(email: str):
+        return User.query.filter_by(email=email).first()
 
 
 def init_db(app):
