@@ -10,9 +10,12 @@ import logging
 from datetime import date
 from flask import Flask
 from flask_login import UserMixin
+from flask_sqlalchemy import SQLAlchemy
 
 from .logger import Log
-from .app import settings, db
+from .config import get_settings
+
+db = SQLAlchemy()
 
 
 # Flask-Login can manage user sessions. UserMixin will add Flask-Login attributes
@@ -67,7 +70,7 @@ if __name__ == '__main__':
     logging.info("Preparing app vars...")
     app = Flask(__name__)
 
-    if settings.ENV_PRO == "N":
+    if get_settings().ENV_PRO == "N":
         basedir = os.path.abspath(os.path.dirname(__file__))
         Log.info("Running in development mode with sqlite DB")
         app.config['DEBUG'] = True

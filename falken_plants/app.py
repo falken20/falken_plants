@@ -5,11 +5,11 @@ from flask import Flask
 import os
 from dotenv import load_dotenv, find_dotenv
 from flask_login import LoginManager
-from flask_sqlalchemy import SQLAlchemy
 
 from .logger import Log, console
 from .config import get_settings
 from .cache import check_cache
+from .models import db
 
 console.rule("Falken Teleworking")
 # Set environment vars
@@ -20,8 +20,6 @@ settings = get_settings()
 check_cache()
 
 basedir = os.path.abspath(os.path.dirname(__file__))
-
-db = SQLAlchemy()
 
 
 def create_app():
@@ -68,3 +66,6 @@ def create_app():
     app.register_blueprint(main_blueprint)
 
     return app
+
+
+app = create_app()

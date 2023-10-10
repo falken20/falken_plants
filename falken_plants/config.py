@@ -9,6 +9,8 @@ from pydantic.v1 import BaseSettings
 # Library to cache the data
 from functools import lru_cache
 
+from .logger import Log
+
 __title__ = 'Falken Plants'
 __version__ = '1.0.0'
 __author__ = 'Falken'
@@ -58,7 +60,7 @@ def get_settings() -> Settings:
     return settings
 
 def print_settings(settings: Settings) -> None:
-    print(f"Settings: \
+    Log.info(f"Settings: \
             \n env_name: {settings.env_name}\
             \n ENV_PRO: {settings.ENV_PRO}\
             \n LEVEL_LOG: {settings.LEVEL_LOG}")

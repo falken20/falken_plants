@@ -8,7 +8,6 @@ from functools import lru_cache
 
 from .logger import Log
 from .models import User
-from .app import settings
 
 main = Blueprint('main', __name__)
 
