@@ -24,19 +24,19 @@ basedir = os.path.abspath(os.path.dirname(__file__))
 
 def create_app():
     app = Flask(__name__, template_folder="../templates",
-                static_folder="../assets")
+                static_folder="../static")
 
     app.config['SECRET_KEY'] = os.getenv(
         'SECRET_KEY', 'your-special-secret-key')
     app.config['TEMPLATE_AUTO_RELOAD'] = True
 
     if settings.ENV_PRO == "N":
-        Log.info("Running in development mode with sqlite DB")
+        Log.info("Running in development mode with sqlite DB", style="red")
         app.config['DEBUG'] = True
         app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + \
             os.path.join(basedir, 'database.db')
     else:
-        Log.info("Running in production mode with postgres DB")
+        Log.info("Running in production mode with postgres DB", style="red")
         app.config['DEBUG'] = False
         app.config['SQLALCHEMY_DATABASE_URI'] = os.environ['DATABASE_URL'].replace(
             "://", "ql://", 1)
@@ -66,5 +66,3 @@ def create_app():
     app.register_blueprint(main_blueprint)
 
     return app
-
-

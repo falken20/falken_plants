@@ -63,8 +63,8 @@ def init_db(app):
         logging.error(f"Execution Error in init_db: {err}", exc_info=True)
 
 
-FORMAT = '%(asctime)s %(levelname)s %(lineno)d %(filename)s %(funcName)s: %(message)s'
-logging.basicConfig(level=logging.INFO, format=FORMAT)
+# FORMAT = '%(asctime)s %(levelname)s %(lineno)d %(filename)s %(funcName)s: %(message)s'
+# logging.basicConfig(level=logging.INFO, format=FORMAT)
 
 if __name__ == '__main__':
     logging.info("Preparing app vars...")

@@ -59,6 +59,7 @@ def get_settings() -> Settings:
     print_settings(settings)
     return settings
 
+
 def print_settings(settings: Settings) -> None:
     Log.info(f"Settings: \
             \n env_name: {settings.env_name}\
