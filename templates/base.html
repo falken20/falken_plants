@@ -24,7 +24,7 @@
                         {% if current_user.is_authenticated %}
                             <!--<a href="{{ url_for('main.index') }}" class="navbar-item">-->
                             <a href="{{ url_for('main.index') }}">
-                                <img src="/static/images/logo_app_transp2.png" style="height: 30px">
+                                <img src="/static/images/logo_app.png" style="height: 30px">
                             </a>
                         {% endif %}
                     </div>
@@ -33,27 +33,27 @@
                     <div class="navbar-item">
                         <div class="buttons">
                             {% if current_user.is_authenticated %}
-                            <a href="{{ url_for('main.search') }}" class="button is-info is-small">
+                            <a href="{{ url_for('main.search') }}" class="button is-primary is-small">
                                 <i class="bi bi-search" style="font-size: 20px" title="Search"></i>
                             </a>
                             {% endif %}
                             {% if current_user.is_authenticated %}
-                            <a href="{{ url_for('main.calendar') }}" class="button is-info is-small">
+                            <a href="{{ url_for('main.calendar') }}" class="button is-primary is-small">
                                 <i class="bi bi-calendar3" style="font-size: 20px" title="Calendar"></i>
                             </a>
                             {% endif %}
                             {% if current_user.is_authenticated %}
-                            <a href="{{ url_for('main.profile') }}" class="button is-info is-small">
+                            <a href="{{ url_for('main.profile') }}" class="button is-primary is-small">
                                 <i class="bi bi-person-badge" style="font-size: 20px" title="Profile"></i>
                             </a>
                             {% endif %}
                             {% if current_user.is_anonymous %}
-                            <a href="{{ url_for('auth.login') }}" class="button is-info is-small">
+                            <a href="{{ url_for('auth.login') }}" class="button is-primary is-small">
                                 <i class="bi bi-box-arrow-in-right" style="font-size: 20px" title="Login"></i>
                             </a>
                             {% endif %}
                             {% if current_user.is_anonymous %}
-                            <a href="{{ url_for('auth.signup') }}" class="button is-info is-small">
+                            <a href="{{ url_for('auth.signup') }}" class="button is-primary is-small">
                                 <i class="bi bi-person-plus-fill" style="font-size: 20px" title="Sign up"></i>
                             </a>
                             {% endif %}

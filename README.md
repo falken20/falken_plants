@@ -29,6 +29,11 @@ pip install -r requirements.txt
 flask run
 ```
 
+##### Running DB utils
+```bash
+python -m falken_plants.models
+```
+
 ##### Setup tests
 ```bash
 pip install -r requirements-tests.txt

@@ -20,3 +20,30 @@ def index():
     Log.debug(f"Current user: {current_user}")
 
     return render_template('index.html')
+
+
+@main.route("/profile", methods=['GET'])
+@login_required
+def profile():
+    Log.info("Profile page")
+    Log.debug(f"Current user: {current_user}")
+
+    return render_template('profile.html', name=current_user.name, date_from=current_user.date_from)
+
+
+@main.route("/search", methods=['GET', 'POST'])
+@login_required
+def search():
+    Log.info("Search page")
+    Log.debug(f"Current user: {current_user}")
+
+    pass
+
+
+@main.route("/calendar", methods=['GET'])
+@login_required
+def calendar():
+    Log.info("Calendar page")
+    Log.debug(f"Current user: {current_user}")
+
+    return render_template('calendar.html')

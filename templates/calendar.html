@@ -1,0 +1,102 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<!-- Mobiscroll JS and CSS Includes
+<link rel="stylesheet" href="{{ url_for('static', filename='mobiscroll.javascript.min.css') }}">
+<script src="{{ url_for('static', filename='js/mobiscroll.javascript.min.js') }}"></script>
+-->
+
+<script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.4/index.global.min.js'></script>
+<script>
+
+</script>
+<style type="text/css">
+    body {
+        margin: 0;
+        padding: 0;
+    }
+    body, html {
+        height: 100%;
+    }    
+</style>
+
+<div mbsc-page class="demo-dots-colors-labels" style="width: 90%">
+    <div style="height:100%">
+        <div class="mbsc-grid">
+            <div class="mbsc-row">
+                <div class="mbsc-col-sm-12 mbsc-col-md-4">
+                    <div class="mbsc-form-group calendar">
+                        <div class="mbsc-form-group-title">Home 🟩 / Office 🟦</div>
+                        <div id='calendar'></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    var dates = []
+    var elem = []
+</script>
+
+{% for x in  all_dates %}
+    {% for y in  x %}
+        <script>
+            elem.push('{{ y }}')
+        </script>
+    {% endfor %}
+    <script>
+        dates.push(elem)
+        elem = []
+    </script>
+{% endfor %}
+
+<script>    
+    var now = new Date();
+
+    var color_office = '#357EC7';
+    var color_home = 'green';
+    //var all_dates = '{{ all_dates }}';
+
+    var events = []
+    var color_bg, text_day 
+    dates.forEach(function (item, index) {
+        if (item[1] == "True") {color_bg = color_home, text_day = 'Home'} else {color_bg = color_office, text_day = 'Office'}
+        var obj = {
+            start: item[0],
+            color: color_bg,
+            title: text_day,
+            //display: 'background'
+        }
+        events.push(obj)
+    });
+
+    document.addEventListener('DOMContentLoaded', function() {
+        var calendarEl = document.getElementById('calendar');
+        var calendar = new FullCalendar.Calendar(calendarEl, {
+            initialView: 'dayGridMonth',
+            navLinks: false, // default false
+            weekends: false, 
+            headerToolbar: {
+                left: 'prev,next',
+                center: 'title',
+                right: 'today'
+            },        
+            firstDay : 1,
+            eventSources: [
+                {
+                    events: events,
+                    color: 'black',
+                    textColor: 'white',
+                }
+            ]  
+        });
+        calendar.setOption('aspectRatio', 0.9);
+        calendar.render();
+    });
+
+</script>
+
+{% endblock %}

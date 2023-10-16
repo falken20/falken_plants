@@ -27,6 +27,7 @@ class User(UserMixin, db.Model):
     email = db.Column(db.String(100), unique=True, nullable=False)
     password = db.Column(db.String(100), nullable=False)
     name = db.Column(db.String(100), nullable=False)
+    date_from = db.Column(db.Date, nullable=False)
 
     @staticmethod
     def get_user_date(user_id: int):
