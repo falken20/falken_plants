@@ -19,7 +19,7 @@ settings = get_settings()
 # Cache info
 check_cache()
 
-basedir = os.path.abspath(os.path.dirname(__file__))
+basedir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 
 def create_app():
@@ -31,7 +31,9 @@ def create_app():
     app.config['TEMPLATE_AUTO_RELOAD'] = True
 
     if settings.ENV_PRO == "N":
-        Log.info("Running in development mode with sqlite DB", style="red")
+        # basedir is the path to the root of the project
+        Log.info("Running in development mode with sqlite DB", style="red bold")
+        Log.info(f"DB path: {os.path.join(basedir, 'database.db')}", style="red bold")
         app.config['DEBUG'] = True
         app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + \
             os.path.join(basedir, 'database.db')

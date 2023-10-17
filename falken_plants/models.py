@@ -113,8 +113,10 @@ if __name__ == '__main__':
     app = Flask(__name__)
 
     if get_settings().ENV_PRO == "N":
-        basedir = os.path.abspath(os.path.dirname(__file__))
+        # basedir is the path to the root of the project
+        basedir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
         Log.info("Running in development mode with sqlite DB")
+        Log.info(f"DB path: {os.path.join(basedir, 'database.db')}", style="red bold")
         app.config['DEBUG'] = True
         app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + \
             os.path.join(basedir, 'database.db')
@@ -124,7 +126,5 @@ if __name__ == '__main__':
         app.config['SQLALCHEMY_DATABASE_URI'] = os.environ['DATABASE_URL'].replace(
             "://", "ql://", 1)
 
-    print(basedir)
-    exit()
     db.init_app(app)
     init_db(app)
