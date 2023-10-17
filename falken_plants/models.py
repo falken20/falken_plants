@@ -18,6 +18,47 @@ from .config import get_settings
 db = SQLAlchemy()
 
 
+class Plant(db.Model):
+    __tablename__ = "t_plant"
+
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(100), nullable=False)
+    name_tech = db.Column(db.String(100), nullable=True)
+    watering = db.Column(db.Integer, nullable=False)
+    spray = db.Column(db.Boolean, nullable=False)
+    sun = db.Column(db.Integer, nullable=False)
+    date_registration = db.Column(db.Date, nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey('t_user.id'), nullable=False)
+
+    @staticmethod
+    def get_plants(user_id: int):
+        return Plant.query.filter_by(user_id=user_id).all()
+
+    @staticmethod
+    def get_plant(plant_id: int):
+        return Plant.query.filter_by(id=plant_id).first()
+
+    @staticmethod
+    def get_plant_name(plant_name: str):
+        return Plant.query.filter_by(name=plant_name).first()
+
+    @staticmethod
+    def get_plant_date(date_from: date):
+        return Plant.query.filter_by(date_from=date_from).first()
+
+    @staticmethod
+    def get_plant_user(user_id: int):
+        return Plant.query.filter_by(user_id=user_id).first()
+
+
+class Watering(db.Model):
+    __tablename__ = "t_watering"
+
+    watering_date = db.Column(db.Date, primary_key=True)
+    plant_id = db.Column(db.Integer, db.ForeignKey(
+        't_plant.id'), nullable=False)
+
+
 # Flask-Login can manage user sessions. UserMixin will add Flask-Login attributes
 # to the model so that Flask-Login will be able to work with it.
 class User(UserMixin, db.Model):
@@ -83,5 +124,7 @@ if __name__ == '__main__':
         app.config['SQLALCHEMY_DATABASE_URI'] = os.environ['DATABASE_URL'].replace(
             "://", "ql://", 1)
 
+    print(basedir)
+    exit()
     db.init_app(app)
     init_db(app)
