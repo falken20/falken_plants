@@ -24,9 +24,14 @@ class Plant(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(100), nullable=False)
     name_tech = db.Column(db.String(100), nullable=True)
-    watering = db.Column(db.Integer, nullable=False)
+    comment = db.Column(db.String(200), nullable=True)
+    # Frequeny in weeks per month (1-4)
+    watering_summer = db.Column(db.Integer, nullable=False)
+    # Frequeny in weeks per month (1-4)
+    watering_winter = db.Column(db.Integer, nullable=False)
     spray = db.Column(db.Boolean, nullable=False)
-    sun = db.Column(db.Integer, nullable=False)
+    # 1: No, 2: Partial, 3: Yes
+    direct_sun = db.Column(db.Integer, nullable=False)
     date_registration = db.Column(db.Date, nullable=False)
     user_id = db.Column(db.Integer, db.ForeignKey('t_user.id'), nullable=False)
 
@@ -43,12 +48,32 @@ class Plant(db.Model):
         return Plant.query.filter_by(name=plant_name).first()
 
     @staticmethod
-    def get_plant_date(date_from: date):
-        return Plant.query.filter_by(date_from=date_from).first()
+    def create_plant(name: str, name_tech: str, comment: str, watering_summer: int, watering_winter: int, spray: bool, direct_sun: int, user_id: int):
+        plant = Plant(name=name, name_tech=name_tech, comment=comment, watering_summer=watering_summer,
+                      watering_winter=watering_winter, spray=spray, direct_sun=direct_sun, date_registration=date.today(), user_id=user_id)
+        db.session.add(plant)
+        db.session.commit()
+        return plant
 
     @staticmethod
-    def get_plant_user(user_id: int):
-        return Plant.query.filter_by(user_id=user_id).first()
+    def update_plant(plant_id: int, name: str, name_tech: str, comment: str, watering_summer: int, watering_winter: int, spray: bool, direct_sun: int):
+        plant = Plant.get_plant(plant_id)
+        plant.name = name
+        plant.name_tech = name_tech
+        plant.comment = comment
+        plant.watering_summer = watering_summer
+        plant.watering_winter = watering_winter
+        plant.spray = spray
+        plant.direct_sun = direct_sun
+        db.session.commit()
+        return plant
+
+    @staticmethod
+    def delete_plant(plant_id: int):
+        plant = Plant.get_plant(plant_id)
+        db.session.delete(plant)
+        db.session.commit()
+        return plant
 
 
 class Watering(db.Model):
@@ -57,6 +82,10 @@ class Watering(db.Model):
     watering_date = db.Column(db.Date, primary_key=True)
     plant_id = db.Column(db.Integer, db.ForeignKey(
         't_plant.id'), nullable=False)
+
+    @staticmethod
+    def get_watering(plant_id: int):
+        return Watering.query.filter_by(plant_id=plant_id).all()
 
 
 # Flask-Login can manage user sessions. UserMixin will add Flask-Login attributes
@@ -71,12 +100,12 @@ class User(UserMixin, db.Model):
     date_from = db.Column(db.Date, nullable=False)
 
     @staticmethod
-    def get_user_date(user_id: int):
-        return User.query.filter_by(id=user_id).first()
-
-    @staticmethod
     def get_user_email(email: str):
         return User.query.filter_by(email=email).first()
+
+    @staticmethod
+    def get_user_name(name: str):
+        return User.query.filter_by(name=name).first()
 
 
 def init_db(app):
@@ -116,7 +145,8 @@ if __name__ == '__main__':
         # basedir is the path to the root of the project
         basedir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
         Log.info("Running in development mode with sqlite DB")
-        Log.info(f"DB path: {os.path.join(basedir, 'database.db')}", style="red bold")
+        Log.info(
+            f"DB path: {os.path.join(basedir, 'database.db')}", style="red bold")
         app.config['DEBUG'] = True
         app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + \
             os.path.join(basedir, 'database.db')
