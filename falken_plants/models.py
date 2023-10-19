@@ -25,12 +25,12 @@ class Plant(db.Model):
     name = db.Column(db.String(100), nullable=False)
     name_tech = db.Column(db.String(100), nullable=True)
     comment = db.Column(db.String(200), nullable=True)
-    # Frequeny in weeks per month (1-4)
+    # Frequency in weeks per month (1-4)
     watering_summer = db.Column(db.Integer, nullable=False)
-    # Frequeny in weeks per month (1-4)
+    # Frequency in weeks per month (1-4)
     watering_winter = db.Column(db.Integer, nullable=False)
     spray = db.Column(db.Boolean, nullable=False)
-    # 1: No, 2: Partial, 3: Yes
+    # Direct sun value 1: No, 2: Partial, 3: Yes
     direct_sun = db.Column(db.Integer, nullable=False)
     date_registration = db.Column(db.Date, nullable=False)
     user_id = db.Column(db.Integer, db.ForeignKey('t_user.id'), nullable=False)
@@ -76,16 +76,18 @@ class Plant(db.Model):
         return plant
 
 
-class Watering(db.Model):
+class Calendar(db.Model):
     __tablename__ = "t_watering"
 
-    watering_date = db.Column(db.Date, primary_key=True)
+    date = db.Column(db.Date, primary_key=True)
+    water = db.Column(db.Boolean, nullable=False)
+    fertilize = db.Column(db.Boolean, nullable=False)
     plant_id = db.Column(db.Integer, db.ForeignKey(
         't_plant.id'), nullable=False)
 
     @staticmethod
-    def get_watering(plant_id: int):
-        return Watering.query.filter_by(plant_id=plant_id).all()
+    def get_calendar(plant_id: int):
+        return Calendar.query.filter_by(plant_id=plant_id).all()
 
 
 # Flask-Login can manage user sessions. UserMixin will add Flask-Login attributes
