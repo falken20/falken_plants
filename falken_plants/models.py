@@ -108,6 +108,11 @@ class User(UserMixin, db.Model):
     @staticmethod
     def get_user_name(name: str):
         return User.query.filter_by(name=name).first()
+    
+    @staticmethod
+    def delete_user(id: int) -> None:
+        User.query.filter(id).delete()
+        db.session.commit()
 
 
 def init_db(app):

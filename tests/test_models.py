@@ -19,3 +19,5 @@ class TestModels(BaseTestCase):
         self.assertFalse(user.plants)
         self.assertFalse(user.plant_types)
         self.assertFalse(user.calendar)
+
+    def test_delete_use
