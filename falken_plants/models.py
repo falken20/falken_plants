@@ -35,6 +35,9 @@ class Plant(db.Model):
     date_registration = db.Column(db.Date, nullable=False)
     user_id = db.Column(db.Integer, db.ForeignKey('t_user.id'), nullable=False)
 
+    def __repr__(self) -> str:
+        return f"<Plant {self.name}>"
+
     @staticmethod
     def get_plants(user_id: int):
         return Plant.query.filter_by(user_id=user_id).all()

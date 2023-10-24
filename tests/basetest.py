@@ -4,8 +4,8 @@ from flask_login import LoginManager
 from werkzeug.security import generate_password_hash
 from datetime import date
 
-from falken_plants import create_app, db
-from falken_plants.models import User
+from falken_plants.app import create_app
+from falken_plants.models import db, User
 
 basedir = os.path.abspath(os.path.dirname(__file__))
 
