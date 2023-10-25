@@ -40,7 +40,7 @@ class BaseTestCase(unittest.TestCase):
             return User.query.get(int(user_id))
     
     @staticmethod
-    def create_user(user = mock_user):
+    def create_user(user: User = mock_user):
         new_user = User(email=user['email'], name=user['name'],
                     password=generate_password_hash(user['password'], method='sha256'),
                     date_from=date.today())

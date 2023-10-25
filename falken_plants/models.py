@@ -54,6 +54,8 @@ class Plant(db.Model):
     def create_plant(name: str, name_tech: str, comment: str, watering_summer: int, watering_winter: int, spray: bool, direct_sun: int, user_id: int):
         plant = Plant(name=name, name_tech=name_tech, comment=comment, watering_summer=watering_summer,
                       watering_winter=watering_winter, spray=spray, direct_sun=direct_sun, date_registration=date.today(), user_id=user_id)
+        if plant.name == "":
+            raise Exception("Plant name can't be empty")
         db.session.add(plant)
         db.session.commit()
         return plant
@@ -111,7 +113,7 @@ class User(UserMixin, db.Model):
     @staticmethod
     def get_user_name(name: str):
         return User.query.filter_by(name=name).first()
-    
+
     @staticmethod
     def delete_user(id: int) -> None:
         User.query.filter(id).delete()
