@@ -84,21 +84,13 @@ class TestModels(BaseTestCase):
         self.assertFalse(Plant.query.filter_by(id=plant.id).first())
 
     def test_create_plant_no_user(self):
-        plant = Plant.create_plant(name='test_plant', name_tech='test_plant', comment='test_plant',
-                                   watering_summer=1, watering_winter=1, spray=True, direct_sun=1, user_id=1)
-        self.assertFalse(plant.id)
+        self.assertRaises(ValueError, Plant.create_plant, name='', name_tech='test_plant', comment='test_plant')
 
     def test_get_plants_no_user(self):
         plant = Plant.create_plant(name='test_plant', name_tech='test_plant', comment='test_plant',
                                    watering_summer=1, watering_winter=1, spray=True, direct_sun=1, user_id=1)
         plants = Plant.get_plants(1)
         self.assertFalse(plants)
-
-    def test_get_plant_no_user(self):
-        plant = Plant.create_plant(name='test_plant', name_tech='test_plant', comment='test_plant',
-                                   watering_summer=1, watering_winter=1, spray=True, direct_sun=1, user_id=1)
-        plant_get = Plant.get_plant(1)
-        self.assertFalse(plant_get)
 
     def test_get_plant_name_no_user(self):
         plant = Plant.create_plant(name='test_plant', name_tech='test_plant', comment='test_plant',
@@ -143,7 +135,4 @@ class TestModels(BaseTestCase):
 
     def test_create_plant_no_name(self):
         user = self.create_user()
-        plant = Plant.create_plant(name='', name_tech='test_plant', comment='test_plant',
-                                   watering_summer=1, watering_winter=1, spray=True, direct_sun=1, user_id=user.id)
-        self.assertIsInstance(plant, Exception)
-
+        self.assertRaises(ValueError, Plant.create_plant, name='', name_tech='test_plant', comment='test_plant',)

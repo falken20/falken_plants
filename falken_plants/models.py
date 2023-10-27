@@ -26,13 +26,14 @@ class Plant(db.Model):
     name_tech = db.Column(db.String(100), nullable=True)
     comment = db.Column(db.String(200), nullable=True)
     # Frequency in weeks per month (1-4)
-    watering_summer = db.Column(db.Integer, nullable=False)
+    watering_summer = db.Column(db.Integer, nullable=True, default=1)
     # Frequency in weeks per month (1-4)
-    watering_winter = db.Column(db.Integer, nullable=False)
-    spray = db.Column(db.Boolean, nullable=False)
+    watering_winter = db.Column(db.Integer, nullable=True, default=2)
+    spray = db.Column(db.Boolean, nullable=True, default=True)
     # Direct sun value 1: No, 2: Partial, 3: Yes
-    direct_sun = db.Column(db.Integer, nullable=False)
-    date_registration = db.Column(db.Date, nullable=False)
+    direct_sun = db.Column(db.Integer, nullable=True)
+    date_registration = db.Column(
+        db.Date, nullable=False, default=date.today())
     user_id = db.Column(db.Integer, db.ForeignKey('t_user.id'), nullable=False)
 
     def __repr__(self) -> str:
@@ -51,11 +52,15 @@ class Plant(db.Model):
         return Plant.query.filter_by(name=plant_name).first()
 
     @staticmethod
-    def create_plant(name: str, name_tech: str, comment: str, watering_summer: int, watering_winter: int, spray: bool, direct_sun: int, user_id: int):
+    def create_plant(name: str, name_tech: str, comment: str, 
+                     watering_summer: int = 1, watering_winter: int = 2, 
+                     spray: bool = True, direct_sun: int = 1, user_id: int = None):
         plant = Plant(name=name, name_tech=name_tech, comment=comment, watering_summer=watering_summer,
                       watering_winter=watering_winter, spray=spray, direct_sun=direct_sun, date_registration=date.today(), user_id=user_id)
-        if plant.name == "":
-            raise Exception("Plant name can't be empty")
+        if plant.name == "" or plant.name is None:
+            raise ValueError("Plant name can't be empty")
+        if plant.user_id == "" or plant.user_id is None:
+            raise ValueError("Plant user_id can't be empty")
         db.session.add(plant)
         db.session.commit()
         return plant
