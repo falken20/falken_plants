@@ -61,6 +61,8 @@ class Plant(db.Model):
             raise ValueError("Plant name can't be empty")
         if plant.user_id == "" or plant.user_id is None:
             raise ValueError("Plant user_id can't be empty")
+        if User.get_user(plant.user_id) is None:
+            raise ValueError("Plant user_id doesn't exist")
         db.session.add(plant)
         db.session.commit()
         return plant
@@ -68,6 +70,8 @@ class Plant(db.Model):
     @staticmethod
     def update_plant(plant_id: int, name: str, name_tech: str, comment: str, watering_summer: int, watering_winter: int, spray: bool, direct_sun: int):
         plant = Plant.get_plant(plant_id)
+        if plant is None:
+            return None
         plant.name = name
         plant.name_tech = name_tech
         plant.comment = comment
@@ -112,6 +116,10 @@ class User(UserMixin, db.Model):
     date_from = db.Column(db.Date, nullable=False)
 
     @staticmethod
+    def get_user(id: int):
+        return User.query.filter_by(id=id).first()
+
+    @staticmethod
     def get_user_email(email: str):
         return User.query.filter_by(email=email).first()
 
@@ -121,7 +129,7 @@ class User(UserMixin, db.Model):
 
     @staticmethod
     def delete_user(id: int) -> None:
-        User.query.filter(id).delete()
+        User.query.filter_by(id=id).delete()
         db.session.commit()
 
 

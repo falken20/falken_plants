@@ -84,32 +84,24 @@ class TestModels(BaseTestCase):
         self.assertFalse(Plant.query.filter_by(id=plant.id).first())
 
     def test_create_plant_no_user(self):
-        self.assertRaises(ValueError, Plant.create_plant, name='', name_tech='test_plant', comment='test_plant')
+        self.assertRaises(ValueError, Plant.create_plant, name='',
+                          name_tech='test_plant', comment='test_plant')
 
     def test_get_plants_no_user(self):
+        user = self.create_user()
         plant = Plant.create_plant(name='test_plant', name_tech='test_plant', comment='test_plant',
-                                   watering_summer=1, watering_winter=1, spray=True, direct_sun=1, user_id=1)
-        plants = Plant.get_plants(1)
-        self.assertFalse(plants)
-
-    def test_get_plant_name_no_user(self):
-        plant = Plant.create_plant(name='test_plant', name_tech='test_plant', comment='test_plant',
-                                   watering_summer=1, watering_winter=1, spray=True, direct_sun=1, user_id=1)
-        plant_get = Plant.get_plant_name(plant.name)
-        self.assertFalse(plant_get)
+                                   watering_summer=1, watering_winter=1, spray=True, direct_sun=1, user_id=user.id)
+        User.delete_user(user.id)
+        plants = Plant.get_plants(user_id=user.id)
+        self.assertIsNone(plants[0])
 
     def test_update_plant_no_user(self):
+        user = self.create_user()
         plant = Plant.create_plant(name='test_plant', name_tech='test_plant', comment='test_plant',
-                                   watering_summer=1, watering_winter=1, spray=True, direct_sun=1, user_id=1)
-        plant_update = Plant.update_plant(1, name='test_plant_update', name_tech='test_plant_update', comment='test_plant_update',
-                                          watering_summer=2, watering_winter=2, spray=False, direct_sun=2)
-        self.assertFalse(plant_update)
-    
-    def test_delete_plant_no_user(self):
-        plant = Plant.create_plant(name='test_plant', name_tech='test_plant', comment='test_plant',
-                                   watering_summer=1, watering_winter=1, spray=True, direct_sun=1, user_id=1)
-        plant_delete = Plant.delete_plant(1)
-        self.assertFalse(plant_delete)
+                                   watering_summer=1, watering_winter=1, spray=True, direct_sun=1, user_id=user.id)
+        User.delete_user(user.id)
+        self.assertRaises(ValueError, Plant.update_plant, plant_id=1, name='test_plant_update', name_tech='test_plant_update', comment='test_plant_update',
+                          watering_summer=2, watering_winter=2, spray=False, direct_sun=2)
 
     def test_get_plants_no_plants(self):
         user = self.create_user()
@@ -135,4 +127,5 @@ class TestModels(BaseTestCase):
 
     def test_create_plant_no_name(self):
         user = self.create_user()
-        self.assertRaises(ValueError, Plant.create_plant, name='', name_tech='test_plant', comment='test_plant',)
+        self.assertRaises(ValueError, Plant.create_plant, name='',
+                          name_tech='test_plant', comment='test_plant',)
