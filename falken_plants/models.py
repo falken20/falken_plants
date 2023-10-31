@@ -52,11 +52,12 @@ class Plant(db.Model):
         return Plant.query.filter_by(name=plant_name).first()
 
     @staticmethod
-    def create_plant(name: str, name_tech: str, comment: str, 
-                     watering_summer: int = 1, watering_winter: int = 2, 
+    def create_plant(name: str, name_tech: str, comment: str,
+                     watering_summer: int = 1, watering_winter: int = 2,
                      spray: bool = True, direct_sun: int = 1, user_id: int = None):
         plant = Plant(name=name, name_tech=name_tech, comment=comment, watering_summer=watering_summer,
-                      watering_winter=watering_winter, spray=spray, direct_sun=direct_sun, date_registration=date.today(), user_id=user_id)
+                      watering_winter=watering_winter, spray=spray, direct_sun=direct_sun,
+                      date_registration=date.today(), user_id=user_id)
         if plant.name == "" or plant.name is None:
             raise ValueError("Plant name can't be empty")
         if plant.user_id == "" or plant.user_id is None:
@@ -68,7 +69,8 @@ class Plant(db.Model):
         return plant
 
     @staticmethod
-    def update_plant(plant_id: int, name: str, name_tech: str, comment: str, watering_summer: int, watering_winter: int, spray: bool, direct_sun: int):
+    def update_plant(plant_id: int, name: str, name_tech: str, comment: str, watering_summer: int,
+                     watering_winter: int, spray: bool, direct_sun: int):
         plant = Plant.get_plant(plant_id)
         if plant is None:
             return None
@@ -91,7 +93,7 @@ class Plant(db.Model):
 
 
 class Calendar(db.Model):
-    __tablename__ = "t_watering"
+    __tablename__ = "t_calendar"
 
     date = db.Column(db.Date, primary_key=True)
     water = db.Column(db.Boolean, nullable=False)
@@ -114,6 +116,9 @@ class User(UserMixin, db.Model):
     password = db.Column(db.String(100), nullable=False)
     name = db.Column(db.String(100), nullable=False)
     date_from = db.Column(db.Date, nullable=False)
+
+    def __repr__(self) -> str:
+        return f"<User {self.name}>"
 
     @staticmethod
     def get_user(id: int):
