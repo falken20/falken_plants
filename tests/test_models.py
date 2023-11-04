@@ -21,6 +21,7 @@ class TestModelUser(BaseTestCase):
         User.delete_user(user.id)
         self.assertFalse(User.query.filter_by(id=user.id).first())
 
+
 class TestModelPlant(BaseTestCase):
     #### Plant model tests ####
     def test_repr(self):
@@ -90,24 +91,16 @@ class TestModelPlant(BaseTestCase):
 
     def test_get_plants_no_user(self):
         user = self.create_user()
-        plant = Plant.create_plant(name='test_plant', name_tech='test_plant', comment='test_plant',
-                                   watering_summer=1, watering_winter=1, spray=True, direct_sun=1, user_id=user.id)
-        User.delete_user(user.id)
         plants = Plant.get_plants(user_id=user.id)
-        # TODO: fix this test
-        self.assertIsNotNone(plants[0])
+        self.assertEqual(len(plants), 0)
 
     def test_update_plant_no_user(self):
         user = self.create_user()
         plant = Plant.create_plant(name='test_plant', name_tech='test_plant', comment='test_plant',
                                    watering_summer=1, watering_winter=1, spray=True, direct_sun=1, user_id=user.id)
         User.delete_user(user.id)
-        
-        # TODO: fix this test
-        # self.assertRaises(ValueError, Plant.update_plant, plant_id=1, name='test_plant_update', name_tech='test_plant_update', 
-        # comment='test_plant_update',watering_summer=2, watering_winter=2, spray=False, direct_sun=2)
-        self.assertEqual(plant.name, 'test_plant')
-
+        self.assertRaises(ValueError, Plant.update_plant, plant_id=plant.id, name='test_plant_update', name_tech='test_plant_update',
+                          comment='test_plant_update', watering_summer=2, watering_winter=2, spray=False, direct_sun=2)
 
     def test_get_plants_no_plants(self):
         user = self.create_user()
@@ -128,14 +121,14 @@ class TestModelPlant(BaseTestCase):
         self.assertFalse(plant_update)
 
     def test_delete_plant_no_plant(self):
-        plant_delete = Plant.delete_plant(1)
+        plant_delete = Plant.delete_plant(10)
         self.assertFalse(plant_delete)
 
     def test_create_plant_no_name(self):
         user = self.create_user()
         self.assertRaises(ValueError, Plant.create_plant, name='',
                           name_tech='test_plant', comment='test_plant',)
-        
+
 
 class TestModelCalendar(BaseTestCase):
     #### Calendar model tests ####

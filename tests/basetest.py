@@ -42,7 +42,7 @@ class BaseTestCase(unittest.TestCase):
     @staticmethod
     def create_user(user: User = mock_user):
         new_user = User(email=user['email'], name=user['name'],
-                    password=generate_password_hash(user['password'], method='sha256'),
+                    password=generate_password_hash(user['password'], method='pbkdf2'),  # Before method='sha256'
                     date_from=date.today())
         db.session.add(new_user)
         db.session.commit()

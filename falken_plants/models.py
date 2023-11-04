@@ -74,6 +74,8 @@ class Plant(db.Model):
         plant = Plant.get_plant(plant_id)
         if plant is None:
             return None
+        if User.get_user(plant.user_id) is None:
+            raise ValueError("Plant user_id doesn't exist")
         plant.name = name
         plant.name_tech = name_tech
         plant.comment = comment
@@ -87,6 +89,8 @@ class Plant(db.Model):
     @staticmethod
     def delete_plant(plant_id: int):
         plant = Plant.get_plant(plant_id)
+        if plant is None:
+            return None
         db.session.delete(plant)
         db.session.commit()
         return plant
