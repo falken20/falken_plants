@@ -105,6 +105,9 @@ class Calendar(db.Model):
     plant_id = db.Column(db.Integer, db.ForeignKey(
         't_plant.id'), nullable=False)
 
+    def __repr__(self) -> str:
+        return f"<Calendar {self.date}>"
+
     @staticmethod
     def get_calendar(plant_id: int):
         return Calendar.query.filter_by(plant_id=plant_id).all()

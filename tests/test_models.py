@@ -1,5 +1,7 @@
+from datetime import date
+
 from .basetest import BaseTestCase
-from falken_plants.models import User, Plant
+from falken_plants.models import User, Plant, Calendar
 
 
 class TestModelUser(BaseTestCase):
@@ -85,10 +87,17 @@ class TestModelPlant(BaseTestCase):
         Plant.delete_plant(plant.id)
         self.assertFalse(Plant.query.filter_by(id=plant.id).first())
 
-    def test_create_plant_no_user(self):
+    def test_create_plant_no_name(self):
+        user = self.create_user()
         self.assertRaises(ValueError, Plant.create_plant, name='',
-                          name_tech='test_plant', comment='test_plant')
+                          name_tech='test_plant', comment='test_plant', user_id=user.id)
 
+    def test_create_plant_no_user(self):
+        self.assertRaises(ValueError, Plant.create_plant, name='test_plant',
+                          name_tech='test_plant', comment='test_plant')
+        self.assertRaises(ValueError, Plant.create_plant, name='test_plant',
+                          name_tech='test_plant', comment='test_plant', user_id=5)
+        
     def test_get_plants_no_user(self):
         user = self.create_user()
         plants = Plant.get_plants(user_id=user.id)
@@ -132,4 +141,25 @@ class TestModelPlant(BaseTestCase):
 
 class TestModelCalendar(BaseTestCase):
     #### Calendar model tests ####
-    pass
+    def test_repr(self):
+        self.assertIn('<Calendar', str(Calendar()))
+
+    def test_create_calendar(self):
+        user = self.create_user()
+        plant = Plant.create_plant(name='test_plant', name_tech='test_plant', comment='test_plant',
+                                   watering_summer=1, watering_winter=1, spray=True, direct_sun=1, user_id=user.id)
+        calendar = Calendar(plant_id=plant.id, date=date.today())
+        self.assertTrue(calendar)
+        self.assertEqual(calendar.plant_id, plant.id)
+        self.assertEqual(calendar.date, date.today())
+    
+    def test_get_calendar(self):
+        user = self.create_user()
+        plant = Plant.create_plant(name='test_plant', name_tech='test_plant', comment='test_plant',
+                                   watering_summer=1, watering_winter=1, spray=True, direct_sun=1, user_id=user.id)
+        Calendar(plant_id=plant.id, date=date.today())
+        calendar_get = Calendar.get_calendar(plant_id=plant.id)
+        self.assertIsInstance(calendar_get, list)
+        print(calendar_get)
+        self.assertEqual(calendar_get[0].plant_id, plant.id)
+        self.assertEqual(calendar_get[0].date, date.today())
