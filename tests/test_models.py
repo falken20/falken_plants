@@ -1,7 +1,11 @@
+# by Richi Rod AKA @richionline / falken20
+
 from datetime import date
+from io import StringIO
+from unittest.mock import patch
 
 from .basetest import BaseTestCase
-from falken_plants.models import User, Plant, Calendar
+from falken_plants.models import User, Plant, Calendar, init_db, db
 
 
 class TestModelUser(BaseTestCase):
@@ -22,6 +26,25 @@ class TestModelUser(BaseTestCase):
         self.assertTrue(user.id)
         User.delete_user(user.id)
         self.assertFalse(User.query.filter_by(id=user.id).first())
+
+    def test_get_user(self):
+        user = self.create_user()
+        user_get = User.get_user(user.id)
+        self.assertEqual(user_get.email, user.email)
+
+    def test_get_user_email(self):
+        user = self.create_user()
+        user_get = User.get_user_email(user.email)
+        self.assertEqual(user_get.email, user.email)
+
+    def test_get_user_name(self):
+        user = self.create_user()
+        user_get = User.get_user_name(user.name)
+        self.assertEqual(user_get.name, user.name)
+
+    def test_get_user_no_user(self):
+        user = User.get_user(1)
+        self.assertFalse(user)
 
 
 class TestModelPlant(BaseTestCase):
@@ -97,7 +120,7 @@ class TestModelPlant(BaseTestCase):
                           name_tech='test_plant', comment='test_plant')
         self.assertRaises(ValueError, Plant.create_plant, name='test_plant',
                           name_tech='test_plant', comment='test_plant', user_id=5)
-        
+
     def test_get_plants_no_user(self):
         user = self.create_user()
         plants = Plant.get_plants(user_id=user.id)
@@ -152,14 +175,73 @@ class TestModelCalendar(BaseTestCase):
         self.assertTrue(calendar)
         self.assertEqual(calendar.plant_id, plant.id)
         self.assertEqual(calendar.date, date.today())
-    
+
     def test_get_calendar(self):
         user = self.create_user()
         plant = Plant.create_plant(name='test_plant', name_tech='test_plant', comment='test_plant',
                                    watering_summer=1, watering_winter=1, spray=True, direct_sun=1, user_id=user.id)
-        Calendar(plant_id=plant.id, date=date.today())
+        Calendar.create_calendar(
+            plant_id=plant.id, date=date.today(), water=True, fertilize=False)
         calendar_get = Calendar.get_calendar(plant_id=plant.id)
         self.assertIsInstance(calendar_get, list)
-        print(calendar_get)
         self.assertEqual(calendar_get[0].plant_id, plant.id)
-        self.assertEqual(calendar_get[0].date, date.today())
+
+    def test_get_calendar_date(self):
+        user = self.create_user()
+        plant = Plant.create_plant(name='test_plant', name_tech='test_plant', comment='test_plant',
+                                   watering_summer=1, watering_winter=1, spray=True, direct_sun=1, user_id=user.id)
+        Calendar.create_calendar(
+            plant_id=plant.id, date=date.today(), water=True, fertilize=False)
+        calendar_get = Calendar.get_calendar_date(
+            plant_id=plant.id, date=date.today())
+        self.assertIsInstance(calendar_get, Calendar)
+        self.assertEqual(calendar_get.plant_id, plant.id)
+        self.assertEqual(calendar_get.date, date.today())
+
+    def test_delete_calendar_date(self):
+        user = self.create_user()
+        plant = Plant.create_plant(name='test_plant', name_tech='test_plant',
+                                   comment='test_plant', watering_summer=1, watering_winter=1, spray=True, direct_sun=1, user_id=user.id)
+        Calendar.create_calendar(
+            plant_id=plant.id, date=date.today(), water=True, fertilize=False)
+        Calendar.delete_calendar_date(
+            plant_id=plant.id, date=date.today())
+        calendar_get = Calendar.get_calendar_date(
+            plant_id=plant.id, date=date.today())
+        self.assertFalse(calendar_get)
+        # Test delete calendar None
+        calendar_delete = Calendar.delete_calendar_date(
+            plant_id=plant.id, date=date.today())
+        self.assertFalse(calendar_delete)
+
+    def test_delete_calendar_plant(self):
+        user = self.create_user()
+        plant = Plant.create_plant(name='test_plant', name_tech='test_plant',
+                                   comment='test_plant', watering_summer=1, watering_winter=1, spray=True, direct_sun=1, user_id=user.id)
+        Calendar.create_calendar(
+            plant_id=plant.id, date=date.today(), water=True, fertilize=False)
+        Calendar.delete_calendar_plant(plant_id=plant.id)
+        calendar_get = Calendar.get_calendar(plant_id=plant.id)
+        self.assertFalse(calendar_get)
+        # Test delete calendar plant None
+        calendar_delete = Calendar.delete_calendar_plant(plant_id=plant.id)
+        self.assertFalse(calendar_delete)
+
+
+class TestInitDB(BaseTestCase):
+    #### init_db tests ####
+    def test_init_db_vars(self):
+        self.assertTrue(db)
+        self.assertTrue(self.app)
+
+    @patch('sys.stdin', StringIO('N\nN\n'))  # Simulate user input
+    def test_init_db(self):
+        init_db(self.app)
+
+    @patch('sys.stdin', StringIO('Y\nY\n'))  # Simulate user input
+    def test_init_db_with_drops(self):
+        init_db(self.app)
+
+    @patch('sys.stdin', StringIO('N\nY\n'))  # Simulate user input
+    def test_init_db_with_create(self):
+        init_db(self.app)

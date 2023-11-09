@@ -100,8 +100,8 @@ class Calendar(db.Model):
     __tablename__ = "t_calendar"
 
     date = db.Column(db.Date, primary_key=True)
-    water = db.Column(db.Boolean, nullable=False)
-    fertilize = db.Column(db.Boolean, nullable=False)
+    water = db.Column(db.Boolean, nullable=False, default=False)
+    fertilize = db.Column(db.Boolean, nullable=False, default=False)
     plant_id = db.Column(db.Integer, db.ForeignKey(
         't_plant.id'), nullable=False)
 
@@ -111,6 +111,37 @@ class Calendar(db.Model):
     @staticmethod
     def get_calendar(plant_id: int):
         return Calendar.query.filter_by(plant_id=plant_id).all()
+
+    @staticmethod
+    def get_calendar_date(date: date, plant_id: int):
+        return Calendar.query.filter_by(date=date, plant_id=plant_id).first()
+
+    @staticmethod
+    def create_calendar(date: date, water: bool, fertilize: bool, plant_id: int):
+        calendar = Calendar(date=date, water=water,
+                            fertilize=fertilize, plant_id=plant_id)
+        db.session.add(calendar)
+        db.session.commit()
+        return calendar
+
+    @staticmethod
+    def delete_calendar_date(date: date, plant_id: int):
+        calendar = Calendar.get_calendar_date(date, plant_id)
+        if calendar is None:
+            return None
+        db.session.delete(calendar)
+        db.session.commit()
+        return calendar
+
+    @staticmethod
+    def delete_calendar_plant(plant_id: int):
+        calendar = Calendar.get_calendar(plant_id)
+        if len(calendar) == 0:
+            return None
+        for date in calendar:
+            db.session.delete(date)
+        db.session.commit()
+        return calendar
 
 
 # Flask-Login can manage user sessions. UserMixin will add Flask-Login attributes

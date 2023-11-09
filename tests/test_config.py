@@ -1,6 +1,9 @@
+# by Richi Rod AKA @richionline / falken20
+
 import unittest
 
 from falken_plants import config
+
 
 class TestConfig(unittest.TestCase):
 

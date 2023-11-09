@@ -1,3 +1,5 @@
+# by Richi Rod AKA @richionline / falken20
+
 from io import StringIO
 import sys
 import unittest
@@ -25,7 +27,7 @@ class TestLogger(unittest.TestCase):
         logger.LEVEL_LOG = "['DEBUG']"
         trace = "Test Debug"
         logger.Log.debug(trace, style="error_style")
-        #self.assertIn(trace, stdout.getvalue())
+        # self.assertIn(trace, stdout.getvalue())
         self.assertEqual(True, True)
 
     @patch('sys.stdout', new_callable=StringIO)
@@ -35,14 +37,12 @@ class TestLogger(unittest.TestCase):
         logger.Log.debug(trace)
         self.assertIn(trace, stdout.getvalue())
 
-
     @patch('sys.stdout', new_callable=StringIO)
     def test_debug_no_trace(self, stdout):
         logger.LEVEL_LOG = "[]"
         trace = "Test Debug"
         logger.Log.debug(trace)
         self.assertNotIn(trace, stdout.getvalue())
-
 
     @patch('sys.stdout', new_callable=StringIO)
     def test_info(self, stdout):
@@ -58,6 +58,12 @@ class TestLogger(unittest.TestCase):
         logger.Log.info(trace)
         self.assertNotIn(trace, stdout.getvalue())
 
+    def test_info_exception(self):
+        logger.LEVEL_LOG = "['INFO']"
+        trace = "Test Info"
+        self.assertRaises(Exception, logger.Log.info(
+            trace, style="error_style"))
+
     @patch('sys.stdout', new_callable=StringIO)
     def test_warning(self, stdout):
         logger.LEVEL_LOG = "['WARNING']"
@@ -71,6 +77,12 @@ class TestLogger(unittest.TestCase):
         trace = "Test Warning"
         logger.Log.warning(trace)
         self.assertNotIn(trace, stdout.getvalue())
+
+    def test_warning_exception(self):
+        logger.LEVEL_LOG = "['WARNING']"
+        trace = "Test Warning"
+        self.assertRaises(Exception, logger.Log.warning(
+            trace, style="error_style"))
 
     @patch('sys.stdout', new_callable=StringIO)
     def test_error(self, stdout):
@@ -93,3 +105,13 @@ class TestLogger(unittest.TestCase):
         except Exception as err:
             logger.Log.error(trace, err, sys)
             self.assertNotIn(trace, stdout.getvalue())
+
+    @patch('sys.stdout', new_callable=StringIO)
+    def test_error_exception(self, stdout):
+        logger.LEVEL_LOG = "['ERROR']"
+        trace = "Test Error"
+        try:
+            raise (Exception)
+        except Exception as err:
+            self.assertRaises(Exception, logger.Log.error(
+                trace, err, sys, style="error_style"))
