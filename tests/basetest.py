@@ -15,9 +15,14 @@ class BaseTestCase(unittest.TestCase):
     
     def setUp(self):
         self.app = create_app()
+        self.app.config['SECRET_KEY'] = 'secret_key_test'
         self.app.config['TESTING'] = True
         self.app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + \
             os.path.join(basedir, 'test.db')
+        
+        self.config_login()
+        self.client = self.app.test_client()
+
         self.app_context = self.app.app_context()
         self.app_context.push()
         db.create_all()
