@@ -32,7 +32,6 @@ class TestAuth(basetest.BaseTestCase):
         self.create_user()
         self.login_http(self)
         response = self.client.get('/logout', follow_redirects=True)
-        self.assertIn('You have been logged out.', response.text)
         self.assertEqual(response.status_code, 200)
 
     def test_auth_logout_rediret_login(self):

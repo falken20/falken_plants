@@ -198,14 +198,14 @@ def init_db(app):
 
         logging.info("Process finished succesfully")
 
-    except Exception as err:
+    except Exception as err:  # pragma: no cover
         logging.error(f"Execution Error in init_db: {err}", exc_info=True)
 
 
 # FORMAT = '%(asctime)s %(levelname)s %(lineno)d %(filename)s %(funcName)s: %(message)s'
 # logging.basicConfig(level=logging.INFO, format=FORMAT)
 
-if __name__ == '__main__':
+if __name__ == '__main__':  # pragma: no cover # To doesn't check in tests
     logging.info("Preparing app vars...")
     app = Flask(__name__)
 

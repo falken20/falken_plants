@@ -9,7 +9,7 @@ from .config import get_settings
 previous_cache = datetime.now()
 
 
-def check_cache(minutes: int = 60):
+def check_cache(seconds: int = 3600):  # 60 minutes default
     # Cache info:
     # hits is the number of calls that @lru_cache returned directly from memory because they existed in the cache.
     # misses is the number of calls that didn’t come from memory and were computed.
@@ -20,12 +20,12 @@ def check_cache(minutes: int = 60):
     Log.info(
         f"CACHE get_settings(): {get_settings.cache_info()}", style="yelloW")
     Log.info(
-        f"Checking expiration time for cache({minutes=})...", style="yellow")
+        f"Checking expiration time for cache({seconds=})...", style="yellow")
     Log.debug(f"Previous cache: {previous_cache}", style="yellow")
     Log.debug(f"Current time: {datetime.now()}", style="yellow")
-    difference = (datetime.now() - previous_cache).seconds / 60
-    Log.info(f"Cache span: {int(difference)} minutes", style="yellow")
-    if difference > minutes:
+    difference = (datetime.now() - previous_cache).seconds
+    Log.info(f"Cache span: {int(difference)} seconds ({int(difference / 60)} minutes)", style="yellow")
+    if difference > seconds:
         Log.info("Cleaning cache by expiration...", style="yellow")
         # calendar.cache_clear()
         previous_cache = datetime.now()
