@@ -1,0 +1,61 @@
+{% extends 'base.html' %}
+
+{% block title %}Primazon: Update Product {{product.product_desc}} {% endblock %}
+
+{% block content %}
+<div class="container" style="margin-top:20px;">
+
+    <form method="POST" action="{{ url_for('update_product') }}">
+
+      <div class="form-group">
+        <input class="form-control" type="hidden" name="product_id" value="{{ product.product_id }}" >
+      </div>
+      <div class="form-group">
+        <label for="product_url">Product URL</label>
+        <input type="text" class="form-control" id="product_url" name="product_url" placeholder="Product URL" value="{{ product.product_url }}" maxlength="500">
+      </div>      
+      <div class="form-group">
+        <a class="btn btn-warning btn-sm" href="{{ url_for('refresh_data', product_id=product.product_id) }}">
+          <i class="bi bi-arrow-clockwise"></i>
+          Refresh data from <img src="/static/img/amazon.jpeg" height="20" /> 
+        </a>
+      </div>
+      <div class="form-group">
+        <label for="product_desc">Description</label>
+        <input type="text" class="form-control" id="product_desc" name="product_desc" placeholder="Description" value="{{ product.product_desc }}" maxlength="150">
+      </div>
+      <div class="form-group">
+        <label for="product_url_photo">Photo URL</label>
+        <input type="text" class="form-control" id="product_url_photo" name="product_url_photo" placeholder="Photo URL" value="{{ product.product_url_photo }}" maxlength="500">
+      </div>
+      <div class="row">
+        <div class="form-group col-md-2">
+          <label for="product_price">Price</label>
+          <input type="number" class="form-control" name="product_price" id="product_price" placeholder="0" step="0.01" value="{{ product.product_price }}" maxlength="10">
+        </div>
+        <div class="form-group col-md-2">
+          <label for="product_min_price">Min</label>
+          <input type="text" class="form-control" id="product_min_price" name="product_min_price" value="{{ product.product_min_price }}" readonly>
+        </div>
+        <div class="form-group col-md-2">
+          <label for="product_max_price">Max</label>
+          <input type="text" class="form-control" id="product_max_price" name="product_max_price" value="{{ product.product_max_price }}" readonly>
+        </div>
+      </div>
+      <div class="row">
+        <div class="form-group col-md-6">
+          <label for="product_rating">Rating</label>
+          <input type="text" class="form-control" id="product_rating" name="product_rating" value="{{ product.product_rating }}" readonly>
+        </div>
+        <div class="form-group col-md-6">
+          <label for="product_reviews">Reviews</label>
+          <input type="text" class="form-control" id="product_reviews" name="product_reviews" value="{{ product.product_reviews }}" readonly>
+        </div>
+      </div>
+
+      <button type="submit" class="btn btn-primary">Save</button>
+
+    </form>
+
+</div>
+{% endblock %}
