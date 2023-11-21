@@ -44,3 +44,19 @@ def calendar():
     Log.debug(f"Current user: {current_user}")
 
     return render_template('calendar.html')
+
+@main.route("/plant/add", methods=['GET'])
+@login_required
+def add_plant():
+    Log.info("Add plant page")
+    Log.debug(f"Current user: {current_user}")
+
+    # return render_template('add_plant.html')
+
+@main.route("/plant/edit/<int:plant_id>", methods=['GET'])
+@login_required
+def edit_plant(plant_id: int):
+    Log.info("Edit plant page")
+    Log.debug(f"Current user: {current_user}")
+
+    pass
