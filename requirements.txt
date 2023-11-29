@@ -8,3 +8,5 @@ pydantic-settings
 flask-sqlalchemy
 psycopg2-binary
 flask-login
+flask_swagger_ui
+

@@ -1,0 +1,95 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "description": "API for Falken Plants",
+        "version": "1.0.0",
+        "title": "Swagger Falken Plants",
+        "termsOfService": "http://swagger.io/terms/",
+        "contact": {
+            "email": "ricardorg20@gmail.com"
+        }
+    },
+    "paths": {
+        "/": {
+            "get": {
+                "tags": [
+                    "Plants"
+                ],
+                "summary": "Get all plants",
+                "description": "",
+                "operationId": "getPlants",
+                "produces": [
+                    "application/json"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "successful operation",
+                        "schema": {
+                            "$ref": "#/definitions/Plants"
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid status value"
+                    }
+                }
+            }
+        },
+        "/api/plants": {
+            "get": {
+                "tags": [
+                    "Plants"
+                ],
+                "summary": "Get all plants",
+                "description": "",
+                "operationId": "getPlants",
+                "produces": [
+                    "application/json"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "successful operation",
+                        "schema": {
+                            "$ref": "#/definitions/Plants"
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid status value"
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Plants"
+                ],
+                "summary": "Add a new plant",
+                "description": "",
+                "operationId": "addPlant",
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "plant",
+                        "in": "body",
+                        "description": "Plant object that needs to be added to the store",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/Plant"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "successful operation",
+                        "schema": {
+                            "$ref": "#/definitions/Plant"
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid status value"
+                    }
+                }
+            }
+        }
+    }
+}
