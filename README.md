@@ -34,19 +34,19 @@ flask run
 python -m falken_plants.models
 ```
 
-##### Setup tests
-```bash
-pip install -r requirements-tests.txt
-```
-
 ##### Running the tests with pytest and coverage
 ```bash
+pip install -r requirements-tests.txt
 ./check_app.sh
 ```
 or
 ```bash
+pip install -r requirements-tests.txt
 coverage run -m pytest -v && coverage html --omit=*/venv/*,*/tests/*
 ```
+
+##### Swagger
+http://127.0.0.1:5000/swagger/
 
 ##### Environment vars
 ```bash
@@ -73,3 +73,4 @@ DB_SQLITE_NAME=primazon.db
 - Bulma: CSS framework (https://bulma.io/)
 - Help to apply Flask-Login (https://www.digitalocean.com/community/tutorials/how-to-add-authentication-to-your-app-with-flask-login)
 - Calendar component (https://fullcalendar.io/)
+- Swagger (https://diptochakrabarty.medium.com/flask-python-swagger-for-rest-apis-6efdf0100bd7)

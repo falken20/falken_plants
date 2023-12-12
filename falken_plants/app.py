@@ -33,7 +33,8 @@ def create_app():
     if settings.ENV_PRO == "N":
         # basedir is the path to the root of the project
         Log.info("Running in development mode with sqlite DB", style="red bold")
-        Log.info(f"DB path: {os.path.join(basedir, 'database.db')}", style="red bold")
+        Log.info(
+            f"DB path: {os.path.join(basedir, 'database.db')}", style="red bold")
         app.config['DEBUG'] = True
         app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + \
             os.path.join(basedir, 'database.db')
@@ -70,5 +71,6 @@ def create_app():
     # blueprint for swagger
     from .swagger import swagger_ui_blueprint, SWAGGER_URL
     app.register_blueprint(swagger_ui_blueprint, url_prefix=SWAGGER_URL)
+    Log.debug(f"Running Swagger in {SWAGGER_URL}")
 
     return app
