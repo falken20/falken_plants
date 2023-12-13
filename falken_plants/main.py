@@ -49,7 +49,7 @@ def calendar():
 
 ###### API plants ######
 
-@main.route("/create_plant", methods=['GET'])
+@main.route("/add_plant", methods=['GET'])
 @login_required
 def create_plant():
     Log.info("Create plant page")
