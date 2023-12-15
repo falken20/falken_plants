@@ -49,13 +49,13 @@ def calendar():
 
 ###### API plants ######
 
-@main.route("/add_plant", methods=['GET'])
+@main.route("/plants/create", methods=['GET'])
 @login_required
 def create_plant():
     Log.info("Create plant page")
     Log.debug(f"Current user: {current_user}")
 
-    return render_template('create_plant.html')
+    return render_template('plant_form.html')
 
 
 @main.route("/plants", methods=['GET'])
@@ -71,15 +71,6 @@ def view_all_plants():
 @login_required
 def view_plant(plant_id: int):
     Log.info("View plant page")
-    Log.debug(f"Current user: {current_user}")
-
-    pass
-
-
-@main.route("/plants", methods=['POST'])
-@login_required
-def add_plant():
-    Log.info("Add plant page")
     Log.debug(f"Current user: {current_user}")
 
     pass
