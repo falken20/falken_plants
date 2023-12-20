@@ -21,42 +21,39 @@
       </div>
 
       <div class="row">
-        <div class="form-group">
+        <div class="form-group col-sm">
           <label for="watering_summer">Watering Summer</label>
-          <select class="custom-select" name="watering_summer" id="watering_summer">
-            <option value="1">1 week per month</option>
-            <option value="2">2 week per month</option>
-            <option value="3">3 week per month</option>
-            <option value="4">4 week per month</option>
+          <select class="form-control" name="watering_summer" id="watering_summer">
+            <option value="1" title="1 week per month">1 wpm</option>
+            <option value="2" title="2 week per month">2 wpm</option>
+            <option value="3" title="3 week per month">3 wpm</option>
+            <option value="4" title="4 week per month">4 wpm</option>
           </select>
+        </div>
+        <div class="form-group col-sm">
           <label for="watering_winter">Watering Winter</label>
-          <select class="custom-select" name="watering_winter" id="watering_winter">
-            <option value="1">1 week per month</option>
-            <option value="2">2 week per month</option>
-            <option value="3">3 week per month</option>
-            <option value="4">4 week per month</option>
+          <select class="form-control" name="watering_winter" id="watering_winter">
+            <option value="1" title="1 week per month">1 wpm</option>
+            <option value="2" title="2 week per month">2 wpm</option>
+            <option value="3" title="3 week per month">3 wpm</option>
+            <option value="4" title="4 week per month">4 wpm</option>
           </select>
+        </div>
+        <div class="form-group col-sm">
           <label for="direct_sun">Direct Sun</label>
-          <select class="custom-select" name="direct_sun" id="direct_sun">
-            <option value="1">No</option>
-            <option value="2">Partial</option>
-            <option value="3">Yes</option>
+          <select class="form-control" name="direct_sun" id="direct_sun">
+            <option value="1" title="No sun">No</option>
+            <option value="2" title="Partial sun">Partial</option>
+            <option value="3" title="Sun">Yes</option>
           </select>
         </div>
       </div>
 
-      <!-- Example single danger button -->
-      <div class="btn-group">
-        <button type="button" class="btn btn-danger dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-          Action
-        </button>
-        <div class="dropdown-menu">
-          <a class="dropdown-item" href="#">Action</a>
-          <a class="dropdown-item" href="#">Another action</a>
-          <a class="dropdown-item" href="#">Something else here</a>
-          <div class="dropdown-divider"></div>
-          <a class="dropdown-item" href="#">Separated link</a>
-        </div>
+      <div class="form-group">
+        <label for="image">Image</label>
+      </div>
+      <div class="form-group">
+        <input type="file" class="form-control-file" id="image" name="image">
       </div>
 
       <button type="submit" class="btn btn-primary">Save</button>

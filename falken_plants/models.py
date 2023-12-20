@@ -32,6 +32,7 @@ class Plant(db.Model):
     spray = db.Column(db.Boolean, nullable=True, default=True)
     # Direct sun value 1: No, 2: Partial, 3: Yes
     direct_sun = db.Column(db.Integer, nullable=True)
+    image = db.Column(db.BLOB, nullable=True)
     date_registration = db.Column(
         db.Date, nullable=False, default=date.today())
     user_id = db.Column(db.Integer, db.ForeignKey('t_user.id'), nullable=False)
