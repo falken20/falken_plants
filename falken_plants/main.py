@@ -4,8 +4,10 @@
 from flask import Blueprint, render_template
 from flask_login import login_required, current_user
 from datetime import date
+from flask import request
 
 from .logger import Log
+from .models import Plant
 
 main = Blueprint('main', __name__)
 
@@ -74,6 +76,30 @@ def view_plant(plant_id: int):
     Log.debug(f"Current user: {current_user}")
 
     pass
+
+
+@main.route("/plants", methods=['POST'])
+@login_required
+def add_plant():
+    Log.info("Add plant page")
+    Log.debug(f"Current user: {current_user}")
+
+    try:
+        plant = Plant.create_plant(name=request.form['name'],
+                                   name_tech=request.form['name_tech'],
+                                   comment=request.form['comment'],
+                                   watering_summer=request.form['watering_summer'],
+                                   watering_winter=request.form['watering_winter'],
+                                   spray=request.form['spray'],
+                                   direct_sun=request.form['direct_sun'],
+                                   image=request.form['image'],
+                                   user_id=current_user.id)
+        Log.info(f"Plant created: {plant}")
+    except Exception as e:
+        Log.error(f"Error creating plant: {e}")
+        return render_template('plant_form.html', error=e)
+    
+    return render_template('index.html')
 
 
 @main.route("/plants/<int:plant_id>", methods=['PUT'])

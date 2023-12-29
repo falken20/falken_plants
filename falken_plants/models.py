@@ -55,19 +55,24 @@ class Plant(db.Model):
     @staticmethod
     def create_plant(name: str, name_tech: str, comment: str,
                      watering_summer: int = 1, watering_winter: int = 2,
-                     spray: bool = True, direct_sun: int = 1, user_id: int = None):
-        plant = Plant(name=name, name_tech=name_tech, comment=comment, watering_summer=watering_summer,
-                      watering_winter=watering_winter, spray=spray, direct_sun=direct_sun,
-                      date_registration=date.today(), user_id=user_id)
-        if plant.name == "" or plant.name is None:
-            raise ValueError("Plant name can't be empty")
-        if plant.user_id == "" or plant.user_id is None:
-            raise ValueError("Plant user_id can't be empty")
-        if User.get_user(plant.user_id) is None:
-            raise ValueError("Plant user_id doesn't exist")
-        db.session.add(plant)
-        db.session.commit()
-        return plant
+                     spray: bool = False, direct_sun: int = 1, 
+                     image = None, user_id: int = None):
+        try:
+            spray = True if spray == "1" else False
+            plant = Plant(name=name, name_tech=name_tech, comment=comment, watering_summer=watering_summer,
+                        watering_winter=watering_winter, spray=spray, direct_sun=direct_sun,
+                        date_registration=date.today(), user_id=user_id)
+            if plant.name == "" or plant.name is None:
+                raise ValueError("Plant name can't be empty")
+            if plant.user_id == "" or plant.user_id is None:
+                raise ValueError("Plant user_id can't be empty")
+            if User.get_user(plant.user_id) is None:
+                raise ValueError("Plant user_id doesn't exist")
+            db.session.add(plant)
+            db.session.commit()
+            return plant
+        except Exception as err:
+            raise Exception(err)
 
     @staticmethod
     def update_plant(plant_id: int, name: str, name_tech: str, comment: str, watering_summer: int,

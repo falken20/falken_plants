@@ -32,7 +32,7 @@ def create_app():
 
     if settings.ENV_PRO == "N":
         # basedir is the path to the root of the project
-        Log.info("Running in development mode with sqlite DB", style="red bold")
+        Log.info("Running in development mode with Sqlite DB", style="red bold")
         Log.info(
             f"DB path: {os.path.join(basedir, 'database.db')}", style="red bold")
         app.config['DEBUG'] = True
