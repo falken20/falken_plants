@@ -58,6 +58,15 @@ DB_SQLITE_URL=sqlite://
 DB_SQLITE_NAME=primazon.db
 ```
 
+##### Environment vars using new config.py file
+```bash
+CONFIG_MODE=
+DEVELOPMENT_DATABASE_URL=
+TEST_DATABASE_URL= 
+STAGING_DATABASE_URL= 
+PRODUCTION_DATABASE_URL= 
+```
+
 ---
 
 ##### Versions
