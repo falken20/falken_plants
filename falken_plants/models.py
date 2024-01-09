@@ -37,6 +37,7 @@ class Plant(db.Model):
         db.Date, nullable=False, default=date.today())
     user_id = db.Column(db.Integer, db.ForeignKey('t_user.id'), nullable=False)
 
+    # TODO: Check to use return "<%r>" % self.name
     def __repr__(self) -> str:
         return f"<Plant {self.name}>"
 
