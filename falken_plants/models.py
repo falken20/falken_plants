@@ -11,6 +11,7 @@ from datetime import date
 from flask import Flask
 from flask_login import UserMixin
 from flask_sqlalchemy import SQLAlchemy
+from flask_validator import ValidateString, ValidateInteger, ValidateEmail, ValidateLessThanOrEqual
 
 from .logger import Log
 from .config import get_settings
@@ -21,25 +22,37 @@ db = SQLAlchemy()
 class Plant(db.Model):
     __tablename__ = "t_plant"
 
-    id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(100), nullable=False)
-    name_tech = db.Column(db.String(100), nullable=True)
-    comment = db.Column(db.String(200), nullable=True)
+    id                  = db.Column(db.Integer, primary_key=True)
+    name                = db.Column(db.String(100), nullable=False)
+    name_tech           = db.Column(db.String(100), nullable=True)
+    comment             = db.Column(db.String(200), nullable=True)
     # Frequency in weeks per month (1-4)
-    watering_summer = db.Column(db.Integer, nullable=True, default=1)
+    watering_summer     = db.Column(db.Integer, nullable=True, default=1)
     # Frequency in weeks per month (1-4)
-    watering_winter = db.Column(db.Integer, nullable=True, default=2)
-    spray = db.Column(db.Boolean, nullable=True, default=True)
+    watering_winter     = db.Column(db.Integer, nullable=True, default=2)
+    spray               = db.Column(db.Boolean, nullable=True, default=True)
     # Direct sun value 1: No, 2: Partial, 3: Yes
-    direct_sun = db.Column(db.Integer, nullable=True)
-    image = db.Column(db.BLOB, nullable=True)
-    date_registration = db.Column(
+    direct_sun          = db.Column(db.Integer, nullable=True)
+    image               = db.Column(db.BLOB, nullable=True)
+    date_registration   = db.Column(
         db.Date, nullable=False, default=date.today())
-    user_id = db.Column(db.Integer, db.ForeignKey('t_user.id'), nullable=False)
+    user_id             = db.Column(db.Integer, db.ForeignKey('t_user.id'), nullable=False)
 
     # TODO: Check to use return "<%r>" % self.name
     def __repr__(self) -> str:
         return f"<Plant {self.name}>"
+    
+    # Validations => https://flask-validator.readthedocs.io/en/latest/index.html
+    # The __declare_last__() hook allows definition of a class level function that is 
+    # automatically called by the MapperEvents.after_configured() event, which occurs 
+    # after mappings are assumed to be completed and the ‘configure’ step has finished:
+    @classmethod
+    def __declare_last__(cls):
+        ValidateString(cls.name, False, True, "Plant name can't be empty or only spaces")
+        ValidateInteger(cls.watering_summer)
+        ValidateInteger(cls.watering_winter)
+        ValidateInteger(cls.direct_sun)
+        ValidateLessThanOrEqual(cls.direct_sun, 3)
 
     @staticmethod
     def get_plants(user_id: int):
@@ -106,11 +119,10 @@ class Plant(db.Model):
 class Calendar(db.Model):
     __tablename__ = "t_calendar"
 
-    date = db.Column(db.Date, primary_key=True)
-    water = db.Column(db.Boolean, nullable=False, default=False)
-    fertilize = db.Column(db.Boolean, nullable=False, default=False)
-    plant_id = db.Column(db.Integer, db.ForeignKey(
-        't_plant.id'), nullable=False)
+    date        = db.Column(db.Date, primary_key=True)
+    water       = db.Column(db.Boolean, nullable=False, default=False)
+    fertilize   = db.Column(db.Boolean, nullable=False, default=False)
+    plant_id    = db.Column(db.Integer, db.ForeignKey('t_plant.id'), nullable=False)
 
     def __repr__(self) -> str:
         return f"<Calendar {self.date}>"
@@ -156,11 +168,11 @@ class Calendar(db.Model):
 class User(UserMixin, db.Model):
     __tablename__ = "t_user"
 
-    id = db.Column(db.Integer, primary_key=True)
-    email = db.Column(db.String(100), unique=True, nullable=False, unique=True)
-    password = db.Column(db.String(100), nullable=False)
-    name = db.Column(db.String(100), nullable=False)
-    date_from = db.Column(db.Date, nullable=False)
+    id          = db.Column(db.Integer, primary_key=True)
+    email       = db.Column(db.String(100), unique=True, nullable=False, unique=True)
+    password    = db.Column(db.String(100), nullable=False)
+    name        = db.Column(db.String(100), nullable=False)
+    date_from   = db.Column(db.Date, nullable=False)
 
     def __repr__(self) -> str:
         return f"<User {self.name}>"
@@ -233,3 +245,5 @@ if __name__ == '__main__':  # pragma: no cover # To doesn't check in tests
 
     db.init_app(app)
     init_db(app)
+
+

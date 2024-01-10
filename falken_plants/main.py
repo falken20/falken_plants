@@ -98,7 +98,7 @@ def add_plant():
     except Exception as e:
         Log.error(f"Error creating plant: {e}")
         return render_template('plant_form.html', error=e)
-    
+
     return render_template('index.html')
 
 
