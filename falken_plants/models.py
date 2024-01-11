@@ -11,7 +11,7 @@ from datetime import date
 from flask import Flask
 from flask_login import UserMixin
 from flask_sqlalchemy import SQLAlchemy
-from flask_validator import ValidateString, ValidateInteger, ValidateEmail, ValidateLessThanOrEqual
+from flask_validator import ValidateString, ValidateInteger, ValidateEmail, ValidateLessThanOrEqual, ValidateBoolean
 
 from .logger import Log
 from .config import get_settings
@@ -26,9 +26,9 @@ class Plant(db.Model):
     name                = db.Column(db.String(100), nullable=False)
     name_tech           = db.Column(db.String(100), nullable=True)
     comment             = db.Column(db.String(200), nullable=True)
-    # Frequency in weeks per month (1-4)
+    # Frequency in weeks per month (0-4)
     watering_summer     = db.Column(db.Integer, nullable=True, default=1)
-    # Frequency in weeks per month (1-4)
+    # Frequency in weeks per month (0-4)
     watering_winter     = db.Column(db.Integer, nullable=True, default=2)
     spray               = db.Column(db.Boolean, nullable=True, default=True)
     # Direct sun value 1: No, 2: Partial, 3: Yes
@@ -45,14 +45,17 @@ class Plant(db.Model):
     # Validations => https://flask-validator.readthedocs.io/en/latest/index.html
     # The __declare_last__() hook allows definition of a class level function that is 
     # automatically called by the MapperEvents.after_configured() event, which occurs 
-    # after mappings are assumed to be completed and the ‘configure’ step has finished:
+    # after mappings are assumed to be completed and the ‘configure’ step has finished.
     @classmethod
     def __declare_last__(cls):
         ValidateString(cls.name, False, True, "Plant name can't be empty or only spaces")
-        ValidateInteger(cls.watering_summer)
-        ValidateInteger(cls.watering_winter)
-        ValidateInteger(cls.direct_sun)
-        ValidateLessThanOrEqual(cls.direct_sun, 3)
+        ValidateInteger(cls.watering_summer, False, True, "Plant watering summer should be a number between 0 and 4")
+        ValidateLessThanOrEqual(cls.watering_summer, 4, False, True, "Plant watering summer should be a number between 0 and 4")
+        ValidateInteger(cls.watering_winter, False, True, "Plant watering winter should be a number between 0 and 4")
+        ValidateLessThanOrEqual(cls.watering_winter, 4, False, True, "Plant watering winter should be a number between 0 and 4")
+        ValidateBoolean(cls.spray, False, True, "Plant spray should be a boolean")
+        ValidateInteger(cls.direct_sun, False, True, "Plant direct sun should be a number between 1 and 3")
+        ValidateLessThanOrEqual(cls.direct_sun, 3, False, True, "Plant direct sun should be a number between 1 and 3")
 
     @staticmethod
     def get_plants(user_id: int):
@@ -176,6 +179,16 @@ class User(UserMixin, db.Model):
 
     def __repr__(self) -> str:
         return f"<User {self.name}>"
+
+    # Validations => https://flask-validator.readthedocs.io/en/latest/index.html
+    # The __declare_last__() hook allows definition of a class level function that is 
+    # automatically called by the MapperEvents.after_configured() event, which occurs 
+    # after mappings are assumed to be completed and the ‘configure’ step has finished.
+    @classmethod
+    def __declare_last__(cls):
+        ValidateEmail(cls.email, False, True, "User email can't be empty or only spaces")
+        ValidateString(cls.name, False, True, "User name can't be empty or only spaces")
+        ValidateString(cls.password, False, True, "User password can't be empty or only spaces")
 
     @staticmethod
     def get_user(id: int):
