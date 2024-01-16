@@ -49,7 +49,7 @@ def calendar():
     return render_template('calendar.html')
 
 
-###### API plants ######
+# ###### API plants ######
 
 @main.route("/plants/create", methods=['GET'])
 @login_required
