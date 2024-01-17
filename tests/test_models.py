@@ -19,7 +19,7 @@ class TestModelUser(BaseTestCase):
         self.assertEqual(user.email, self.mock_user['email'])
         self.assertEqual(user.name, self.mock_user['name'])
         self.assertTrue(user.password)
-        self.assertTrue(user.date_from)
+        self.assertTrue(user.date_created)
 
     def test_delete_user(self):
         user = self.create_user()
@@ -64,7 +64,7 @@ class TestModelPlant(BaseTestCase):
         self.assertEqual(plant.watering_winter, 1)
         self.assertTrue(plant.spray)
         self.assertEqual(plant.direct_sun, 1)
-        self.assertTrue(plant.date_registration)
+        self.assertTrue(plant.date_created)
         self.assertEqual(plant.user_id, user.id)
 
     def test_get_plants(self):

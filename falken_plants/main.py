@@ -28,7 +28,7 @@ def profile():
     Log.info("Profile page")
     Log.debug(f"Current user: {current_user}")
 
-    return render_template('profile.html', name=current_user.name, date_from=current_user.date_from)
+    return render_template('profile.html', name=current_user.name, date_created=current_user.date_created)
 
 
 @main.route("/search", methods=['GET', 'POST'])

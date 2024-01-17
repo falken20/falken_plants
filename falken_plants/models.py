@@ -7,7 +7,7 @@
 
 import os
 import logging
-from datetime import datetime
+from datetime import date
 from flask import Flask
 from flask_login import UserMixin
 from flask_sqlalchemy import SQLAlchemy
@@ -36,9 +36,9 @@ class Plant(db.Model):
     # Direct sun value 1: No, 2: Partial, 3: Yes
     direct_sun = db.Column(db.Integer, nullable=True)
     image = db.Column(db.BLOB, nullable=True)
-    date_created = db.Column(db.Date, nullable=False, default=datetime.now)
+    date_created = db.Column(db.Date, nullable=False, default=date.today)
     date_updated = db.Column(db.Date, nullable=False,
-                             default=datetime.now, onupdate=datetime.now)
+                             default=date.today, onupdate=date.today)
     user_id = db.Column(db.Integer, db.ForeignKey('t_user.id'), nullable=False)
 
     # TODO: Check to use return "<%r>" % self.name
@@ -112,22 +112,19 @@ class Plant(db.Model):
                      watering_summer: int = 1, watering_winter: int = 2,
                      spray: bool = False, direct_sun: int = 1,
                      image=None, user_id: int = None):
-        try:
-            spray = True if spray == "1" else False
-            plant = Plant(name=name, name_tech=name_tech, comment=comment, watering_summer=watering_summer,
-                          watering_winter=watering_winter, spray=spray, direct_sun=direct_sun,
-                          date_registration=datetime.now, user_id=user_id)
-            if plant.name == "" or plant.name is None:
-                raise ValueError("Plant name can't be empty")
-            if plant.user_id == "" or plant.user_id is None:
-                raise ValueError("Plant user_id can't be empty")
-            if User.get_user(plant.user_id) is None:
-                raise ValueError("Plant user_id doesn't exist")
-            db.session.add(plant)
-            db.session.commit()
-            return plant
-        except Exception as err:
-            raise Exception(err)
+        spray = True if spray == "1" else False
+        plant = Plant(name=name, name_tech=name_tech, comment=comment, watering_summer=watering_summer,
+                      watering_winter=watering_winter, spray=spray, direct_sun=direct_sun,
+                      date_created=date.today, user_id=user_id)
+        if plant.name == "" or plant.name is None:
+            raise ValueError("Plant name can't be empty")
+        if plant.user_id == "" or plant.user_id is None:
+            raise ValueError("Plant user_id can't be empty")
+        if User.get_user(plant.user_id) is None:
+            raise ValueError("Plant user_id doesn't exist")
+        db.session.add(plant)
+        db.session.commit()
+        return plant
 
     @staticmethod
     def update_plant(plant_id: int, name: str, name_tech: str, comment: str, watering_summer: int,
@@ -214,9 +211,9 @@ class User(UserMixin, db.Model):
     email = db.Column(db.String(100), nullable=False, unique=True)
     password = db.Column(db.String(100), nullable=False)
     name = db.Column(db.String(100), nullable=False)
-    date_created = db.Column(db.Date, nullable=False, default=datetime.now)
+    date_created = db.Column(db.Date, nullable=False, default=date.today)
     date_updated = db.Column(db.Date, nullable=False,
-                             default=datetime.now, onupdate=datetime.now)
+                             default=date.today, onupdate=date.today)
 
     def __repr__(self) -> str:
         return f"<User {self.name}>"
