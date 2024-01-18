@@ -112,10 +112,10 @@ class Plant(db.Model):
                      watering_summer: int = 1, watering_winter: int = 2,
                      spray: bool = False, direct_sun: int = 1,
                      image=None, user_id: int = None):
-        spray = True if spray == "1" else False
+        spray = True if spray or spray == "1" else False
         plant = Plant(name=name, name_tech=name_tech, comment=comment, watering_summer=watering_summer,
                       watering_winter=watering_winter, spray=spray, direct_sun=direct_sun,
-                      date_created=date.today, user_id=user_id)
+                      date_created=date.today(), user_id=user_id)
         if plant.name == "" or plant.name is None:
             raise ValueError("Plant name can't be empty")
         if plant.user_id == "" or plant.user_id is None:
