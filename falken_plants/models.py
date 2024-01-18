@@ -56,24 +56,23 @@ class Plant(db.Model):
                        "Plant name can't be empty or only spaces")
         ValidateInteger(cls.watering_summer, False, True,
                         "Plant watering summer should be a number between 0 and 4")
-        ValidateLessThanOrEqual(cls.watering_summer, 4, False, True,
+        ValidateLessThanOrEqual(cls.watering_summer, 4, True,
                                 "Plant watering summer should be a number between 0 and 4")
-        ValidateGreaterThanOrEqual(cls.watering_summer, 0, False, True,
+        ValidateGreaterThanOrEqual(cls.watering_summer, 0, True,
                                    "Plant watering summer should be a number between 0 and 4")
         ValidateInteger(cls.watering_winter, False, True,
                         "Plant watering winter should be a number between 0 and 4")
-        ValidateLessThanOrEqual(cls.watering_winter, 4, False, True,
+        ValidateLessThanOrEqual(cls.watering_winter, 4, True,
                                 "Plant watering winter should be a number between 0 and 4")
-        ValidateGreaterThanOrEqual(cls.watering_winter, 0, False, True,
+        ValidateGreaterThanOrEqual(cls.watering_winter, 0, True,
                                    "Plant watering winter should be a number between 0 and 4")
-        ValidateBoolean(cls.spray, False, True,
-                        "Plant spray should be a boolean")
+        ValidateBoolean(cls.spray)
         ValidateInteger(cls.direct_sun, False, True,
                         "Plant direct sun should be a number between 1 and 3")
-        ValidateLessThanOrEqual(cls.direct_sun, 3, False, True,
+        ValidateLessThanOrEqual(cls.direct_sun, 3, True,
                                 "Plant direct sun should be a number between 1 and 3")
-        ValidateGreaterThanOrEqual(
-            cls.direct_sun, 1, False, True, "Plant direct sun should be a number between 1 and 3")
+        ValidateGreaterThanOrEqual(cls.direct_sun, 1, True,
+                                   "Plant direct sun should be a number between 1 and 3")
 
     # SQLAlchemy has a built in helped method for using validations, validates(). Its a Server-side validation
     @validates('name')
