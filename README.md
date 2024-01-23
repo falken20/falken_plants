@@ -48,6 +48,7 @@ coverage run -m pytest -v && coverage html --omit=*/venv/*,*/tests/*
 ##### Swagger
 http://127.0.0.1:5000/swagger/
 
+
 ##### Environment vars
 ```bash
 ENV_PRO=N
