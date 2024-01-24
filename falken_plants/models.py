@@ -94,64 +94,6 @@ class Plant(db.Model):
     def serialize(self):
         return {c.key: getattr(self, c.key) for c in inspect(self).mapper.column_attrs}
 
-    @staticmethod
-    def get_plants(user_id: int):
-        return Plant.query.filter_by(user_id=user_id).all()
-
-    @staticmethod
-    def get_plant(plant_id: int):
-        return Plant.query.filter_by(id=plant_id).first()
-
-    @staticmethod
-    def get_plant_name(plant_name: str):
-        return Plant.query.filter_by(name=plant_name).first()
-
-    @staticmethod
-    def create_plant(name: str, name_tech: str, comment: str,
-                     watering_summer: int = 1, watering_winter: int = 2,
-                     spray: bool = False, direct_sun: int = 1,
-                     image=None, user_id: int = None):
-        spray = True if spray or spray == "1" else False
-        plant = Plant(name=name, name_tech=name_tech, comment=comment, watering_summer=watering_summer,
-                      watering_winter=watering_winter, spray=spray, direct_sun=direct_sun,
-                      date_created=date.today(), user_id=user_id)
-        if plant.name == "" or plant.name is None:
-            raise ValueError("Plant name can't be empty")
-        if plant.user_id == "" or plant.user_id is None:
-            raise ValueError("Plant user_id can't be empty")
-        if User.get_user(plant.user_id) is None:
-            raise ValueError("Plant user_id doesn't exist")
-        db.session.add(plant)
-        db.session.commit()
-        return plant
-
-    @staticmethod
-    def update_plant(plant_id: int, name: str, name_tech: str, comment: str, watering_summer: int,
-                     watering_winter: int, spray: bool, direct_sun: int):
-        plant = Plant.get_plant(plant_id)
-        if plant is None:
-            return None
-        if User.get_user(plant.user_id) is None:
-            raise ValueError("Plant user_id doesn't exist")
-        plant.name = name
-        plant.name_tech = name_tech
-        plant.comment = comment
-        plant.watering_summer = watering_summer
-        plant.watering_winter = watering_winter
-        plant.spray = spray
-        plant.direct_sun = direct_sun
-        db.session.commit()
-        return plant
-
-    @staticmethod
-    def delete_plant(plant_id: int):
-        plant = Plant.get_plant(plant_id)
-        if plant is None:
-            return None
-        db.session.delete(plant)
-        db.session.commit()
-        return plant
-
 
 class Calendar(db.Model):
     __tablename__ = "t_calendar"
@@ -164,41 +106,6 @@ class Calendar(db.Model):
 
     def __repr__(self) -> str:
         return f"<Calendar {self.date}>"
-
-    @staticmethod
-    def get_calendar(plant_id: int):
-        return Calendar.query.filter_by(plant_id=plant_id).all()
-
-    @staticmethod
-    def get_calendar_date(date: date, plant_id: int):
-        return Calendar.query.filter_by(date=date, plant_id=plant_id).first()
-
-    @staticmethod
-    def create_calendar(date: date, water: bool, fertilize: bool, plant_id: int):
-        calendar = Calendar(date=date, water=water,
-                            fertilize=fertilize, plant_id=plant_id)
-        db.session.add(calendar)
-        db.session.commit()
-        return calendar
-
-    @staticmethod
-    def delete_calendar_date(date: date, plant_id: int):
-        calendar = Calendar.get_calendar_date(date, plant_id)
-        if calendar is None:
-            return None
-        db.session.delete(calendar)
-        db.session.commit()
-        return calendar
-
-    @staticmethod
-    def delete_calendar_plant(plant_id: int):
-        calendar = Calendar.get_calendar(plant_id)
-        if len(calendar) == 0:
-            return None
-        for date in calendar:
-            db.session.delete(date)
-        db.session.commit()
-        return calendar
 
 
 # Flask-Login can manage user sessions. UserMixin will add Flask-Login attributes
@@ -229,23 +136,6 @@ class User(UserMixin, db.Model):
                        "User name can't be empty or only spaces")
         ValidateString(cls.password, False, True,
                        "User password can't be empty or only spaces")
-
-    @staticmethod
-    def get_user(id: int):
-        return User.query.filter_by(id=id).first()
-
-    @staticmethod
-    def get_user_email(email: str):
-        return User.query.filter_by(email=email).first()
-
-    @staticmethod
-    def get_user_name(name: str):
-        return User.query.filter_by(name=name).first()
-
-    @staticmethod
-    def delete_user(id: int) -> None:
-        User.query.filter_by(id=id).delete()
-        db.session.commit()
 
 
 def init_db(app):
