@@ -7,7 +7,7 @@ from .models import db, Plant, Calendar, User
 # return jsonify(response)
 
 
-class PlantController:
+class ControllerPlant:
     def __init__(self):
         pass
 
@@ -36,7 +36,7 @@ class PlantController:
             raise ValueError("Plant name can't be empty")
         if plant.user_id == "" or plant.user_id is None:
             raise ValueError("Plant user_id can't be empty")
-        if User.get_user(plant.user_id) is None:
+        if ControllerUser.get_user(plant.user_id) is None:
             raise ValueError("Plant user_id doesn't exist")
         db.session.add(plant)
         db.session.commit()
@@ -45,10 +45,10 @@ class PlantController:
     @staticmethod
     def update_plant(plant_id: int, name: str, name_tech: str, comment: str, watering_summer: int,
                      watering_winter: int, spray: bool, direct_sun: int):
-        plant = Plant.get_plant(plant_id)
+        plant = ControllerPlant.get_plant(plant_id)
         if plant is None:
             return None
-        if User.get_user(plant.user_id) is None:
+        if ControllerUser.get_user(plant.user_id) is None:
             raise ValueError("Plant user_id doesn't exist")
         plant.name = name
         plant.name_tech = name_tech
@@ -62,7 +62,7 @@ class PlantController:
 
     @staticmethod
     def delete_plant(plant_id: int):
-        plant = Plant.get_plant(plant_id)
+        plant = ControllerPlant.get_plant(plant_id)
         if plant is None:
             return None
         db.session.delete(plant)
@@ -70,7 +70,7 @@ class PlantController:
         return plant
 
 
-class CalendarController:
+class ControllerCalendar:
     def __init__(self):
         pass
 
@@ -79,20 +79,20 @@ class CalendarController:
         return Calendar.query.filter_by(plant_id=plant_id).all()
 
     @staticmethod
-    def get_calendar_date(date: date, plant_id: int):
-        return Calendar.query.filter_by(date=date, plant_id=plant_id).first()
+    def get_calendar_date(date_calendar: date, plant_id: int):
+        return Calendar.query.filter_by(date_calendar=date_calendar, plant_id=plant_id).first()
 
     @staticmethod
-    def create_calendar(date: date, water: bool, fertilize: bool, plant_id: int):
-        calendar = Calendar(date=date, water=water,
+    def create_calendar(date_calendar: date, water: bool, fertilize: bool, plant_id: int):
+        calendar = Calendar(date_calendar=date_calendar, water=water,
                             fertilize=fertilize, plant_id=plant_id)
         db.session.add(calendar)
         db.session.commit()
         return calendar
 
     @staticmethod
-    def delete_calendar_date(date: date, plant_id: int):
-        calendar = Calendar.get_calendar_date(date, plant_id)
+    def delete_calendar_date(date_calendar: date, plant_id: int):
+        calendar = ControllerCalendar.get_calendar_date(date_calendar, plant_id)
         if calendar is None:
             return None
         db.session.delete(calendar)
@@ -101,16 +101,16 @@ class CalendarController:
 
     @staticmethod
     def delete_calendar_plant(plant_id: int):
-        calendar = Calendar.get_calendar(plant_id)
+        calendar = ControllerCalendar.get_calendar(plant_id)
         if len(calendar) == 0:
             return None
-        for date in calendar:
-            db.session.delete(date)
+        for date_calendar in calendar:
+            db.session.delete(date_calendar)
         db.session.commit()
         return calendar
 
 
-class UserController:
+class ControllerUser:
     def __init__(self):
         pass
 

@@ -7,7 +7,7 @@ from datetime import date
 from flask import request
 
 from .logger import Log
-from .controllers import PlantController
+from .controllers import ControllerPlant
 
 main = Blueprint('main', __name__)
 
@@ -85,7 +85,7 @@ def add_plant():
     Log.debug(f"Current user: {current_user}")
 
     try:
-        plant = PlantController.create_plant(name=request.form['name'],
+        plant = ControllerPlant.create_plant(name=request.form['name'],
                                              name_tech=request.form['name_tech'],
                                              comment=request.form['comment'],
                                              watering_summer=request.form['watering_summer'],
@@ -149,7 +149,7 @@ def view_calendar(plant_id: int):
 
 @main.route("/plants/<int:plant_id>/calendar/<date>", methods=['GET'])
 @login_required
-def view_calendar_date(plant_id: int, date: date):
+def view_calendar_date(plant_id: int, date_calendar: date):
     Log.info("View calendar date page")
     Log.debug(f"Current user: {current_user}")
 
@@ -158,7 +158,7 @@ def view_calendar_date(plant_id: int, date: date):
 
 @main.route("/plants/<int:plant_id>/calendar/<date>", methods=['POST'])
 @login_required
-def add_calendar_date(plant_id: int, date: date):
+def add_calendar_date(plant_id: int, date_calendar: date):
     Log.info("Add calendar date page")
     Log.debug(f"Current user: {current_user}")
 
@@ -167,7 +167,7 @@ def add_calendar_date(plant_id: int, date: date):
 
 @main.route("/plants/<int:plant_id>/calendar/<date>", methods=['PUT'])
 @login_required
-def update_calendar_date(plant_id: int, date: date):
+def update_calendar_date(plant_id: int, date_calendar: date):
     Log.info("Update calendar date page")
     Log.debug(f"Current user: {current_user}")
 

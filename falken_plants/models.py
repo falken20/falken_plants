@@ -98,14 +98,14 @@ class Plant(db.Model):
 class Calendar(db.Model):
     __tablename__ = "t_calendar"
 
-    date = db.Column(db.Date, primary_key=True)
+    date_calendar = db.Column(db.Date, primary_key=True)
     water = db.Column(db.Boolean, nullable=False, default=False)
     fertilize = db.Column(db.Boolean, nullable=False, default=False)
     plant_id = db.Column(db.Integer, db.ForeignKey(
         't_plant.id'), nullable=False)
 
     def __repr__(self) -> str:
-        return f"<Calendar {self.date}>"
+        return f"<Calendar {self.date_calendar}>"
 
 
 # Flask-Login can manage user sessions. UserMixin will add Flask-Login attributes
