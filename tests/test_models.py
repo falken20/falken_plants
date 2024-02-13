@@ -17,6 +17,23 @@ class TestModelPlant(BaseTestCase):
     def test_repr(self):
         self.assertIn('<Plant', str(Plant()))
 
+    def test_serialize(self):
+        plant = Plant(name='test', user_id=1)
+        self.assertEqual(plant.serialize(), {
+            'id': None,
+            'name': 'test',
+            'name_tech': None,
+            'comment': None,
+            'watering_summer': 1,
+            'watering_winter': 2,
+            'spray': True,
+            'direct_sun': None,
+            'image': None,
+            'date_created': date.today(),
+            'date_updated': date.today(),
+            'user_id': 1
+        })
+
 
 class TestModelCalendar(BaseTestCase):
     #### Calendar model tests ####
