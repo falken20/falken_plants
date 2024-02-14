@@ -5,6 +5,7 @@ from flask import Blueprint, render_template
 from flask_login import login_required, current_user
 from datetime import date
 from flask import request
+import sys
 
 from .logger import Log
 from .controllers import ControllerPlant
@@ -96,7 +97,7 @@ def add_plant():
                                              user_id=current_user.id)
         Log.info(f"Plant created: {plant}")
     except Exception as e:
-        Log.error(f"Error creating plant: {e}")
+        Log.error(f"Error creating plant", err=e, sys=sys)
         return render_template('plant_form.html', error=e)
 
     return render_template('index.html')
