@@ -86,6 +86,7 @@ def add_plant():
     Log.debug(f"Current user: {current_user}")
 
     try:
+        Log.debug(f"Request form: {request.form}")
         plant = ControllerPlant.create_plant(name=request.form['name'],
                                              name_tech=request.form['name_tech'],
                                              comment=request.form['comment'],

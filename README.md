@@ -71,6 +71,7 @@ PRODUCTION_DATABASE_URL=
 ---
 
 ##### Versions
+- 1.0.0 Basic Version
 
 
 ---

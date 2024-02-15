@@ -53,13 +53,13 @@ class Plant(db.Model):
     @classmethod
     def __declare_last__(cls):
         ValidateString(cls.name, False, True,
-                       "Plant name can't be empty or only spaces")
+                       "Validate String: Plant name can't be empty or only spaces")
         ValidateInteger(cls.watering_summer, False, True,
-                        "Plant watering summer should be a number between 0 and 4")
+                        "Validate Integer: Plant watering summer should be a number between 0 and 4")
         ValidateLessThanOrEqual(cls.watering_summer, 4, True,
-                                "Plant watering summer should be a number between 0 and 4")
+                                "ValidateLessThanOrEqual: Plant watering summer should be a number between 0 and 4")
         ValidateGreaterThanOrEqual(cls.watering_summer, 0, True,
-                                   "Plant watering summer should be a number between 0 and 4")
+                                   "ValidateGreaterThanOrEqual: Plant watering summer should be a number between 0 and 4")
         ValidateInteger(cls.watering_winter, False, True,
                         "Plant watering winter should be a number between 0 and 4")
         ValidateLessThanOrEqual(cls.watering_winter, 4, True,

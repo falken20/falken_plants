@@ -2,6 +2,7 @@
 from datetime import date
 
 from .models import db, Plant, Calendar, User
+from .logger import Log
 
 # The CRUD operations use to return a JSON response:
 # return jsonify(response)
@@ -28,6 +29,7 @@ class ControllerPlant:
                      watering_summer: int = 1, watering_winter: int = 2,
                      spray: bool = False, direct_sun: int = 1,
                      image=None, user_id: int = None):
+        Log.info(f"Creating plant: {name}")
         spray = True if spray or spray == "1" else False
         plant = Plant(name=name, name_tech=name_tech, comment=comment, watering_summer=watering_summer,
                       watering_winter=watering_winter, spray=spray, direct_sun=direct_sun,

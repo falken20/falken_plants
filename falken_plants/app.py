@@ -11,10 +11,12 @@ from .config import get_settings
 from .cache import check_cache
 from .models import db
 
-console.rule("Falken Teleworking")
 # Set environment vars
 load_dotenv(find_dotenv())
 settings = get_settings()
+
+console.rule(settings.SETUP_DATA['title'] + " " +
+             settings.SETUP_DATA['version'] + " by " + settings.SETUP_DATA['author'])
 
 # Cache info
 check_cache()
