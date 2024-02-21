@@ -1,9 +1,10 @@
 #!/bin/sh
 
 # Unit test and coverage
-echo "***** Unit Test *****"
+echo "***** Run Tests *****"
 coverage run -m pytest -v -s
-echo "***** Coverage tests *****"
+# coverage run -m unittest -v
+echo "***** Coverage tests last execution *****"
 coverage report --omit="*/tests/*,*/venv/*" -m ./falken_plants/*.py 
 
 # Coverage report in html

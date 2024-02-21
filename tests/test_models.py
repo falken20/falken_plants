@@ -19,6 +19,7 @@ class TestModelPlant(BaseTestCase):
 
     def test_serialize(self):
         plant = Plant(name='test', user_id=1)
+        print("DATA:", plant.serialize())
         self.assertEqual(plant.serialize(), {
             'id': None,
             'name': 'test',
