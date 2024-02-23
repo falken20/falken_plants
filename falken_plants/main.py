@@ -98,7 +98,7 @@ def add_plant():
                                              user_id=current_user.id)
         Log.info(f"Plant created: {plant}")
     except Exception as e:
-        Log.error(f"Error creating plant", err=e, sys=sys)
+        Log.error("Error creating plant", err=e, sys=sys)
         return render_template('plant_form.html', error=e)
 
     return render_template('index.html')
