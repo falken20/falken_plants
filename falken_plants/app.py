@@ -23,6 +23,9 @@ check_cache()
 
 basedir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
+from .config import config
+# TODO: Review config file
+
 
 def create_app():
     app = Flask(__name__, template_folder="../templates",
