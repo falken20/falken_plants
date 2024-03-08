@@ -23,10 +23,16 @@ check_cache()
 
 basedir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-
-def create_app():
+# TODO: Review how to init config_mode parameter
+def create_app(config_mode='development'):
     app = Flask(__name__, template_folder="../templates",
                 static_folder="../static")
+    
+    Log.info(f"Running in {config_mode} mode", style="red bold")
+    Log.info(f"Config mode: {app.config['DEBUG']}", style="red bold")
+    app.config.from_object(settings.config[config_mode])
+    Log.info(f"DB: {app.config['SQLALCHEMY_DATABASE_URI']}", style="red bold")
+    # TODO: Continue here...
 
     app.config['SECRET_KEY'] = os.getenv(
         'SECRET_KEY', 'your-special-secret-key')
@@ -34,14 +40,12 @@ def create_app():
 
     if settings.ENV_PRO == "N":
         # basedir is the path to the root of the project
-        Log.info("Running in development mode with Sqlite DB", style="red bold")
         Log.info(
             f"DB path: {os.path.join(basedir, 'database.db')}", style="red bold")
         app.config['DEBUG'] = True
         app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + \
             os.path.join(basedir, 'database.db')
     else:
-        Log.info("Running in production mode with postgres DB", style="red")
         app.config['DEBUG'] = False
         app.config['SQLALCHEMY_DATABASE_URI'] = os.environ['DATABASE_URL'].replace(
             "://", "ql://", 1)
