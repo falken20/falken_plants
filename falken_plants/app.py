@@ -10,6 +10,7 @@ from .logger import Log, console
 from .config import get_settings
 from .cache import check_cache
 from .models import db
+import config
 
 # Set environment vars
 load_dotenv(find_dotenv())
@@ -30,7 +31,13 @@ def create_app(config_mode='development'):
     
     Log.info(f"Running in {config_mode} mode", style="red bold")
     Log.info(f"Config mode: {app.config['DEBUG']}", style="red bold")
+
     app.config.from_object(settings.config[config_mode])
+    app.config.from_object(config.DevelopmentConfig)
+        
+    for key, value in app.config.items():
+        Log.debug(f"app.config: {key}: {value}")
+
     Log.info(f"DB: {app.config['SQLALCHEMY_DATABASE_URI']}", style="red bold")
     # TODO: Continue here...
 

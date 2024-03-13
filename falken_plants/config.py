@@ -31,6 +31,10 @@ __features__ = [
 class Config:
     SQLALCHEMY_TRACK_MODIFICATIONS = True
 
+    @property
+    def SQLALCHEMY_DATABASE_URI(self):
+        return self.SQLALCHEMY_DATABASE_URI
+
 
 class DevelopmentConfig(Config):
     DEVELOPMENT = True
@@ -103,7 +107,6 @@ def print_settings(settings: Settings) -> None:
             \n env_name: {settings.env_name}\
             \n ENV_PRO: {settings.ENV_PRO}\
             \n LEVEL_LOG: {settings.LEVEL_LOG}")
-    
-    for f,v in settings.config.items():
-        Log.info(f"Environment settings: {f} - {vars(v)}")
 
+    for f, v in settings.config.items():
+        Log.info(f"Environment settings: {f} - {vars(v)}")
