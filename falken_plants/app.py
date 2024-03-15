@@ -34,12 +34,10 @@ def create_app(config_mode='development'):
 
     app.config.from_object(settings)
     app.config.from_object(settings.CONFIG_ENV[config_mode])
-    # TODO: Continue here...
 
-    app.config['SECRET_KEY'] = os.getenv(
-        'SECRET_KEY', 'your-special-secret-key')
     app.config['TEMPLATE_AUTO_RELOAD'] = True
 
+    """
     if settings.ENV_PRO == "N":
         # basedir is the path to the root of the project
         Log.info(
@@ -51,8 +49,7 @@ def create_app(config_mode='development'):
         app.config['DEBUG'] = False
         app.config['SQLALCHEMY_DATABASE_URI'] = os.environ['DATABASE_URL'].replace(
             "://", "ql://", 1)
-
-    app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True
+    """
 
     db.init_app(app)
 
@@ -84,3 +81,6 @@ def create_app(config_mode='development'):
     print_app_config(app)
 
     return app
+
+
+app = create_app(config_mode='development')

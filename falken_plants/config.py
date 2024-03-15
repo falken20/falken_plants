@@ -19,9 +19,12 @@ __url_github__ = 'https://github.com/falken20/'
 __url_twitter__ = 'https://twitter.com/richionline'
 __url_linkedin__ = 'https://www.linkedin.com/in/richionline/'
 __license__ = 'MIT License'
-__copyright__ = '© 2023 by Richi Rod AKA @richionline / falken20'
+__copyright__ = '© 2024 by Richi Rod AKA @richionline / falken20'
 __features__ = [
 ]
+
+
+base_dir = os.path.abspath(os.path.dirname(__file__))
 
 #######################################################################
 # Config format for Flask apps, you create a class for each environment
@@ -41,9 +44,13 @@ class DevelopmentConfig(Config):
     DEBUG = True
     SQLALCHEMY_DATABASE_URI = os.getenv("DEVELOPMENT_DATABASE_URL")
 
+    SQLALCHEMY_DATABASE_URI = 'sqlite:///' + \
+            os.path.join(base_dir, 'database.db')
+
 
 class TestingConfig(Config):
     TESTING = True
+    DEBUG = False
     SQLALCHEMY_DATABASE_URI = os.getenv("TEST_DATABASE_URL")
 
 
@@ -54,21 +61,26 @@ class StagingConfig(Config):
 
 
 class ProductionConfig(Config):
+    PRODUCTION = True
     DEBUG = False
     SQLALCHEMY_DATABASE_URI = os.getenv("PRODUCTION_DATABASE_URL")
-    PRUEBA_ROD = True
 
 
 class Settings(BaseSettings):
     # pydantic will automatically assume those default values if it doesn’t
     # find the corresponding environment variables.
-    env_name: str = "Local"
-    base_url: str = "http://localhost:5000"
-    # db_url: str = "sqlite:///./shortener.db"
-    ENV_PRO: str = "N"
-    LEVEL_LOG: list = []
-    DATABASE_URL: str = ""
-    DB_SQLITE_URL: str = ""
+    ENV_NAME: str = "Local"
+    BASE_URL: str = "http://localhost:5000"
+    LEVEL_LOG: list = ["INFO", "WARNING", "ERROR"]
+    SECRET_KEY: str = 'your-special-secret-key'
+    CONFIG_MODE: str = "development"
+    BASE_DIR = os.path.abspath(os.path.dirname(__file__))
+    CONFIG_ENV = {
+        "development": DevelopmentConfig,
+        "testing": TestingConfig,
+        "staging": StagingConfig,
+        "production": ProductionConfig
+    }
     APP_DATA = {
         'title': __title__,
         'version': __version__,
@@ -81,12 +93,6 @@ class Settings(BaseSettings):
         'features': __features__,
     }
 
-    CONFIG_ENV = {
-        "development": DevelopmentConfig,
-        "testing": TestingConfig,
-        "staging": StagingConfig,
-        "production": ProductionConfig
-    }
 
     class Config:
         # When you add the Config class with the path to your env_file to your
@@ -98,19 +104,20 @@ class Settings(BaseSettings):
 @lru_cache
 def get_settings() -> Settings:
     settings = Settings()
-    Log.info(f"Loading settings for: {settings.env_name}")
+    Log.info(f"Loading settings for: {settings.CONFIG_MODE}")
     print_settings(settings)
     return settings
 
 
 def print_settings(settings: Settings) -> None:
     Log.info(f"Settings: \
-            \n env_name: {settings.env_name}\
-            \n ENV_PRO: {settings.ENV_PRO}\
+            \n ENV_NAME: {settings.ENV_NAME}\
+            \n CONFIG_MODE: {settings.CONFIG_MODE}\
             \n LEVEL_LOG: {settings.LEVEL_LOG}")
 
     for f, v in settings.CONFIG_ENV.items():
         Log.info(f"Environment settings: {f} - {vars(v)}")
+
 
 @lru_cache
 def print_app_config(app):

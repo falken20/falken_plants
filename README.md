@@ -51,7 +51,6 @@ http://127.0.0.1:5000/swagger/
 
 ##### Environment vars
 ```bash
-ENV_PRO=N
 LEVEL_LOG=["DEBUG", "INFO", "WARNING", "ERROR"]
 SECRET_KEY= 
 DATABASE_URL=postgres://YYYY:YYYY@db.rhsrwnntcqvjpgamytve.supabase.co:6543/postgres
