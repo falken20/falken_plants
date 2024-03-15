@@ -56,6 +56,7 @@ class StagingConfig(Config):
 class ProductionConfig(Config):
     DEBUG = False
     SQLALCHEMY_DATABASE_URI = os.getenv("PRODUCTION_DATABASE_URL")
+    PRUEBA_ROD = True
 
 
 class Settings(BaseSettings):
@@ -68,7 +69,7 @@ class Settings(BaseSettings):
     LEVEL_LOG: list = []
     DATABASE_URL: str = ""
     DB_SQLITE_URL: str = ""
-    SETUP_DATA = {
+    APP_DATA = {
         'title': __title__,
         'version': __version__,
         'author': __author__,
@@ -80,7 +81,7 @@ class Settings(BaseSettings):
         'features': __features__,
     }
 
-    config = {
+    CONFIG_ENV = {
         "development": DevelopmentConfig,
         "testing": TestingConfig,
         "staging": StagingConfig,
@@ -108,5 +109,15 @@ def print_settings(settings: Settings) -> None:
             \n ENV_PRO: {settings.ENV_PRO}\
             \n LEVEL_LOG: {settings.LEVEL_LOG}")
 
-    for f, v in settings.config.items():
+    for f, v in settings.CONFIG_ENV.items():
         Log.info(f"Environment settings: {f} - {vars(v)}")
+
+@lru_cache
+def print_app_config(app):
+    """ Print the app config """
+    for key, value in app.config.items():
+        if isinstance(value, dict):
+            for k, v in value.items():
+                Log.debug(f"app.config: {key}: {k} - {v}")
+        else:
+            Log.debug(f"app.config: {key}: {value}")

@@ -7,38 +7,33 @@ from dotenv import load_dotenv, find_dotenv
 from flask_login import LoginManager
 
 from .logger import Log, console
-from .config import get_settings
+from .config import get_settings, print_app_config
 from .cache import check_cache
 from .models import db
-import config
 
 # Set environment vars
 load_dotenv(find_dotenv())
 settings = get_settings()
 
-console.rule(settings.SETUP_DATA['title'] + " " +
-             settings.SETUP_DATA['version'] + " by " + settings.SETUP_DATA['author'])
+console.rule(settings.APP_DATA['title'] + " " +
+             settings.APP_DATA['version'] + " by " + settings.APP_DATA['author'])
 
 # Cache info
 check_cache()
 
 basedir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
+
 # TODO: Review how to init config_mode parameter
 def create_app(config_mode='development'):
     app = Flask(__name__, template_folder="../templates",
                 static_folder="../static")
-    
+
     Log.info(f"Running in {config_mode} mode", style="red bold")
     Log.info(f"Config mode: {app.config['DEBUG']}", style="red bold")
 
-    app.config.from_object(settings.config[config_mode])
-    app.config.from_object(config.DevelopmentConfig)
-        
-    for key, value in app.config.items():
-        Log.debug(f"app.config: {key}: {value}")
-
-    Log.info(f"DB: {app.config['SQLALCHEMY_DATABASE_URI']}", style="red bold")
+    app.config.from_object(settings)
+    app.config.from_object(settings.CONFIG_ENV[config_mode])
     # TODO: Continue here...
 
     app.config['SECRET_KEY'] = os.getenv(
@@ -85,5 +80,7 @@ def create_app(config_mode='development'):
     from .swagger import swagger_ui_blueprint, SWAGGER_URL
     app.register_blueprint(swagger_ui_blueprint, url_prefix=SWAGGER_URL)
     Log.debug(f"Running Swagger in {SWAGGER_URL}")
+
+    print_app_config(app)
 
     return app
