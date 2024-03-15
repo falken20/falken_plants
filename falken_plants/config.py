@@ -24,8 +24,6 @@ __features__ = [
 ]
 
 
-base_dir = os.path.abspath(os.path.dirname(__file__))
-
 #######################################################################
 # Config format for Flask apps, you create a class for each environment
 #######################################################################
@@ -39,13 +37,17 @@ class Config:
         return self.SQLALCHEMY_DATABASE_URI
 
 
+# Valid SQLite URL forms are:
+# sqlite:///:memory: (or, sqlite://)
+# sqlite:///relative/path/to/file.db
+# sqlite:////absolute/path/to/file.db
 class DevelopmentConfig(Config):
     DEVELOPMENT = True
     DEBUG = True
     SQLALCHEMY_DATABASE_URI = os.getenv("DEVELOPMENT_DATABASE_URL")
 
-    SQLALCHEMY_DATABASE_URI = 'sqlite:///' + \
-            os.path.join(base_dir, 'database.db')
+    base_dir = os.path.abspath(os.path.dirname(__file__))
+    # SQLALCHEMY_DATABASE_URI = 'sqlite:///' + os.path.join(base_dir, 'database.db')
 
 
 class TestingConfig(Config):
@@ -63,7 +65,8 @@ class StagingConfig(Config):
 class ProductionConfig(Config):
     PRODUCTION = True
     DEBUG = False
-    SQLALCHEMY_DATABASE_URI = os.getenv("PRODUCTION_DATABASE_URL")
+    SQLALCHEMY_DATABASE_URI = os.environ['PRODUCTION_DATABASE_URL'].replace(
+        "://", "ql://", 1)
 
 
 class Settings(BaseSettings):
@@ -92,7 +95,6 @@ class Settings(BaseSettings):
         'copyrigth': __copyright__,
         'features': __features__,
     }
-
 
     class Config:
         # When you add the Config class with the path to your env_file to your

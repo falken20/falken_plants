@@ -29,13 +29,13 @@ def create_app(config_mode='development'):
     app = Flask(__name__, template_folder="../templates",
                 static_folder="../static")
 
-    Log.info(f"Running in {config_mode} mode", style="red bold")
-    Log.info(f"Config mode: {app.config['DEBUG']}", style="red bold")
-
     app.config.from_object(settings)
     app.config.from_object(settings.CONFIG_ENV[config_mode])
 
     app.config['TEMPLATE_AUTO_RELOAD'] = True
+
+    Log.info(f"Running in {config_mode} mode", style="red bold")
+    Log.info(f"Debug: {app.config['DEBUG']}", style="red bold")
 
     """
     if settings.ENV_PRO == "N":
@@ -45,10 +45,6 @@ def create_app(config_mode='development'):
         app.config['DEBUG'] = True
         app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + \
             os.path.join(basedir, 'database.db')
-    else:
-        app.config['DEBUG'] = False
-        app.config['SQLALCHEMY_DATABASE_URI'] = os.environ['DATABASE_URL'].replace(
-            "://", "ql://", 1)
     """
 
     db.init_app(app)
@@ -83,4 +79,4 @@ def create_app(config_mode='development'):
     return app
 
 
-app = create_app(config_mode='development')
+app = create_app(config_mode=settings.CONFIG_MODE)
