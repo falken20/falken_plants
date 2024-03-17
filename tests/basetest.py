@@ -14,11 +14,10 @@ class BaseTestCase(unittest.TestCase):
     mock_user_unknown = {'email': 'python@mail.com', 'name': 'python', 'password': 'error_password'}  
     
     def setUp(self):
-        self.app = create_app() # TODO: Review how to init config_mode parameter
+        self.app = create_app(config_mode="testing") # TODO: Review how to init config_mode parameter
         self.app.config['SECRET_KEY'] = 'secret_key_test'
         self.app.config['TESTING'] = True
-        self.app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + \
-            os.path.join(basedir, 'test.db')
+        # self.app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + os.path.join(basedir, 'test.db')
         
         self.config_login()
         self.client = self.app.test_client()

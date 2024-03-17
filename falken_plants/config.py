@@ -53,13 +53,10 @@ class DevelopmentConfig(Config):
 class TestingConfig(Config):
     TESTING = True
     DEBUG = False
+    Log.debug("ROD...." + os.getenv("TEST_DATABASE_URL"))
     SQLALCHEMY_DATABASE_URI = os.getenv("TEST_DATABASE_URL")
-
-
-class StagingConfig(Config):
-    DEVELOPMENT = True
-    DEBUG = True
-    SQLALCHEMY_DATABASE_URI = os.getenv("STAGING_DATABASE_URL")
+    SQLALCHEMY_DATABASE_URI = "sqlite:///:memory:"
+    # TODO: CONFIG_MODE sigue poniendo development en logs --> Revisar basetest.py
 
 
 class ProductionConfig(Config):
@@ -80,7 +77,6 @@ class Settings(BaseSettings):
     CONFIG_ENV = {
         "development": DevelopmentConfig,
         "testing": TestingConfig,
-        "staging": StagingConfig,
         "production": ProductionConfig
     }
     APP_DATA = {
@@ -124,6 +120,10 @@ def print_app_config(app):
     for key, value in app.config.items():
         if isinstance(value, dict):
             for k, v in value.items():
-                Log.debug(f"app.config: {key}: {k} - {v}")
+                if isinstance(v, dict):
+                    for k2, v2 in v.items():
+                        Log.debug(f"app.config: {key}: {k} - {k2} - {v2}")
+                else:
+                    Log.debug(f"app.config: {key}: {k} - {v}")
         else:
             Log.debug(f"app.config: {key}: {value}")

@@ -19,26 +19,25 @@ settings = get_settings()
 console.rule(settings.APP_DATA['title'] + " " +
              settings.APP_DATA['version'] + " by " + settings.APP_DATA['author'])
 
-print_settings(settings)
-
-
 # Cache info
 check_cache()
 
 basedir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 
-def create_app(config_mode=settings.CONFIG_MODE):
+def create_app(config_mode="development"):
     app = Flask(__name__, template_folder="../templates",
                 static_folder="../static")
+    print_settings(settings)
 
     app.config.from_object(settings)
     app.config.from_object(settings.CONFIG_ENV[config_mode])
 
     app.config['TEMPLATE_AUTO_RELOAD'] = True
 
-    Log.info(f"Running in {config_mode} mode", style="red bold")
+    Log.info(f"Running in '{config_mode}' mode", style="red bold")
     Log.info(f"Debug: {app.config['DEBUG']}", style="red bold")
+    Log.info(f"Testing: {app.config['TESTING']}", style="red bold")
 
     db.init_app(app)
 
