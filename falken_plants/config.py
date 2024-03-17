@@ -44,10 +44,10 @@ class Config:
 class DevelopmentConfig(Config):
     DEVELOPMENT = True
     DEBUG = True
-    SQLALCHEMY_DATABASE_URI = os.getenv("DEVELOPMENT_DATABASE_URL")
-
     base_dir = os.path.abspath(os.path.dirname(__file__))
-    # SQLALCHEMY_DATABASE_URI = 'sqlite:///' + os.path.join(base_dir, 'database.db')
+    SQLALCHEMY_DATABASE_URI = 'sqlite:///' + \
+        os.path.join(base_dir,
+                     os.getenv("DEVELOPMENT_DATABASE_URL").replace("sqlite://", ""))
 
 
 class TestingConfig(Config):
@@ -72,7 +72,6 @@ class ProductionConfig(Config):
 class Settings(BaseSettings):
     # pydantic will automatically assume those default values if it doesn’t
     # find the corresponding environment variables.
-    ENV_NAME: str = "Local"
     BASE_URL: str = "http://localhost:5000"
     LEVEL_LOG: list = ["INFO", "WARNING", "ERROR"]
     SECRET_KEY: str = 'your-special-secret-key'
@@ -105,15 +104,13 @@ class Settings(BaseSettings):
 
 @lru_cache
 def get_settings() -> Settings:
+    Log.debug(f"Loading settings...")
     settings = Settings()
-    Log.info(f"Loading settings for: {settings.CONFIG_MODE}")
-    print_settings(settings)
     return settings
 
 
 def print_settings(settings: Settings) -> None:
-    Log.info(f"Settings: \
-            \n ENV_NAME: {settings.ENV_NAME}\
+    Log.info(f"Principal settings: \
             \n CONFIG_MODE: {settings.CONFIG_MODE}\
             \n LEVEL_LOG: {settings.LEVEL_LOG}")
 

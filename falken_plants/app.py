@@ -7,9 +7,10 @@ from dotenv import load_dotenv, find_dotenv
 from flask_login import LoginManager
 
 from .logger import Log, console
-from .config import get_settings, print_app_config
+from .config import get_settings, print_app_config, print_settings
 from .cache import check_cache
 from .models import db
+
 
 # Set environment vars
 load_dotenv(find_dotenv())
@@ -18,14 +19,16 @@ settings = get_settings()
 console.rule(settings.APP_DATA['title'] + " " +
              settings.APP_DATA['version'] + " by " + settings.APP_DATA['author'])
 
+print_settings(settings)
+
+
 # Cache info
 check_cache()
 
 basedir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 
-# TODO: Review how to init config_mode parameter
-def create_app(config_mode='development'):
+def create_app(config_mode=settings.CONFIG_MODE):
     app = Flask(__name__, template_folder="../templates",
                 static_folder="../static")
 
@@ -36,16 +39,6 @@ def create_app(config_mode='development'):
 
     Log.info(f"Running in {config_mode} mode", style="red bold")
     Log.info(f"Debug: {app.config['DEBUG']}", style="red bold")
-
-    """
-    if settings.ENV_PRO == "N":
-        # basedir is the path to the root of the project
-        Log.info(
-            f"DB path: {os.path.join(basedir, 'database.db')}", style="red bold")
-        app.config['DEBUG'] = True
-        app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + \
-            os.path.join(basedir, 'database.db')
-    """
 
     db.init_app(app)
 
