@@ -7,7 +7,7 @@ from dotenv import load_dotenv, find_dotenv
 from flask_login import LoginManager
 
 from .logger import Log, console
-from .config import get_settings, print_app_config, print_settings
+from .config import get_settings, print_app_config, print_settings_environment
 from .cache import check_cache
 from .models import db
 
@@ -28,7 +28,7 @@ basedir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 def create_app(config_mode="development"):
     app = Flask(__name__, template_folder="../templates",
                 static_folder="../static")
-    print_settings(settings)
+    # print_settings_environment(settings)
 
     app.config.from_object(settings)
     app.config.from_object(settings.CONFIG_ENV[config_mode])
@@ -66,7 +66,10 @@ def create_app(config_mode="development"):
     app.register_blueprint(swagger_ui_blueprint, url_prefix=SWAGGER_URL)
     Log.debug(f"Running Swagger in {SWAGGER_URL}")
 
-    print_app_config(app)
+    if config_mode == "testing":
+        print_settings_environment(settings.CONFIG_ENV["testing"])
+    else:
+        print_app_config(app)
 
     return app
 

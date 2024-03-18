@@ -41,10 +41,12 @@ class Plant(db.Model):
                              default=date.today, onupdate=date.today)
     user_id = db.Column(db.Integer, db.ForeignKey('t_user.id'), nullable=False)
 
-    # TODO: Check to use return "<%r>" % self.name
 
     def __repr__(self) -> str:
         return f"<Plant {self.name}>"
+    
+    def __str__(self) -> str:
+        return "<%r>" % self.name_tech
 
     # Validations => https://flask-validator.readthedocs.io/en/latest/index.html
     # The __declare_last__() hook allows definition of a class level function that is
@@ -81,7 +83,7 @@ class Plant(db.Model):
             raise ValueError("Plant name can't be empty")
         return value
 
-    # TODO: Check to use @validates('name_tech', 'comment') => https://stackoverflow.com/a/57294872
+    # Check to use @validates('name_tech', 'comment') => https://stackoverflow.com/a/57294872
     @validates('name_tech', 'comment')
     def validate_empty_string(self, key, value):
         if isinstance(value, str) and value == '':
@@ -89,7 +91,7 @@ class Plant(db.Model):
         else:
             return value
 
-    # TODO: Check to use serialize()
+    # Check to use serialize()
     # How to serialize SqlAlchemy PostgreSQL query to JSON => https://stackoverflow.com/a/46180522
     def serialize(self):
         return {c.key: getattr(self, c.key) for c in inspect(self).mapper.column_attrs}
@@ -123,6 +125,9 @@ class User(UserMixin, db.Model):
 
     def __repr__(self) -> str:
         return f"<User {self.name}>"
+    
+    def __str__(self) -> str:
+        return "<%r>" % self.email
 
     # Validations => https://flask-validator.readthedocs.io/en/latest/index.html
     # The __declare_last__() hook allows definition of a class level function that is

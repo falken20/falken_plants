@@ -36,6 +36,12 @@ class Config:
     def SQLALCHEMY_DATABASE_URI(self):
         return self.SQLALCHEMY_DATABASE_URI
 
+    def __repr__(self) -> str:
+        return "Config()"
+
+    def __str__(self) -> str:
+        return self.SQLALCHEMY_DATABASE_URI
+
 
 # Valid SQLite URL forms are:
 # sqlite:///:memory: (or, sqlite://)
@@ -105,13 +111,8 @@ def get_settings() -> Settings:
     return settings
 
 
-def print_settings(settings: Settings) -> None:
-    Log.info(f"Principal settings: \
-            \n CONFIG_MODE: {settings.CONFIG_MODE}\
-            \n LEVEL_LOG: {settings.LEVEL_LOG}")
-
-    for f, v in settings.CONFIG_ENV.items():
-        Log.info(f"Environment settings: {f} - {vars(v)}")
+def print_settings_environment(environment: dict) -> None:
+    Log.info(f"Environment settings: {vars(environment)}")
 
 
 @lru_cache
@@ -120,10 +121,10 @@ def print_app_config(app):
     for key, value in app.config.items():
         if isinstance(value, dict):
             for k, v in value.items():
-                if isinstance(v, dict):
-                    for k2, v2 in v.items():
-                        Log.debug(f"app.config: {key}: {k} - {k2} - {v2}")
+                if isinstance(v, type):
+                    Log.debug(
+                        f"app.config: {key}: {k} -> {v.SQLALCHEMY_DATABASE_URI}")
                 else:
-                    Log.debug(f"app.config: {key}: {k} - {v}")
+                    Log.debug(f"app.config: {key}: {k} -> {v}")
         else:
             Log.debug(f"app.config: {key}: {value}")
