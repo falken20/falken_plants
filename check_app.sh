@@ -4,6 +4,7 @@
 echo "***** Run Tests *****"
 coverage run -m pytest -v -s
 # coverage run -m unittest -v
+# Probar un solo test: pytest -v -s tests/test_auth.py::TestAuth::test_auth_login
 echo "***** Coverage tests last execution *****"
 coverage report --omit="*/tests/*,*/venv/*" -m ./falken_plants/*.py 
 

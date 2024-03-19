@@ -41,12 +41,11 @@ class Plant(db.Model):
                              default=date.today, onupdate=date.today)
     user_id = db.Column(db.Integer, db.ForeignKey('t_user.id'), nullable=False)
 
-
     def __repr__(self) -> str:
         return f"<Plant {self.name}>"
-    
+
     def __str__(self) -> str:
-        return "<%r>" % self.name_tech
+        return "<Plant %r>" % self.name
 
     # Validations => https://flask-validator.readthedocs.io/en/latest/index.html
     # The __declare_last__() hook allows definition of a class level function that is
@@ -125,9 +124,9 @@ class User(UserMixin, db.Model):
 
     def __repr__(self) -> str:
         return f"<User {self.name}>"
-    
+
     def __str__(self) -> str:
-        return "<%r>" % self.email
+        return "<User %r>" % self.name
 
     # Validations => https://flask-validator.readthedocs.io/en/latest/index.html
     # The __declare_last__() hook allows definition of a class level function that is

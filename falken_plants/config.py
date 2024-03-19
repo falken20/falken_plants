@@ -59,9 +59,7 @@ class DevelopmentConfig(Config):
 class TestingConfig(Config):
     TESTING = True
     DEBUG = False
-    Log.debug("ROD...." + os.getenv("TEST_DATABASE_URL"))
-    SQLALCHEMY_DATABASE_URI = os.getenv("TEST_DATABASE_URL")
-    SQLALCHEMY_DATABASE_URI = "sqlite:///:memory:"
+    SQLALCHEMY_DATABASE_URI = os.getenv("TESTING_DATABASE_URL", "sqlite:///:memory:")
     # TODO: CONFIG_MODE sigue poniendo development en logs --> Revisar basetest.py
 
 
@@ -106,7 +104,7 @@ class Settings(BaseSettings):
 
 @lru_cache
 def get_settings() -> Settings:
-    Log.debug(f"Loading settings...")
+    Log.debug("Loading settings...")
     settings = Settings()
     return settings
 
