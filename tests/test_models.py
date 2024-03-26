@@ -15,11 +15,10 @@ class TestModelUser(BaseTestCase):
 
 class TestModelPlant(BaseTestCase):
     def test_repr(self):
-        self.assertIn('<Plant', str(Plant()))
+        self.assertIn('<Plant', str(Plant(name='test', user_id=1)))
 
     def test_serialize(self):
         plant = Plant(name='test', user_id=1)
-        print("DATA:", plant.serialize())
         self.assertEqual(plant.serialize(), {
             'id': None,
             'name': 'test',
@@ -28,7 +27,7 @@ class TestModelPlant(BaseTestCase):
             'watering_summer': 1,
             'watering_winter': 2,
             'spray': True,
-            'direct_sun': None,
+            'direct_sun': 2,
             'image': None,
             'date_created': date.today(),
             'date_updated': date.today(),

@@ -34,7 +34,7 @@ class Plant(db.Model):
     watering_winter = db.Column(db.Integer, nullable=True, default=2)
     spray = db.Column(db.Boolean, nullable=True, default=True)
     # Direct sun value 1: No, 2: Partial, 3: Yes
-    direct_sun = db.Column(db.Integer, nullable=True)
+    direct_sun = db.Column(db.Integer, nullable=True, default=2)
     image = db.Column(db.BLOB, nullable=True)
     date_created = db.Column(db.Date, nullable=False, default=date.today)
     date_updated = db.Column(db.Date, nullable=False,
@@ -46,6 +46,21 @@ class Plant(db.Model):
 
     def __str__(self) -> str:
         return "<Plant %r>" % self.name
+
+    # TODO: Doesn`t work default param y columns and it is neccesary to use __init__ method
+    def __init__(self, name=None, name_tech=None, comment=None, watering_summer=1, watering_winter=2, spray=True, direct_sun=2, image=None,
+                 user_id=None, date_created=date.today(), date_updated=date.today()):
+        self.name = name
+        self.name_tech = name_tech
+        self.comment = comment
+        self.watering_summer = watering_summer
+        self.watering_winter = watering_winter
+        self.spray = spray
+        self.direct_sun = direct_sun
+        self.image = image
+        self.user_id = user_id
+        self.date_created = date_created
+        self.date_updated = date_updated
 
     # Validations => https://flask-validator.readthedocs.io/en/latest/index.html
     # The __declare_last__() hook allows definition of a class level function that is
@@ -68,7 +83,7 @@ class Plant(db.Model):
         ValidateGreaterThanOrEqual(cls.watering_winter, 0, True,
                                    "Plant watering winter should be a number between 0 and 4")
         ValidateBoolean(cls.spray)
-        ValidateInteger(cls.direct_sun, False, True,
+        ValidateInteger(cls.direct_sun, True, True,
                         "Plant direct sun should be a number between 1 and 3")
         ValidateLessThanOrEqual(cls.direct_sun, 3, True,
                                 "Plant direct sun should be a number between 1 and 3")

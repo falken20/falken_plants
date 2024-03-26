@@ -36,8 +36,8 @@ def create_app(config_mode="development"):
     app.config['TEMPLATE_AUTO_RELOAD'] = True
 
     Log.info(f"Running in '{config_mode}' mode", style="red bold")
-    Log.info(f"Debug: {app.config['DEBUG']}", style="red bold")
-    Log.info(f"Testing: {app.config['TESTING']}", style="red bold")
+    Log.debug(
+        f"Debug: {app.config['DEBUG']} - Testing: {app.config['TESTING']}")
 
     db.init_app(app)
 
