@@ -17,7 +17,7 @@ from flask_validator import (ValidateString, ValidateInteger, ValidateEmail, Val
                              ValidateGreaterThanOrEqual, ValidateBoolean)
 
 from .logger import Log
-from .config import get_settings
+from .config import get_settings, print_settings_environment
 
 db = SQLAlchemy()
 
@@ -190,20 +190,16 @@ if __name__ == '__main__':  # pragma: no cover # To doesn't check in tests
     logging.info("Preparing app vars...")
     app = Flask(__name__)
 
-    if get_settings().ENV_PRO == "N":
-        # basedir is the path to the root of the project
-        basedir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-        Log.info("Running in development mode with sqlite DB")
-        Log.info(
-            f"DB path: {os.path.join(basedir, 'database.db')}", style="red bold")
-        app.config['DEBUG'] = True
-        app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + \
-            os.path.join(basedir, 'database.db')
-    else:
-        Log.info("Running in production mode with postgres DB")
-        app.config['DEBUG'] = False
-        app.config['SQLALCHEMY_DATABASE_URI'] = os.environ['DATABASE_URL'].replace(
-            "://", "ql://", 1)
+    # Set environment vars
+    settings = get_settings()
+    app.config.from_object(settings)
+    app.config.from_object(settings.CONFIG_ENV[settings.CONFIG_MODE])
+    app.config['TEMPLATE_AUTO_RELOAD'] = True
+
+    Log.info(f"Running in '{settings.CONFIG_MODE}' mode", style="red bold")
+    Log.debug(f"Debug: {app.config['DEBUG']}")
+    Log.debug(f"Testing: {app.config['TESTING']}")
+    print_settings_environment(settings.CONFIG_ENV[settings.CONFIG_MODE])
 
     db.init_app(app)
     init_db(app)

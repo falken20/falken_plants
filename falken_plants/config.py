@@ -50,7 +50,8 @@ class Config:
 class DevelopmentConfig(Config):
     DEVELOPMENT = True
     DEBUG = True
-    base_dir = os.path.abspath(os.path.dirname(__file__))
+    # The path to the database file is relative to the project root.
+    base_dir = os.path.abspath(os.path.dirname(os.path.dirname(__file__)))
     SQLALCHEMY_DATABASE_URI = 'sqlite:///' + \
         os.path.join(base_dir,
                      os.getenv("DEVELOPMENT_DATABASE_URL").replace("sqlite://", ""))
@@ -59,8 +60,8 @@ class DevelopmentConfig(Config):
 class TestingConfig(Config):
     TESTING = True
     DEBUG = False
-    SQLALCHEMY_DATABASE_URI = os.getenv("TESTING_DATABASE_URL", "sqlite:///:memory:")
-    # TODO: CONFIG_MODE sigue poniendo development en logs --> Revisar basetest.py
+    SQLALCHEMY_DATABASE_URI = os.getenv(
+        "TESTING_DATABASE_URL", "sqlite:///:memory:")
 
 
 class ProductionConfig(Config):
