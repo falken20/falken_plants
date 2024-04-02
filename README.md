@@ -75,6 +75,8 @@ PRODUCTION_DATABASE_URL=
 
 ---
 ##### learning tips
+- locals(): You cant print all params of a method without write one by one
+
 - flash(): By calling flash function, you can send a message to the next request.
 - UserMixin: Flask-Login can manage user sessions. 
 - LoginManager: A user loader tells Flask-Login how to find a specific user from the ID that is stored in their session cookie. 

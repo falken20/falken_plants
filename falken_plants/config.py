@@ -74,7 +74,7 @@ class ProductionConfig(Config):
 class Settings(BaseSettings):
     # pydantic will automatically assume those default values if it doesn’t
     # find the corresponding environment variables.
-    BASE_URL: str = "http://localhost:5000"
+    BASE_URL: str = "http://127.0.0.1:5000"
     LEVEL_LOG: list = ["INFO", "WARNING", "ERROR"]
     SECRET_KEY: str = 'your-special-secret-key'
     CONFIG_MODE: str = "development"

@@ -5,7 +5,6 @@
 # This file is to set all the db models and use the ORM flask_sqlalchemy
 # ######################################################################
 
-import os
 import logging
 from datetime import date
 from flask import Flask
@@ -48,8 +47,9 @@ class Plant(db.Model):
         return "<Plant %r>" % self.name
 
     # TODO: Doesn`t work default param y columns and it is neccesary to use __init__ method
-    def __init__(self, name=None, name_tech=None, comment=None, watering_summer=1, watering_winter=2, spray=True, direct_sun=2, image=None,
-                 user_id=None, date_created=date.today(), date_updated=date.today()):
+    def __init__(self, name=None, name_tech=None, comment=None, watering_summer=1, watering_winter=2,
+                 spray=True, direct_sun=2, image=None, user_id=None, date_created=date.today(),
+                 date_updated=date.today()):
         self.name = name
         self.name_tech = name_tech
         self.comment = comment

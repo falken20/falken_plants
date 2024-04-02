@@ -30,9 +30,10 @@ class ControllerPlant:
                      spray: bool = False, direct_sun: int = 1,
                      image=None, user_id: int = None):
         Log.info(f"Creating plant: {name}")
+        Log.debug(f"Params method: {locals()}")
         spray = True if spray or spray == "1" else False
-        plant = Plant(name=name, name_tech=name_tech, comment=comment, watering_summer=watering_summer,
-                      watering_winter=watering_winter, spray=spray, direct_sun=direct_sun,
+        plant = Plant(name=name, name_tech=name_tech, comment=comment, watering_summer=int(watering_summer),
+                      watering_winter=int(watering_winter), spray=spray, direct_sun=direct_sun,
                       date_created=date.today(), user_id=user_id)
         if plant.name == "" or plant.name is None:
             raise ValueError("Plant name can't be empty")
@@ -47,6 +48,7 @@ class ControllerPlant:
     @staticmethod
     def update_plant(plant_id: int, name: str, name_tech: str, comment: str, watering_summer: int,
                      watering_winter: int, spray: bool, direct_sun: int):
+        Log.debug(f"Params method: {locals()}")
         plant = ControllerPlant.get_plant(plant_id)
         if plant is None:
             return None
@@ -88,6 +90,7 @@ class ControllerCalendar:
     def create_calendar(date_calendar: date, water: bool, fertilize: bool, plant_id: int):
         calendar = Calendar(date_calendar=date_calendar, water=water,
                             fertilize=fertilize, plant_id=plant_id)
+        Log.debug(f"Params method: {locals()}")
         db.session.add(calendar)
         db.session.commit()
         return calendar

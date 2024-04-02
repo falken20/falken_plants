@@ -82,7 +82,7 @@ def view_plant(plant_id: int):
 @main.route("/plants", methods=['POST'])
 @login_required
 def add_plant():
-    Log.info("Add plant page")
+    Log.info("Add plant api")
     Log.debug(f"Current user: {current_user}")
 
     try:
