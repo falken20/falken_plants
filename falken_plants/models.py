@@ -41,10 +41,10 @@ class Plant(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey('t_user.id'), nullable=False)
 
     def __repr__(self) -> str:
-        return f"<Plant {self.name}>"
+        return f"<Plant {self.name} - {self.name_tech}>"
 
     def __str__(self) -> str:
-        return "<Plant %r>" % self.name
+        return f"<Plant {self.name} - {self.name_tech}>"
 
     # TODO: Doesn`t work default param y columns and it is neccesary to use __init__ method
     def __init__(self, name=None, name_tech=None, comment=None, watering_summer=1, watering_winter=2,
