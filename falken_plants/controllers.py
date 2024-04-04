@@ -73,6 +73,10 @@ class ControllerPlant:
         db.session.commit()
         return plant
 
+    @staticmethod
+    def get_all_plants(user_id: int):
+        return Plant.query.filter(Plant.user_id == user_id).order_by(Plant.name).all()
+
 
 class ControllerCalendar:
     def __init__(self):

@@ -20,7 +20,20 @@ def index():
     Log.info("Index page")
     Log.debug(f"Current user: {current_user}")
 
-    return render_template('index.html')
+    all_plants = ControllerPlant.get_all_plants(current_user.id)
+
+    return render_template('plant_list.html', plants=all_plants, message="")
+
+
+@main.route('/show_grouped/')
+@login_required
+def show_grouped():
+    Log.info("Show grouped page")
+    Log.debug(f"Current user: {current_user}")
+
+    all_plants = ControllerPlant.get_all_plants(current_user.id)
+
+    return render_template('plant_list_group.html', plants=all_plants, message="")
 
 
 @main.route("/profile", methods=['GET'])
