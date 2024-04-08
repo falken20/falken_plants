@@ -9,16 +9,15 @@
         {% for plant in plants %}
             <tr style="font-size:smaller;">
                 <div class="row">
-                    <td style="width: 20%; text-align: center;">
+                    <td style="width: 25%; text-align: center;">
                         <img src="{{ plant.image }}" height="70">
-                        <div style="font-weight: bold; font-size: medium;">{{ plant.name }}</div>
+                    </td>
+                    <td style="width: 25%; text-align: center;">
                         <div><small>☀️ {{ plant.watering_summer }} wpm</small></div>
                         <div><small>❄️ {{ plant.watering_winter }} wpm</small></div>
                     </td>
-                    <td style="width:80%" colspan="2"> 
-                        <div style="font-weight: bold;">
-                            <a href="" target="_blank">{{ plant.name }}</a>
-                        </div>
+                    <td style="width:50%" colspan="2"> 
+                        <div style="font-weight: bold;">{{ plant.name }}</div>
                         <div><small style="font-weight: bold;"> {{ plant.name_tech }} </small></div>
                         <div><small style="color:red;font-weight: bold;">{{ plant.comment }} </small></div>
                     </td>
