@@ -114,7 +114,7 @@ def add_plant():
         Log.error("Error creating plant", err=e, sys=sys)
         return render_template('plant_form.html', error=e)
 
-    return render_template('index.html')
+    return render_template('plant_list.html')
 
 
 @main.route("/plants/<int:plant_id>", methods=['PUT'])

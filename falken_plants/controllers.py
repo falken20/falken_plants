@@ -34,7 +34,7 @@ class ControllerPlant:
         spray = True if spray or spray == "1" else False
         plant = Plant(name=name, name_tech=name_tech, comment=comment, watering_summer=int(watering_summer),
                       watering_winter=int(watering_winter), spray=spray, direct_sun=int(direct_sun),
-                      date_created=date.today(), user_id=user_id)
+                      image=image, date_created=date.today(), user_id=user_id)
         if plant.name == "" or plant.name is None:
             raise ValueError("Plant name can't be empty")
         if plant.user_id == "" or plant.user_id is None:
