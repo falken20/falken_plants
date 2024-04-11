@@ -22,6 +22,10 @@
     font-weight: bold;
 }
 
+small {
+    font-size: 70% !important;
+}
+
 
 
 .mainPage {
