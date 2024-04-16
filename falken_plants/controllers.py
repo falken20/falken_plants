@@ -3,6 +3,7 @@ from datetime import date
 
 from .models import db, Plant, Calendar, User
 from .logger import Log
+from .config import shorten_url
 
 # The CRUD operations use to return a JSON response:
 # return jsonify(response)
@@ -28,9 +29,10 @@ class ControllerPlant:
     def create_plant(name: str, name_tech: str, comment: str,
                      watering_summer: int = 1, watering_winter: int = 2,
                      spray: bool = False, direct_sun: int = 1,
-                     image=None, user_id: int = None):
+                     image=None, user_id: int = None) -> Plant:
         Log.info(f"Creating plant: {name}")
         Log.debug(f"Params method: {locals()}")
+        image = shorten_url(image) if image is not None else None
         spray = True if spray or spray == "1" else False
         plant = Plant(name=name, name_tech=name_tech, comment=comment, watering_summer=int(watering_summer),
                       watering_winter=int(watering_winter), spray=spray, direct_sun=int(direct_sun),
@@ -47,7 +49,7 @@ class ControllerPlant:
 
     @staticmethod
     def update_plant(plant_id: int, name: str, name_tech: str, comment: str, watering_summer: int,
-                     watering_winter: int, spray: bool, direct_sun: int):
+                     watering_winter: int, spray: bool, direct_sun: int, image: str) -> Plant:
         Log.debug(f"Params method: {locals()}")
         plant = ControllerPlant.get_plant(plant_id)
         if plant is None:
@@ -59,8 +61,9 @@ class ControllerPlant:
         plant.comment = comment
         plant.watering_summer = watering_summer
         plant.watering_winter = watering_winter
-        plant.spray = spray
+        plant.spray = True if spray or spray == "1" else False
         plant.direct_sun = direct_sun
+        plant.image = shorten_url(image) if image is not None else None
         db.session.commit()
         return plant
 

@@ -6,6 +6,8 @@
 import os
 from pydantic.v1 import BaseSettings
 # from pydantic_settings import BaseSettings # New version
+import pyshorteners
+
 
 # Library to cache the data
 from functools import lru_cache
@@ -22,6 +24,13 @@ __license__ = 'MIT License'
 __copyright__ = '© 2024 by Richi Rod AKA @richionline / falken20'
 __features__ = [
 ]
+
+
+# Method to shorten a URL
+def shorten_url(url: str) -> str:
+    """ Shorten a URL """
+    shortener = pyshorteners.Shortener()
+    return shortener.tinyurl.short(url)
 
 
 #######################################################################

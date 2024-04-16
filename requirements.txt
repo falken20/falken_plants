@@ -10,3 +10,4 @@ psycopg2-binary
 flask-login
 flask_swagger_ui
 flask_validator # Validation for string, countries, etc.
+pyshorteners # URL shortener
