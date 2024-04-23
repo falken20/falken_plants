@@ -12,9 +12,11 @@
                     <img src="{{ plant.image }}" height="75" style="max-width:100px;">
                 </div>
                 <div class="card-body p-1">
-                    <small>☀️ {{ plant.watering_summer }} wpm</small><br>
-                    <small>❄️ {{ plant.watering_winter }} wpm</small><br>
-                    <small>💦<input type="checkbox" id="spray" name="spray" checked="{{ plant.spray }}"></small>
+                    <small style="font-weight: bold;">{{ plant.name }}</small> <br>
+                    <small>🌞 {{ plant.watering_summer }} </small>
+                    <small>❄️ {{ plant.watering_winter }} </small>
+                    <small>💦 ⛔️<input type="checkbox" id="spray" name="spray" checked="{{ plant.spray }}"></small>
+                    <small>🌗</small>
                 </div>
                 <div class="card-body p-0">
                     <a class="btn btn-success btn-sm p-1" href="{{url_for('main.update_plant', plant_id=plant.id)}}">

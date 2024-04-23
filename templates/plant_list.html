@@ -13,14 +13,17 @@
                         <img src="{{ plant.image }}" height="70">
                     </td>
                     <td style="width: 25%; text-align: center;">
-                        <div><small>☀️ {{ plant.watering_summer }} wpm</small></div>
-                        <div><small>❄️ {{ plant.watering_winter }} wpm</small></div>
-                        <div>💦<input type="checkbox" id="spray" name="spray" checked="{{ plant.spray }}"></div>
+                        <div><small>🌞 {{ plant.watering_summer }} month</small></div>
+                        <div><small>❄️ {{ plant.watering_winter }} month</small></div>
+                        <div>
+                            💦<input type="checkbox" id="spray" name="spray" checked="{{ plant.spray }}">
+                            🌝 🌗 ❌
+                        </div>
                     </td>
                     <td style="width:50%" colspan="2"> 
                         <div style="font-weight: bold;">{{ plant.name }}</div>
-                        <div><small style="font-weight: bold;"> {{ plant.name_tech }} </small></div>
-                        <div><small style="color:red;font-weight: bold;">{{ plant.comment }} </small></div>
+                        <div><small style="color: red; font-weight: bold;"> {{ plant.name_tech }} </small></div>
+                        <div><small>{{ plant.comment }} </small></div>
                     </td>
                 </div>
             </tr>
