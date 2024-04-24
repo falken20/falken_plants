@@ -32,6 +32,10 @@
                     <td colspan="3">
                         <a class="btn btn-success btn-sm btn-block" href="{{url_for('main.update_plant', plant_id=plant.id)}}">Edit</a>
                         <a class="btn btn-danger btn-sm btn-block" href="{{url_for('main.delete_plant', plant_id=plant.id)}}">Delete</a>
+                        <form method="DELETE" action="/plants/{{plant.id}}">
+                            <input type="hidden" name="_method" value="DELETE">
+                            <button type="submit" class="btn btn-danger btn-sm btn-block">Delete</button>
+                        </form>
                     </td>
                 </div>
             </tr>

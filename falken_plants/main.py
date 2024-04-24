@@ -74,6 +74,17 @@ def create_plant():
     return render_template('plant_form.html')
 
 
+@main.route("/plants/update", methods=['GET'])
+@login_required
+def update_plant(plant_id: int):
+    Log.info("Update plant page")
+    Log.debug(f"Current user: {current_user}")
+
+    plant = ControllerPlant.get_plant(plant_id)
+
+    return render_template('plant_form.html', plant=plant)
+
+
 @main.route("/plants", methods=['GET'])
 @login_required
 def view_all_plants():
@@ -94,7 +105,7 @@ def view_plant(plant_id: int):
 
 @main.route("/plants", methods=['POST'])
 @login_required
-def add_plant():
+def post_plant():
     Log.info("Add plant api")
     Log.debug(f"Current user: {current_user}")
 
@@ -119,7 +130,7 @@ def add_plant():
 
 @main.route("/plants/<int:plant_id>", methods=['PUT'])
 @login_required
-def update_plant(plant_id: int):
+def put_plant(plant_id: int):
     Log.info("Update plant page")
     Log.debug(f"Current user: {current_user}")
 
@@ -132,7 +143,9 @@ def delete_plant(plant_id: int):
     Log.info("Delete plant page")
     Log.debug(f"Current user: {current_user}")
 
-    pass
+    ControllerPlant.delete_plant(plant_id)
+
+    return render_template('plant_list.html')
 
 
 @main.route("/plants/<int:plant_id>/calendar/water", methods=['POST'])
