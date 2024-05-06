@@ -26,6 +26,11 @@ small {
     font-size: 50% !important;
 }
 
+p {
+    font-size: 50% !important;
+    text-align: justify;
+}
+
 
 
 .mainPage {

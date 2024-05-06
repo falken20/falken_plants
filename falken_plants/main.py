@@ -137,7 +137,8 @@ def put_plant(plant_id: int):
     pass
 
 
-@main.route("/plants/<int:plant_id>", methods=['DELETE'])
+# TODO: @main.route("/plants/<int:plant_id>", methods=['DELETE'])
+@main.route("/plants/delete/<int:plant_id>")
 @login_required
 def delete_plant(plant_id: int):
     Log.info("Delete plant page")
@@ -145,7 +146,9 @@ def delete_plant(plant_id: int):
 
     ControllerPlant.delete_plant(plant_id)
 
-    return render_template('plant_list.html')
+    all_plants = ControllerPlant.get_all_plants(current_user.id)
+
+    return render_template('plant_list.html', plants=all_plants, message="")
 
 
 @main.route("/plants/<int:plant_id>/calendar/water", methods=['POST'])

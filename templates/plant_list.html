@@ -13,8 +13,8 @@
                         <img src="{{ plant.image }}" height="70">
                     </td>
                     <td style="width: 25%; text-align: center;">
-                        <div><small>🌞 {{ plant.watering_summer }} month</small></div>
-                        <div><small>❄️ {{ plant.watering_winter }} month</small></div>
+                        <div><small>🌞 {{ plant.watering_summer }}/month</small></div>
+                        <div><small>❄️ {{ plant.watering_winter }}/month</small></div>
                         <div>
                             💦<input type="checkbox" id="spray" name="spray" checked="{{ plant.spray }}">
                             🌝 🌗 ❌
@@ -23,7 +23,7 @@
                     <td style="width:50%" colspan="2"> 
                         <div style="font-weight: bold;">{{ plant.name }}</div>
                         <div><small style="color: red; font-weight: bold;"> {{ plant.name_tech }} </small></div>
-                        <div><small>{{ plant.comment }} </small></div>
+                        <div><p>{{ plant.comment }} </p></div>
                     </td>
                 </div>
             </tr>
@@ -32,10 +32,6 @@
                     <td colspan="3">
                         <a class="btn btn-success btn-sm btn-block" href="{{url_for('main.update_plant', plant_id=plant.id)}}">Edit</a>
                         <a class="btn btn-danger btn-sm btn-block" href="{{url_for('main.delete_plant', plant_id=plant.id)}}">Delete</a>
-                        <form method="DELETE" action="{{url_for('main.delete_plant', plant_id=plant.id)}}">
-                            <input type="hidden" name="_method" value="DELETE">
-                            <button type="submit" class="btn btn-danger btn-sm btn-block">Delete</button>
-                        </form>
                     </td>
                 </div>
             </tr>
