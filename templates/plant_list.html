@@ -4,32 +4,33 @@
 
 <div class="container">    
 
-    <table class="table table-striped" style="max-width: 600px;">
+    <table class="table table-sm" style="max-width: 600px;">
         <tbody>
         {% for plant in plants %}
             <tr style="font-size:smaller;">
                 <div class="row">
-                    <td style="width: 25%; text-align: center;">
+                    <td style="width: 30%; text-align: center;">
                         <img src="{{ plant.image }}" height="70">
                     </td>
-                    <td style="width: 25%; text-align: center;">
-                        <div><small>🌞 {{ plant.watering_summer }}/month</small></div>
-                        <div><small>❄️ {{ plant.watering_winter }}/month</small></div>
-                        <div>
-                            💦<input type="checkbox" id="spray" name="spray" checked="{{ plant.spray }}">
-                            🌝 🌗 ❌
-                        </div>
-                    </td>
-                    <td style="width:50%" colspan="2"> 
+                    <td style="width:70%" colspan="2"> 
                         <div style="font-weight: bold;">{{ plant.name }}</div>
                         <div><small style="color: red; font-weight: bold;"> {{ plant.name_tech }} </small></div>
-                        <div><p>{{ plant.comment }} </p></div>
+                        <div><small>🌞 {{ plant.watering_summer }}/m
+                                    ❄️ {{ plant.watering_winter }}/m
+                                    💦<input type="checkbox" id="spray" name="spray" checked="{{ plant.spray }}">
+                                    🌝🌗❌
+                        </small></div>                        
                     </td>
                 </div>
             </tr>
+            <tr style="font-size:smaller;">
+                <td colspan="2">
+                    <div class="row"><p>{{ plant.comment }} </p></div>
+                </td>
+            </tr>
             <tr>
                 <div class="row">
-                    <td colspan="3">
+                    <td colspan="2">
                         <a class="btn btn-success btn-sm btn-block" href="{{url_for('main.update_plant', plant_id=plant.id)}}">Edit</a>
                         <a class="btn btn-danger btn-sm btn-block" href="{{url_for('main.delete_plant', plant_id=plant.id)}}">Delete</a>
                     </td>
