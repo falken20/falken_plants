@@ -14,15 +14,15 @@
                     </td>
                     <td style="width:70%" colspan="2"> 
                         <div style="font-weight: bold;">{{ plant.name }}</div>
-                        <div><small style="color: red; font-weight: bold;"> {{ plant.name_tech }} </small></div>
+                        <div><small style="color: red; font-weight: bold;" id="name_tech"> {{ plant.name_tech }} </small></div>
                         <div>
                             <small>
                                 🌞 {{ plant.watering_summer }}/m
                                 ❄️ {{ plant.watering_winter }}/m
                                 <!-- TODO: Show the icon for spray-->
-                                <input type="checkbox" id="spray" name="spray" checked="{{ plant.spray }}" style="visibility:hidden"
-                                        onChange="activeVisibility('spray', 'spray_icon');">
-                                <label id="spray_icon" style="visibility:hidden">💦</label>
+                                <input type="checkbox" id="spray" name="spray" checked="{{ plant.spray }}" style="visibility:visible"
+                                        onclick="activeVisibility('spray', 'spray_icon');">
+                                <label id="spray_icon" style="visibility:hidden" onload="activeVisibility('spray', 'spray_icon');">💦</label>
                                 🌝🌗❌
                             </small>
                         </div>                        
