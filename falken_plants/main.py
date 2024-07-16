@@ -71,9 +71,10 @@ def create_plant():
     Log.info("Create plant page")
     Log.debug(f"Current user: {current_user}")
 
-    return render_template('plant_form.html')
+    return render_template('plant_form.html', plant=None)
 
 
+# TODO: Finish this
 @main.route("/plants/update/<int:plant_id>", methods=['GET'])
 @login_required
 def update_plant(plant_id: int):

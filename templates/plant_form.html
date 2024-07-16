@@ -9,15 +9,15 @@
 
       <div class="form-group">
         <label for="name">Name</label>
-        <input type="text" class="form-control" id="name" name="name" placeholder="Plant name" maxlength="100">
+        <input type="text" class="form-control" id="name" name="name" placeholder="Plant name" maxlength="100" value="{{plant.name}}">
       </div>
       <div class="form-group">
         <label for="name_tech">Tech Name</label>
-        <input type="text" class="form-control" id="name_tech" name="name_tech" placeholder="Tech plant name" maxlength="100">
+        <input type="text" class="form-control" id="name_tech" name="name_tech" placeholder="Tech plant name" maxlength="100" value="{{plant.name_tech}}">
       </div>
       <div class="form-group">
         <label for="comment">Comments</label>
-        <input type="text" class="form-control" id="comment" name="comment" placeholder="Comments" maxlength="200">
+        <input type="text" class="form-control" id="comment" name="comment" placeholder="Comments" maxlength="200" value="{{plant.comment}}">
       </div>
 
       <div class="row">
@@ -56,7 +56,7 @@
 
       <div class="form-group">
         <label for="image">URL Photo</label>
-        <input type="text" class="form-control" id="image" name="image" placeholder="URL Photo" maxlength="200">
+        <input type="text" class="form-control" id="image" name="image" placeholder="URL Photo" maxlength="200" value="{{plant.image}}">
       </div>
 
       <button type="submit" class="btn btn-primary">Save</button>
