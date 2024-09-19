@@ -31,6 +31,11 @@ p {
     text-align: justify;
 }
 
+.navbar-item img{
+    max-height: 2.75rem !important;
+}
+
+
 
 
 
