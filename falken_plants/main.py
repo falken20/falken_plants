@@ -4,7 +4,7 @@
 from flask import Blueprint, render_template
 from flask_login import login_required, current_user
 from datetime import date
-from flask import request
+from flask import request, redirect
 import sys
 
 from .logger import Log
@@ -22,6 +22,7 @@ def index():
 
     all_plants = ControllerPlant.get_all_plants(current_user.id)
 
+    # return redirect(url_for('main.view_all_plants'))
     return render_template('plant_list.html', plants=all_plants, message="")
 
 
@@ -69,6 +70,7 @@ def calendar():
 @login_required
 def view_all_plants():
     Log.info("View all the plants page")
+    Log.info(f"Method: {request.method}")
     Log.debug(f"Current user: {current_user}")
 
     all_plants = ControllerPlant.get_all_plants(current_user.id)
@@ -80,6 +82,7 @@ def view_all_plants():
 @login_required
 def create_plant():
     Log.info("Create plant page")
+    Log.info(f"Method: {request.method}")
     Log.debug(f"Current user: {current_user}")
 
     return render_template('plant_form.html', plant=None, form_method="POST")
@@ -89,6 +92,7 @@ def create_plant():
 @login_required
 def update_plant(plant_id: int):
     Log.info("Edit plant page")
+    Log.info(f"Method: {request.method}")
     Log.debug(f"Current user: {current_user}")
 
     plant = ControllerPlant.get_plant(plant_id)
@@ -97,10 +101,12 @@ def update_plant(plant_id: int):
     return render_template('plant_form.html', plant=plant, form_method="PUT")
 
 
+# TODO: Make it work
 @main.route("/plants/<int:plant_id>", methods=['GET'])
 @login_required
 def view_plant(plant_id: int):
     Log.info("View plant page")
+    Log.info(f"Method: {request.method}")
     Log.debug(f"Current user: {current_user}")
 
     pass
@@ -109,11 +115,18 @@ def view_plant(plant_id: int):
 @main.route("/plants", methods=['POST'])
 @login_required
 def post_plant():
-    Log.info("Add plant api")
+    Log.info("Add or update plant API")
+    Log.info(f"Method: {request.method}")
+    Log.info(f"Hidden Method: {request.form['_method']}")
     Log.debug(f"Current user: {current_user}")
 
     try:
         Log.debug(f"Request form: {request.form}")
+        if request.form['_method'] == "PUT":
+            Log.info(f"Its a PUT method, redirect to update plant API: /plants/{request.form['id']}")
+            # return redirect(f"/plants/update/{request.form['id']}")
+            return redirect(url_for('main.put_plant', plant_id=request.form['id']))
+
         plant = ControllerPlant.create_plant(name=request.form['name'],
                                              name_tech=request.form['name_tech'],
                                              comment=request.form['comment'],
@@ -131,11 +144,12 @@ def post_plant():
     return render_template('plant_list.html')
 
 
-@main.route("/plants/", methods=['PUT'])
+@main.route("/plants", methods=['PUT'])
 @main.route("/plants/<int:plant_id>", methods=['PUT'])
 @login_required
 def put_plant(plant_id: int):
-    Log.info("Update plant page")
+    Log.info("Update plant API")
+    Log.info(f"Method: {request.method}")
     Log.debug(f"Current user: {current_user}")
 
     try:
@@ -163,7 +177,8 @@ def put_plant(plant_id: int):
 @main.route("/plants/delete/<int:plant_id>")
 @login_required
 def delete_plant(plant_id: int):
-    Log.info("Delete plant page")
+    Log.info("Delete plant API")
+    Log.info(f"Method: {request.method}")
     Log.debug(f"Current user: {current_user}")
 
     ControllerPlant.delete_plant(plant_id)
@@ -177,6 +192,7 @@ def delete_plant(plant_id: int):
 @login_required
 def water_plant(plant_id: int):
     Log.info("Water plant page")
+    Log.info(f"Method: {request.method}")
     Log.debug(f"Current user: {current_user}")
 
     pass
@@ -186,6 +202,7 @@ def water_plant(plant_id: int):
 @login_required
 def fertilize_plant(plant_id: int):
     Log.info("Fertilize plant page")
+    Log.info(f"Method: {request.method}")
     Log.debug(f"Current user: {current_user}")
 
     pass
@@ -195,6 +212,7 @@ def fertilize_plant(plant_id: int):
 @login_required
 def view_calendar(plant_id: int):
     Log.info("View calendar page")
+    Log.info(f"Method: {request.method}")
     Log.debug(f"Current user: {current_user}")
 
     pass
@@ -204,6 +222,7 @@ def view_calendar(plant_id: int):
 @login_required
 def view_calendar_date(plant_id: int, date_calendar: date):
     Log.info("View calendar date page")
+    Log.info(f"Method: {request.method}")
     Log.debug(f"Current user: {current_user}")
 
     pass
@@ -213,6 +232,7 @@ def view_calendar_date(plant_id: int, date_calendar: date):
 @login_required
 def add_calendar_date(plant_id: int, date_calendar: date):
     Log.info("Add calendar date page")
+    Log.info(f"Method: {request.method}")
     Log.debug(f"Current user: {current_user}")
 
     pass
@@ -222,6 +242,7 @@ def add_calendar_date(plant_id: int, date_calendar: date):
 @login_required
 def update_calendar_date(plant_id: int, date_calendar: date):
     Log.info("Update calendar date page")
+    Log.info(f"Method: {request.method}")
     Log.debug(f"Current user: {current_user}")
 
     pass
