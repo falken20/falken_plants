@@ -4,7 +4,7 @@
 from flask import Blueprint, render_template
 from flask_login import login_required, current_user
 from datetime import date
-from flask import request, redirect
+from flask import request, redirect, url_for
 import sys
 
 from .logger import Log
@@ -109,12 +109,13 @@ def view_plant(plant_id: int):
     Log.info(f"Method: {request.method}")
     Log.debug(f"Current user: {current_user}")
 
-    pass
+    return redirect(url_for('main.view_all_plants'))
 
 
 @main.route("/plants", methods=['POST'])
 @login_required
 def post_plant():
+    # Because HTML doesn't support PUT method, we use a hidden field to know if its a PUT method
     Log.info("Add or update plant API")
     Log.info(f"Method: {request.method}")
     Log.info(f"Hidden Method: {request.form['_method']}")
@@ -122,23 +123,40 @@ def post_plant():
 
     try:
         Log.debug(f"Request form: {request.form}")
+        # Because HTML doesn't support PUT method, we use a hidden field to know if its a PUT method
         if request.form['_method'] == "PUT":
-            Log.info(f"Its a PUT method, redirect to update plant API: /plants/{request.form['id']}")
+            Log.info(
+                f"Its a PUT method, redirect to update plant API: /plants/{request.form['id']}")
             # return redirect(f"/plants/update/{request.form['id']}")
-            return redirect(url_for('main.put_plant', plant_id=request.form['id']))
+            return redirect(url_for('main.put_plant', plant_id=request.form['id'], method='PUT'))
+            #  put_plant(request.form['id'], request.form)
+            return
 
-        plant = ControllerPlant.create_plant(name=request.form['name'],
-                                             name_tech=request.form['name_tech'],
-                                             comment=request.form['comment'],
-                                             watering_summer=request.form['watering_summer'],
-                                             watering_winter=request.form['watering_winter'],
-                                             spray=request.form['spray'],
-                                             direct_sun=request.form['direct_sun'],
-                                             image=request.form['image'],
-                                             user_id=current_user.id)
-        Log.info(f"Plant created: {plant}")
+            plant_id = plant_id if plant_id else request.form['plant_id']
+            plant = ControllerPlant.update_plant(plant_id=plant_id,
+                                                 name=request.form['name'],
+                                                 name_tech=request.form['name_tech'],
+                                                 comment=request.form['comment'],
+                                                 watering_summer=request.form['watering_summer'],
+                                                 watering_winter=request.form['watering_winter'],
+                                                 spray=request.form['spray'],
+                                                 direct_sun=request.form['direct_sun'],
+                                                 image=request.form['image'],
+                                                 user_id=current_user.id)
+            Log.info(f"Plant updated: {plant}")
+        else:
+            plant = ControllerPlant.create_plant(name=request.form['name'],
+                                                 name_tech=request.form['name_tech'],
+                                                 comment=request.form['comment'],
+                                                 watering_summer=request.form['watering_summer'],
+                                                 watering_winter=request.form['watering_winter'],
+                                                 spray=request.form['spray'],
+                                                 direct_sun=request.form['direct_sun'],
+                                                 image=request.form['image'],
+                                                 user_id=current_user.id)
+            Log.info(f"Plant created: {plant}")
     except Exception as e:
-        Log.error("Error creating plant", err=e, sys=sys)
+        Log.error("Error creating/update plant", err=e, sys=sys)
         return render_template('plant_form.html', error=e)
 
     return render_template('plant_list.html')
