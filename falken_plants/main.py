@@ -101,7 +101,7 @@ def update_plant(plant_id: int):
     return render_template('plant_form.html', plant=plant, form_method="PUT")
 
 
-# TODO: Make it work
+# TODO: Make it work and make form read_only
 @main.route("/plants/<int:plant_id>", methods=['GET'])
 @login_required
 def view_plant(plant_id: int):
@@ -109,7 +109,10 @@ def view_plant(plant_id: int):
     Log.info(f"Method: {request.method}")
     Log.debug(f"Current user: {current_user}")
 
-    return redirect(url_for('main.view_all_plants'))
+    plant = ControllerPlant.get_plant(plant_id)
+    Log.debug(f"Plant to view: {plant}")
+
+    return render_template('plant_form.html', plant=plant, form_method="GET")
 
 
 @main.route("/plants", methods=['POST'])
@@ -127,12 +130,11 @@ def post_plant():
         if request.form['_method'] == "PUT":
             Log.info(
                 f"Its a PUT method, redirect to update plant API: /plants/{request.form['id']}")
-            # return redirect(f"/plants/update/{request.form['id']}")
-            return redirect(url_for('main.put_plant', plant_id=request.form['id'], method='PUT'))
-            #  put_plant(request.form['id'], request.form)
-            return
+            # return redirect(f"/plants/{request.form['id']}")
+            # return redirect(url_for('main.put_plant', plant_id=request.form['id'], method='PUT'))
+            # put_plant(request.form['id'])
 
-            plant_id = plant_id if plant_id else request.form['plant_id']
+            plant_id = request.form['id']
             plant = ControllerPlant.update_plant(plant_id=plant_id,
                                                  name=request.form['name'],
                                                  name_tech=request.form['name_tech'],

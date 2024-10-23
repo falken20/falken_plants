@@ -51,7 +51,7 @@ class ControllerPlant:
 
     @staticmethod
     def update_plant(plant_id: int, name: str, name_tech: str, comment: str, watering_summer: int,
-                     watering_winter: int, spray: bool, direct_sun: int, image: str) -> Plant:
+                     watering_winter: int, spray: bool, direct_sun: int, image: str, user_id: int) -> Plant:
         Log.debug(f"Params method: {locals()}")
         plant = ControllerPlant.get_plant(plant_id)
         if plant is None:
@@ -66,6 +66,7 @@ class ControllerPlant:
         plant.spray = True if spray or spray == "1" else False
         plant.direct_sun = direct_sun
         plant.image = shorten_url(image) if image is not None else None
+        plant.user_id = user_id
         db.session.commit()
         return plant
 
@@ -106,7 +107,8 @@ class ControllerCalendar:
 
     @staticmethod
     def delete_calendar_date(date_calendar: date, plant_id: int):
-        calendar = ControllerCalendar.get_calendar_date(date_calendar, plant_id)
+        calendar = ControllerCalendar.get_calendar_date(
+            date_calendar, plant_id)
         if calendar is None:
             return None
         db.session.delete(calendar)
