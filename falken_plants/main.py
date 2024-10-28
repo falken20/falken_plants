@@ -128,14 +128,13 @@ def post_plant():
         Log.debug(f"Request form: {request.form}")
         # Because HTML doesn't support PUT method, we use a hidden field to know if its a PUT method
         if request.form['_method'] == "PUT":
-            Log.info(
-                f"Its a PUT method, redirect to update plant API: /plants/{request.form['id']}")
+            Log.info("Hidden PUT method: Update the plant")
+            # Log.info(f"Its a PUT method, redirect to update plant API: /plants/{request.form['id']}")
             # return redirect(f"/plants/{request.form['id']}")
             # return redirect(url_for('main.put_plant', plant_id=request.form['id'], method='PUT'))
             # put_plant(request.form['id'])
 
-            plant_id = request.form['id']
-            plant = ControllerPlant.update_plant(plant_id=plant_id,
+            plant = ControllerPlant.update_plant(plant_id=request.form['id'],
                                                  name=request.form['name'],
                                                  name_tech=request.form['name_tech'],
                                                  comment=request.form['comment'],
@@ -146,7 +145,7 @@ def post_plant():
                                                  image=request.form['image'],
                                                  user_id=current_user.id)
             Log.info(f"Plant updated: {plant}")
-        else:
+        else: # Its a POST method
             plant = ControllerPlant.create_plant(name=request.form['name'],
                                                  name_tech=request.form['name_tech'],
                                                  comment=request.form['comment'],
@@ -159,9 +158,10 @@ def post_plant():
             Log.info(f"Plant created: {plant}")
     except Exception as e:
         Log.error("Error creating/update plant", err=e, sys=sys)
-        return render_template('plant_form.html', error=e)
+        return render_template('plant_form.html', plant=plant, form_method=request.form['_method'], error=e)
 
-    return render_template('plant_list.html')
+    return redirect(f"/plants/")
+
 
 
 @main.route("/plants", methods=['PUT'])
