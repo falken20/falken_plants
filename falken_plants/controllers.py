@@ -14,7 +14,7 @@ class ControllerPlant:
         pass
 
     @staticmethod
-    def get_plants(user_id: int):
+    def list_all_plants(user_id: int):
         return Plant.query.filter_by(user_id=user_id).all()
 
     @staticmethod
