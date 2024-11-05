@@ -36,7 +36,9 @@ def get_update_delete_plants(plant_id):
     elif request.method == 'PUT':
         return ControllerPlant.update_plant(plant_id)
     elif request.method == 'DELETE':
-        return ControllerPlant.delete_plant(plant_id)
+        ControllerPlant.delete_plant(plant_id)
+        all_plants = ControllerPlant.list_all_plants(current_user.id)
+        return render_template('plant_list.html', plants=all_plants, message="")
     else:
         return "Method not allowed", 405
 
@@ -149,19 +151,6 @@ def put_plant(plant_id: int):
     return render_template('plant_list.html')
 
 
-# TODO: @main.route("/plants/<int:plant_id>", methods=['DELETE'])
-@main.route("/plants/delete/<int:plant_id>")
-@login_required
-def delete_plant(plant_id: int):
-    Log.info("Delete plant API")
-    Log.info(f"Method: {request.method}")
-    Log.debug(f"Current user: {current_user}")
-
-    ControllerPlant.delete_plant(plant_id)
-
-    all_plants = ControllerPlant.get_all_plants(current_user.id)
-
-    return render_template('plant_list.html', plants=all_plants, message="")
 
 
 @main.route("/plants/<int:plant_id>/calendar/water", methods=['POST'])
