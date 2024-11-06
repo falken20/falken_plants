@@ -61,6 +61,10 @@ def create_app(config_mode="development"):
     from .main import main as main_blueprint
     app.register_blueprint(main_blueprint)
 
+    # blueprint for API urls
+    from .urls import urls as urls_blueprint
+    app.register_blueprint(urls_blueprint)
+
     # blueprint for swagger
     from .swagger import swagger_ui_blueprint, SWAGGER_URL
     app.register_blueprint(swagger_ui_blueprint, url_prefix=SWAGGER_URL)

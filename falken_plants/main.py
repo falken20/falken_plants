@@ -1,14 +1,14 @@
 # by Richi Rod AKA @richionline / falken20
 # ./falken_plants/main.py
 
-from flask import Blueprint, render_template
+from flask import Blueprint, render_template, request, redirect, url_for
 from flask_login import login_required, current_user
 from datetime import date
-from flask import request, redirect, url_for
 import sys
 
 from .logger import Log
 from .controllers import ControllerPlant
+from . import urls
 
 main = Blueprint('main', __name__)
 
