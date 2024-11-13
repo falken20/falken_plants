@@ -5,6 +5,7 @@ from flask_login import login_required, current_user
 from datetime import date
 
 from .controllers import ControllerPlant
+from .logger import Log
 
 urls = Blueprint('urls', __name__)
 
@@ -51,7 +52,7 @@ def get_update_delete_plants(plant_id):
 @urls.route("/plants/create", methods=['GET'])
 @login_required
 def page_create_plant():
-    Log.info("Create plant page")
+    Log.info("Show create plant page")
     Log.info(f"Method: {request.method}")
     Log.debug(f"Current user: {current_user}")
 
@@ -61,7 +62,7 @@ def page_create_plant():
 @urls.route("/plants/update/<int:plant_id>", methods=['GET'])
 @login_required
 def page_update_plant(plant_id: int):
-    Log.info("Edit plant page")
+    Log.info("Show edit plant page")
     Log.info(f"Method: {request.method}")
     Log.debug(f"Current user: {current_user}")
 
