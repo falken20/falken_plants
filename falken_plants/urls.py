@@ -1,5 +1,6 @@
 # by Richi Rod AKA @richionline / falken20
 # ./falken_plants/urls.py
+import sys
 from flask import request, redirect, url_for, Blueprint, render_template
 from flask_login import login_required, current_user
 from datetime import date
@@ -78,6 +79,7 @@ def page_update_plant(plant_id: int):
 def post_plant():
     # Because HTML doesn't support PUT method, we use a hidden field to know if its a PUT method
     Log.info("Method post_plant")
+    Log.info(f"Method: {request.method}")
     Log.info(f"Hidden Method: {request.form['_method']}")
 
     try:
@@ -90,16 +92,7 @@ def post_plant():
             # return redirect(url_for('main.put_plant', plant_id=request.form['id'], method='PUT'))
             # put_plant(request.form['id'])
 
-            plant = ControllerPlant.update_plant(plant_id=request.form['id'],
-                                                 name=request.form['name'],
-                                                 name_tech=request.form['name_tech'],
-                                                 comment=request.form['comment'],
-                                                 watering_summer=request.form['watering_summer'],
-                                                 watering_winter=request.form['watering_winter'],
-                                                 spray=request.form['spray'],
-                                                 direct_sun=request.form['direct_sun'],
-                                                 image=request.form['image'],
-                                                 user_id=current_user.id)
+            plant = ControllerPlant.update_plant(request.form)
             Log.info(f"Plant updated: {plant}")
         else:  # Its a POST method
             plant = ControllerPlant.create_plant(name=request.form['name'],
