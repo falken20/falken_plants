@@ -4,6 +4,7 @@ import sys
 from flask import request, redirect, url_for, Blueprint, render_template
 from flask_login import login_required, current_user
 from datetime import date
+import pprint
 
 from .controllers import ControllerPlant
 from .logger import Log
@@ -83,7 +84,10 @@ def post_plant():
     Log.info(f"Hidden Method: {request.form['_method']}")
 
     try:
-        Log.debug(f"Request form: {request.form}")
+        # Log.debug(f"Request form: {request.form}")
+        pprint.pprint("Request form:")
+        pprint.pprint(request.form)
+
         # Because HTML doesn't support PUT method, we use a hidden field to know if its a PUT method
         if request.form['_method'] == "PUT":
             Log.info("Hidden PUT method: Update the plant")
@@ -119,7 +123,10 @@ def put_plant(plant_id: int):
     Log.debug(f"Current user: {current_user}")
 
     try:
-        Log.debug(f"Request form: {request.form}")
+        # Log.debug(f"Request form: {request.form}")
+        pprint.pprint("Request form:")
+        pprint.pprint(request.form)
+
         plant_id = plant_id if plant_id else request.form['plant_id']
         plant = ControllerPlant.update_plant(plant_id=plant_id,
                                              name=request.form['name'],
