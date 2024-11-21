@@ -85,7 +85,7 @@ def post_plant():
 
     try:
         # Log.debug(f"Request form: {request.form}")
-        pprint.pprint("Request form:")
+        Log.info("Request form:")
         pprint.pprint(request.form)
 
         # Because HTML doesn't support PUT method, we use a hidden field to know if its a PUT method
@@ -96,7 +96,7 @@ def post_plant():
             # return redirect(url_for('main.put_plant', plant_id=request.form['id'], method='PUT'))
             # put_plant(request.form['id'])
 
-            plant = ControllerPlant.update_plant(request.form)
+            plant = ControllerPlant.update_plant(request.form, current_user.id)
             Log.info(f"Plant updated: {plant}")
         else:  # Its a POST method
             plant = ControllerPlant.create_plant(name=request.form['name'],
@@ -124,7 +124,7 @@ def put_plant(plant_id: int):
 
     try:
         # Log.debug(f"Request form: {request.form}")
-        pprint.pprint("Request form:")
+        Log.info("Request form:")
         pprint.pprint(request.form)
 
         plant_id = plant_id if plant_id else request.form['plant_id']

@@ -1,5 +1,7 @@
 # by Richi Rod AKA @richionline / falken20
 from datetime import date
+import pprint
+import sys
 
 from .models import db, Plant, Calendar, User
 from .logger import Log
@@ -50,25 +52,33 @@ class ControllerPlant:
         return plant
 
     @staticmethod
-    def update_plant(plant_id: int, name: str, name_tech: str, comment: str, watering_summer: int,
-                     watering_winter: int, spray: bool, direct_sun: int, image: str, user_id: int) -> Plant:
-        Log.debug(f"Params method: {locals()}")
-        plant = ControllerPlant.get_plant(plant_id)
-        if plant is None:
-            return None
-        if ControllerUser.get_user(plant.user_id) is None:
-            raise ValueError("Plant user_id doesn't exist")
-        plant.name = name
-        plant.name_tech = name_tech
-        plant.comment = comment
-        plant.watering_summer = watering_summer
-        plant.watering_winter = watering_winter
-        plant.spray = True if spray or spray == "1" else False
-        plant.direct_sun = direct_sun
-        plant.image = shorten_url(image) if image is not None else None
-        plant.user_id = user_id
-        db.session.commit()
-        return plant
+    # def update_plant(plant_id: int, name: str, name_tech: str, comment: str, watering_summer: int, 
+    # watering_winter: int, spray: bool, direct_sun: int, image: str, user_id: int) -> Plant:
+    def update_plant(plant_data: dict, current_user) -> Plant:
+        try:
+            Log.debug(f"Params method: {locals()}")
+            Log.debug("Plant data:")
+            pprint.pprint(plant_data)
+            plant = ControllerPlant.get_plant(plant_data["plant_id"])
+            if plant is None:
+                return None
+            if ControllerUser.get_user(current_user) is None:
+                raise ValueError("Plant user_id doesn't exist")
+            plant.name = plant_data["name"]
+            plant.name_tech = plant_data["name_tech"]
+            plant.comment = plant_data["comment"]
+            plant.watering_summer = plant_data["watering_summer"]
+            plant.watering_winter = plant_data["watering_winter"]
+            plant.spray = True if plan_data["spray"] or plant_data["spray"] == "1" else False
+            plant.direct_sun = plant_data["direct_sun"]
+            plant.image = shorten_url(plant_data["image"]) if plant_data["image"] is not None else None
+            plant.user_id = current_user
+            db.session.commit()
+            return plant
+        except Exception as e:
+            Log.error("Error in ControllerPlant.update_plant", err=e, sys=sys)
+            raise e
+
 
     @staticmethod
     def delete_plant(plant_id: int):
