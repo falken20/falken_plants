@@ -17,7 +17,7 @@ main = Blueprint('main', __name__)
 @main.route("/home", methods=('GET', 'POST'))
 @login_required
 def index():
-    Log.info("Index page")
+    Log.info(f"Method {sys._getframe().f_code.co_filename}: {sys._getframe().f_code.co_name}")
     Log.debug(f"Current user: {current_user}")
 
     all_plants = ControllerPlant.get_all_plants(current_user.id)
@@ -29,7 +29,7 @@ def index():
 @main.route('/show_grouped/')
 @login_required
 def show_grouped():
-    Log.info("Show grouped page")
+    Log.info(f"Method {sys._getframe().f_code.co_filename}: {sys._getframe().f_code.co_name}")
     Log.debug(f"Current user: {current_user}")
 
     all_plants = ControllerPlant.get_all_plants(current_user.id)
@@ -40,7 +40,7 @@ def show_grouped():
 @main.route("/profile", methods=['GET'])
 @login_required
 def profile():
-    Log.info("Profile page")
+    Log.info(f"Method {sys._getframe().f_code.co_filename}: {sys._getframe().f_code.co_name}")
     Log.debug(f"Current user: {current_user}")
 
     return render_template('profile.html', name=current_user.name, date_created=current_user.date_created)
@@ -49,7 +49,7 @@ def profile():
 @main.route("/search", methods=['GET', 'POST'])
 @login_required
 def search():
-    Log.info("Search page")
+    Log.info(f"Method {sys._getframe().f_code.co_filename}: {sys._getframe().f_code.co_name}")
     Log.debug(f"Current user: {current_user}")
 
     pass
@@ -58,7 +58,7 @@ def search():
 @main.route("/calendar", methods=['GET'])
 @login_required
 def calendar():
-    Log.info("Calendar page")
+    Log.info(f"Method {sys._getframe().f_code.co_filename}: {sys._getframe().f_code.co_name}")
     Log.debug(f"Current user: {current_user}")
 
     return render_template('calendar.html')

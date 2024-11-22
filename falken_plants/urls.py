@@ -17,8 +17,8 @@ urls = Blueprint('urls', __name__)
 @urls.route("/plants", methods=['GET', 'POST'])
 @login_required
 def list_create_plants():
-    Log.info("GET or POST plants API")
-    Log.info(f"Method: {request.method}")
+    Log.info(f"Method {sys._getframe().f_code.co_filename}: {sys._getframe().f_code.co_name}")
+    Log.info(f"Method HTTP: {request.method}")
     Log.debug(f"Current user: {current_user}")
     if request.method == 'GET':
         all_plants = ControllerPlant.list_all_plants(user_id)
@@ -32,8 +32,8 @@ def list_create_plants():
 @urls.route("/plants/<int:plant_id>", methods=['GET', 'PUT', 'DELETE'])
 @login_required
 def get_update_delete_plants(plant_id):
-    Log.info("GET, PUT or DELETE plants API")
-    Log.info(f"Method: {request.method}")
+    Log.info(f"Method {sys._getframe().f_code.co_filename}: {sys._getframe().f_code.co_name}")
+    Log.info(f"Method HTTP: {request.method}")
     Log.debug(f"Current user: {current_user}")
     if request.method == 'GET':
         # TODO: Make it work and make form read_only
@@ -54,8 +54,8 @@ def get_update_delete_plants(plant_id):
 @urls.route("/plants/create", methods=['GET'])
 @login_required
 def page_create_plant():
-    Log.info("Show create plant page")
-    Log.info(f"Method: {request.method}")
+    Log.info(f"Method {sys._getframe().f_code.co_filename}: {sys._getframe().f_code.co_name}")
+    Log.info(f"Method HTTP: {request.method}")
     Log.debug(f"Current user: {current_user}")
 
     return render_template('plant_form.html', plant=None, form_method="POST")
@@ -64,8 +64,8 @@ def page_create_plant():
 @urls.route("/plants/update/<int:plant_id>", methods=['GET'])
 @login_required
 def page_update_plant(plant_id: int):
-    Log.info("Show edit plant page")
-    Log.info(f"Method: {request.method}")
+    Log.info(f"Method {sys._getframe().f_code.co_filename}: {sys._getframe().f_code.co_name}")
+    Log.info(f"Method HTTP: {request.method}")
     Log.debug(f"Current user: {current_user}")
 
     plant = ControllerPlant.get_plant(plant_id)
@@ -79,9 +79,9 @@ def page_update_plant(plant_id: int):
 @login_required
 def post_plant():
     # Because HTML doesn't support PUT method, we use a hidden field to know if its a PUT method
-    Log.info("Method post_plant")
-    Log.info(f"Method: {request.method}")
-    Log.info(f"Hidden Method: {request.form['_method']}")
+    Log.info(f"Method {sys._getframe().f_code.co_filename}: {sys._getframe().f_code.co_name}")
+    Log.info(f"Method HTTP: {request.method}")
+    Log.info(f"Hidden Method HTTP: {request.form['_method']}")
 
     try:
         # Log.debug(f"Request form: {request.form}")
@@ -118,8 +118,8 @@ def post_plant():
 
 @login_required
 def put_plant(plant_id: int):
-    Log.info("Method put_plant")
-    Log.info(f"Method: {request.method}")
+    Log.info(f"Method {sys._getframe().f_code.co_filename}: {sys._getframe().f_code.co_name}")
+    Log.info(f"Method HTTP: {request.method}")
     Log.debug(f"Current user: {current_user}")
 
     try:
@@ -152,8 +152,8 @@ def put_plant(plant_id: int):
 @urls.route("/plants/<int:plant_id>/calendar/water", methods=['POST'])
 @login_required
 def water_plant(plant_id: int):
-    Log.info("Water plant page")
-    Log.info(f"Method: {request.method}")
+    Log.info(f"Method {sys._getframe().f_code.co_filename}: {sys._getframe().f_code.co_name}")
+    Log.info(f"Method HTTP: {request.method}")
     Log.debug(f"Current user: {current_user}")
 
     pass
@@ -162,8 +162,8 @@ def water_plant(plant_id: int):
 @urls.route("/plants/<int:plant_id>/calendar/fertilize", methods=['POST'])
 @login_required
 def fertilize_plant(plant_id: int):
-    Log.info("Fertilize plant page")
-    Log.info(f"Method: {request.method}")
+    Log.info(f"Method {sys._getframe().f_code.co_filename}: {sys._getframe().f_code.co_name}")
+    Log.info(f"Method HTTP: {request.method}")
     Log.debug(f"Current user: {current_user}")
 
     pass
@@ -172,8 +172,8 @@ def fertilize_plant(plant_id: int):
 @urls.route("/plants/<int:plant_id>/calendar", methods=['GET'])
 @login_required
 def view_calendar(plant_id: int):
-    Log.info("View calendar page")
-    Log.info(f"Method: {request.method}")
+    Log.info(f"Method {sys._getframe().f_code.co_filename}: {sys._getframe().f_code.co_name}")
+    Log.info(f"Method HTTP: {request.method}")
     Log.debug(f"Current user: {current_user}")
 
     pass
@@ -182,8 +182,8 @@ def view_calendar(plant_id: int):
 @urls.route("/plants/<int:plant_id>/calendar/<date>", methods=['GET'])
 @login_required
 def view_calendar_date(plant_id: int, date_calendar: date):
-    Log.info("View calendar date page")
-    Log.info(f"Method: {request.method}")
+    Log.info(f"Method {sys._getframe().f_code.co_filename}: {sys._getframe().f_code.co_name}")
+    Log.info(f"Method HTTP: {request.method}")
     Log.debug(f"Current user: {current_user}")
 
     pass
@@ -192,8 +192,8 @@ def view_calendar_date(plant_id: int, date_calendar: date):
 @urls.route("/plants/<int:plant_id>/calendar/<date>", methods=['POST'])
 @login_required
 def add_calendar_date(plant_id: int, date_calendar: date):
-    Log.info("Add calendar date page")
-    Log.info(f"Method: {request.method}")
+    Log.info(f"Method {sys._getframe().f_code.co_filename}: {sys._getframe().f_code.co_name}")
+    Log.info(f"Method HTTP: {request.method}")
     Log.debug(f"Current user: {current_user}")
 
     pass
@@ -202,8 +202,8 @@ def add_calendar_date(plant_id: int, date_calendar: date):
 @urls.route("/plants/<int:plant_id>/calendar/<date>", methods=['PUT'])
 @login_required
 def update_calendar_date(plant_id: int, date_calendar: date):
-    Log.info("Update calendar date page")
-    Log.info(f"Method: {request.method}")
+    Log.info(f"Method {sys._getframe().f_code.co_filename}: {sys._getframe().f_code.co_name}")
+    Log.info(f"Method HTTP: {request.method}")
     Log.debug(f"Current user: {current_user}")
 
     pass
