@@ -64,7 +64,7 @@ class ControllerPlant:
             Log.debug(f"Params method: {locals()}")
             Log.debug("Plant data:")
             pprint.pprint(plant_data)
-            plant = ControllerPlant.get_plant(plant_data["plant_id"])
+            plant = ControllerPlant.get_plant(plant_data["id"])
             if plant is None:
                 return None
             if ControllerUser.get_user(current_user) is None:
@@ -72,11 +72,11 @@ class ControllerPlant:
             plant.name = plant_data["name"]
             plant.name_tech = plant_data["name_tech"]
             plant.comment = plant_data["comment"]
-            plant.watering_summer = plant_data["watering_summer"]
-            plant.watering_winter = plant_data["watering_winter"]
-            plant.spray = True if plan_data["spray"] or plant_data["spray"] == "1" else False
-            plant.direct_sun = plant_data["direct_sun"]
-            plant.image = shorten_url(plant_data["image"]) if plant_data["image"] is not None else None
+            plant.watering_summer = int(plant_data["watering_summer"])
+            plant.watering_winter = int(plant_data["watering_winter"])
+            plant.spray = True if plant_data["spray"] or plant_data["spray"] == "1" else False
+            plant.direct_sun = int(plant_data["direct_sun"])
+            plant.image = shorten_url(plant_data["image"]) if plant_data["image"] != "" else None
             plant.user_id = current_user
             db.session.commit()
             return plant

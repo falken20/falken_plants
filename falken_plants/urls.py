@@ -21,7 +21,7 @@ def list_create_plants():
     Log.info(f"Method HTTP: {request.method}")
     Log.debug(f"Current user: {current_user}")
     if request.method == 'GET':
-        all_plants = ControllerPlant.list_all_plants(user_id)
+        all_plants = ControllerPlant.list_all_plants(current_user.id)
         return render_template('plant_list.html', plants=all_plants, message="")
     elif request.method == 'POST':
         return post_plant()
@@ -113,7 +113,7 @@ def post_plant():
         Log.error("Error creating/update plant", err=e, sys=sys)
         return render_template('plant_form.html', plant=plant, form_method=request.form['_method'], error=e)
 
-    return redirect(f"/plants/")
+    return redirect(f"/plants")
 
 
 @login_required
