@@ -20,6 +20,7 @@ def list_create_plants():
     Log.info(f"Method {sys._getframe().f_code.co_filename}: {sys._getframe().f_code.co_name}")
     Log.info(f"Method HTTP: {request.method}")
     Log.debug(f"Current user: {current_user}")
+
     if request.method == 'GET':
         all_plants = ControllerPlant.list_all_plants(current_user.id)
         return render_template('plant_list.html', plants=all_plants, message="")
@@ -35,6 +36,7 @@ def get_update_delete_plants(plant_id):
     Log.info(f"Method {sys._getframe().f_code.co_filename}: {sys._getframe().f_code.co_name}")
     Log.info(f"Method HTTP: {request.method}")
     Log.debug(f"Current user: {current_user}")
+
     if request.method == 'GET':
         # TODO: Make it work and make form read_only
         plant = ControllerPlant.get_plant(plant_id)
