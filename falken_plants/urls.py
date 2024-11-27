@@ -55,7 +55,7 @@ def get_update_delete_plants(plant_id):
 
 @urls.route("/plants/create", methods=['GET'])
 @login_required
-def page_create_plant():
+def view_create_plant():
     Log.info(f"Method {sys._getframe().f_code.co_filename}: {sys._getframe().f_code.co_name}")
     Log.info(f"Method HTTP: {request.method}")
     Log.debug(f"Current user: {current_user}")
@@ -65,7 +65,7 @@ def page_create_plant():
 
 @urls.route("/plants/update/<int:plant_id>", methods=['GET'])
 @login_required
-def page_update_plant(plant_id: int):
+def view_update_plant(plant_id: int):
     Log.info(f"Method {sys._getframe().f_code.co_filename}: {sys._getframe().f_code.co_name}")
     Log.info(f"Method HTTP: {request.method}")
     Log.debug(f"Current user: {current_user}")
