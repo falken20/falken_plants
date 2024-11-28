@@ -74,7 +74,7 @@ class ControllerPlant:
             plant.comment = plant_data["comment"]
             plant.watering_summer = int(plant_data["watering_summer"])
             plant.watering_winter = int(plant_data["watering_winter"])
-            plant.spray = True if plant_data["spray"] or plant_data["spray"] == "1" else False
+            plant.spray = True if plant_data.get("spray") is not None else False
             plant.direct_sun = int(plant_data["direct_sun"])
             plant.image = shorten_url(plant_data["image"]) if plant_data["image"] != "" else None
             plant.user_id = current_user

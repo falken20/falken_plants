@@ -25,11 +25,19 @@
                             <small>
                                 🌞 {{ plant.watering_summer }}/m
                                 ❄️ {{ plant.watering_winter }}/m
-                                <!-- TODO: Show the icon for spray-->
-                                <input type="checkbox" id="spray" name="spray" checked="{{ plant.spray }}" style="visibility:visible"
+                                {% if plant.spray %}
+                                    💦
+                                {% endif %}
+                                <!--<input type="checkbox" id="spray" name="spray" checked="{{ plant.spray }}" style="visibility:visible"
                                         onclick="activeVisibility('spray', 'spray_icon');">
-                                <label id="spray_icon" style="visibility:hidden" onload="activeVisibility('spray', 'spray_icon');">💦</label>
-                                🌝🌗❌
+                                <label id="spray_icon" style="visibility:hidden" onload="activeVisibility('spray', 'spray_icon');">💦</label>-->
+                                {% if plant.direct_sun == 1 %}
+                                    🌞
+                                {% elif plant.direct_sun == 2 %}
+                                    🌗
+                                {% else %}
+                                    🌑
+                                {% endif %}
                             </small>
                         </div>                        
                     </td>
