@@ -20,7 +20,7 @@ def index():
     Log.info(f"Method {sys._getframe().f_code.co_filename}: {sys._getframe().f_code.co_name}")
     Log.debug(f"Current user: {current_user}")
 
-    all_plants = ControllerPlant.get_all_plants(current_user.id)
+    all_plants = ControllerPlant.list_all_plants(current_user.id)
 
     # return redirect(url_for('main.view_all_plants'))
     return render_template('plant_list.html', plants=all_plants, message="")
@@ -32,7 +32,7 @@ def show_grouped():
     Log.info(f"Method {sys._getframe().f_code.co_filename}: {sys._getframe().f_code.co_name}")
     Log.debug(f"Current user: {current_user}")
 
-    all_plants = ControllerPlant.get_all_plants(current_user.id)
+    all_plants = ControllerPlant.list_all_plants(current_user.id)
 
     return render_template('plant_list_group.html', plants=all_plants, message="")
 

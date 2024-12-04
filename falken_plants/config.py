@@ -4,6 +4,7 @@
 # Library that uses type annotation to validate data and manage settings.
 # from pydantic import BaseSettings # Old version
 import os
+import sys
 from pydantic.v1 import BaseSettings
 # from pydantic_settings import BaseSettings # New version
 import pyshorteners
@@ -29,9 +30,13 @@ __features__ = [
 # Method to shorten a URL
 def shorten_url(url: str) -> str:
     """ Shorten a URL """
-    shortener = pyshorteners.Shortener()
-    return shortener.tinyurl.short(url)
-
+    Log.debug(f"Shortening URL: {url}")
+    try:
+        shortener = pyshorteners.Shortener()
+        return shortener.tinyurl.short(url)
+    except Exception as e:
+        Log.error("Error in shorten_url", err=e, sys=sys)
+        return url        
 
 #######################################################################
 # Config format for Flask apps, you create a class for each environment

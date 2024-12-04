@@ -15,10 +15,26 @@
                     <small style="font-weight: bold;">{{ plant.name }}</small>
                 </div>
                 <div class="card-body p-1">
-                    <small>🌞 {{ plant.watering_summer }} </small>
-                    <small>❄️ {{ plant.watering_winter }} </small>
-                    <small>💦 ⛔️<input type="checkbox" id="spray" name="spray" checked="{{ plant.spray }}"></small>
-                    <small>🌗</small>
+                    <small>🌞 {{ plant.watering_summer }}/m </small>
+                    <small>❄️ {{ plant.watering_winter }}/m </small>
+                    <small>
+                        {% if plant.spray %}
+                            💦
+                        {% else %}
+                            ⛔️
+                        {% endif %}                        
+                    </small>
+                    <small>
+                        {% if plant.direct_sun == 1 %}
+                            🌑
+                        {% elif plant.direct_sun == 2 %}
+                            🌗
+                        {% elif plant.direct_sun == 3 %}
+                            🌞
+                        {% else %}
+                            ❓
+                        {% endif %}
+                    </small>
                 </div>
                 <div class="card-body p-0">
                     <a class="btn btn-success btn-sm p-1" href="{{url_for('urls.view_update_plant', plant_id=plant.id)}}">
