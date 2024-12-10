@@ -49,6 +49,19 @@ def get_update_delete_plants(plant_id):
         return render_template('plant_list.html', plants=all_plants, message="")
     else:
         return "Method not allowed", 405
+    
+
+@urls.route("/plants/<int:plant_id>/delete", methods=['GET'])
+@login_required
+def delete_plant(plant_id: int):
+    Log.info(f"Method {sys._getframe().f_code.co_filename}: {sys._getframe().f_code.co_name}")
+    Log.info(f"Method HTTP: {request.method}")
+    Log.debug(f"Current user: {current_user}")
+
+    ControllerPlant.delete_plant(plant_id)
+    Log.info(f"Plant deleted: {plant_id}")
+    all_plants = ControllerPlant.list_all_plants(current_user.id)
+    return render_template('plant_list.html', plants=all_plants, message="")
 
 
 # API Pages Plants
