@@ -33,7 +33,10 @@ def shorten_url(url: str) -> str:
     Log.debug(f"Shortening URL: {url}")
     try:
         shortener = pyshorteners.Shortener()
-        return shortener.tinyurl.short(url)
+        new_url = shortener.tinyurl.short(url)
+        # Log.debug(f"Shortened URL: {new_url}")
+        # TODO: Review how to obtain the new URL
+        return url
     except Exception as e:
         Log.error("Error in shorten_url", err=e, sys=sys)
         return url        

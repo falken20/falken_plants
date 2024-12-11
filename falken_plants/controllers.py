@@ -43,7 +43,7 @@ class ControllerPlant:
         Log.info(f"Creating plant: {name}")
         Log.debug(f"Params method: {locals()}")
         # TODO: Check if the image is a valid URL
-        # image = shorten_url(image) if image is not None else None
+        image = shorten_url(image) if image is not None else None
         Log.debug(f"Image shortened: {image}")
         spray = True if spray or spray == "1" else False
         plant = Plant(name=name, name_tech=name_tech, comment=comment, watering_summer=int(watering_summer),
