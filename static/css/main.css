@@ -35,6 +35,12 @@ p {
     max-height: 2.75rem !important;
 }
 
+.buttons_app {
+    margin-top: 0.1rem !important;
+    margin-bottom: 0.1rem !important;
+    margin-left: 0.1rem !important;
+    margin-right: 0.1rem !important;
+}
 
 
 

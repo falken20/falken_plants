@@ -55,12 +55,5 @@ def search():
     pass
 
 
-@main.route("/calendar", methods=['GET'])
-@login_required
-def calendar():
-    Log.info(f"Method {sys._getframe().f_code.co_filename}: {sys._getframe().f_code.co_name}")
-    Log.debug(f"Current user: {current_user}")
-
-    return render_template('calendar.html')
 
 
