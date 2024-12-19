@@ -10,12 +10,20 @@ servers:
   - url: "/api"
 
 paths:
-  /people:
+  /plants:
     get:
-      operationId: "people.read_all"
+      operationId: "urls.list_create_plants"
       tags:
-        - "People"
-      summary: "Read the list of people"
+        - "Plants"
+      summary: "Read the list of plants"
       responses:
         "200":
-          description: "Successfully read people list"
+          description: "Successfully read plants list"
+    post:
+      operationId: "urls.list_create_plants"
+      tags:
+        - "Plants"
+      summary: "Create a plant"
+      responses:
+        "200":
+          description: "Successfully plant created"

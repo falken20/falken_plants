@@ -78,6 +78,7 @@ PRODUCTION_DATABASE_URL=
 - locals(): You cant print all params of a method without write one by one
 - pyshorteners: To shorten an url
 - Javascript util: Hidden elements (falken.js)
+- Swagger
 
 
 
