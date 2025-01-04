@@ -40,9 +40,17 @@ p {
     margin-bottom: 0.1rem !important;
     margin-left: 0.1rem !important;
     margin-right: 0.1rem !important;
+    color: white !important
 }
 
-
+.card-body {
+    margin-top: 0.1rem !important; 
+    margin-bottom: 0.1rem !important;    
+    margin-left: 0.1rem !important;
+    margin-right: 0.1rem !important;
+    display: flex !important;
+    justify-content: center !important;
+}
 
 
 

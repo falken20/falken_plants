@@ -79,5 +79,3 @@ def create_app(config_mode="development"):
 
 
 app = create_app(config_mode=settings.CONFIG_MODE)
-# TODO: Set up swagger
-app.add_api("swagger.yml")

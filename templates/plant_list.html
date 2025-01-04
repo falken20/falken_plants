@@ -10,7 +10,7 @@
 
 <div class="container">    
 
-    <table class="table table-sm" style="max-width: 600px;">
+    <table class="table table-sm table-borderless" style="max-width: 600px;">
         <tbody>
         {% for plant in plants %}
             <tr style="font-size:smaller;">
@@ -19,7 +19,9 @@
                         <img src="{{ plant.image }}" height="70">
                     </td>
                     <td style="width:70%" colspan="2"> 
-                        <div style="font-weight: bold;">{{ plant.name }}</div>
+                        <div style="font-weight: bold;">
+                            {{ plant.name }}
+                        </div>
                         <div><small style="color: red; font-weight: bold;" id="name_tech"> {{ plant.name_tech }} </small></div>
                         <div>
                             <small>
@@ -49,14 +51,16 @@
             </tr>
             <tr style="font-size:smaller;">
                 <td colspan="2">
-                    <div class="row"><p>{{ plant.comment }} </p></div>
+                    <div class="row"><small>{{ plant.comment }}</small></div>
                 </td>
             </tr>
-            <tr>
+            <tr class="border-bottom">
                 <div class="row">
                     <td colspan="2">
-                        <a class="btn btn-success btn-sm btn-block" href="{{url_for('urls.view_update_plant', plant_id=plant.id)}}">Edit</a>
-                        <a class="btn btn-danger btn-sm btn-block" href="{{url_for('urls.delete_plant', plant_id=plant.id, ope='DELETE')}}">Delete</a>
+                        <a class="btn btn-success btn-sm btn-block buttons_app" href="{{url_for('urls.view_update_plant', plant_id=plant.id)}}">
+                            <i class="bi bi-pencil-square" style="font-size: 25px;" title="Edit"></i></a>
+                        <a class="btn btn-danger btn-sm btn-block buttons_app" href="{{url_for('urls.delete_plant', plant_id=plant.id, ope='DELETE')}}">
+                            <i class="bi bi-trash" style="font-size: 25px" title="Delete"></i></a>
                     </td>
                 </div>
             </tr>
