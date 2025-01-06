@@ -3,7 +3,8 @@ from flask_swagger_ui import get_swaggerui_blueprint
 # endpoint we want swagger docs to be visible at
 SWAGGER_URL = "/swagger"
 # json file which contains the endpoints definition for the api
-SWAGGER_API_URL = "/swagger.yml"
+SWAGGER_API_URL = "/static/swagger.json"
+# SWAGGER_API_URL = "/static/swagger.yml"
 
 
 # get_swaggerui_blueprint is used to create a config for the swagger endpoint
