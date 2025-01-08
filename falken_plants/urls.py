@@ -1,9 +1,8 @@
 # by Richi Rod AKA @richionline / falken20
 # ./falken_plants/urls.py
 import sys
-from flask import request, redirect, url_for, Blueprint, render_template
+from flask import request, redirect, Blueprint, render_template
 from flask_login import login_required, current_user
-from datetime import date
 import pprint
 
 from .controllers import ControllerPlant
@@ -49,7 +48,7 @@ def get_update_delete_plants(plant_id):
         return render_template('plant_list.html', plants=all_plants, message="")
     else:
         return "Method not allowed", 405
-    
+
 
 @urls.route("/plants/<int:plant_id>/delete", methods=['GET'])
 @login_required
@@ -128,7 +127,7 @@ def post_plant():
         Log.error("Error creating/update plant", err=e, sys=sys)
         return render_template('plant_form.html', plant=plant, form_method=request.form['_method'], error=e)
 
-    return redirect(f"/plants")
+    return redirect("/plants")
 
 
 @login_required
@@ -159,4 +158,3 @@ def put_plant(plant_id: int):
         return render_template('plant_form.html', error=e)
 
     return render_template('plant_list.html')
-
