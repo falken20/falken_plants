@@ -34,12 +34,12 @@ def shorten_url(url: str) -> str:
     try:
         shortener = pyshorteners.Shortener()
         new_url = shortener.tinyurl.short(url)
-        # Log.debug(f"Shortened URL: {new_url}")
+        Log.debug(f"Shortened URL: {new_url}")
         # TODO: Review how to obtain the new URL
         return url
     except Exception as e:
         Log.error("Error in shorten_url", err=e, sys=sys)
-        return url        
+        return url
 
 #######################################################################
 # Config format for Flask apps, you create a class for each environment

@@ -1,14 +1,12 @@
 # by Richi Rod AKA @richionline / falken20
 # ./falken_plants/main.py
 
-from flask import Blueprint, render_template, request, redirect, url_for
+from flask import Blueprint, render_template
 from flask_login import login_required, current_user
-from datetime import date
 import sys
 
 from .logger import Log
 from .controllers import ControllerPlant
-from . import urls
 
 main = Blueprint('main', __name__)
 
@@ -53,7 +51,3 @@ def search():
     Log.debug(f"Current user: {current_user}")
 
     pass
-
-
-
-
