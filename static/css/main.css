@@ -52,6 +52,11 @@ p {
     justify-content: center !important;
 }
 
+.center_table {
+    margin: 0px auto !important;
+}
+
+
 
 
 .mainPage {
