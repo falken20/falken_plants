@@ -84,8 +84,9 @@ class TestingConfig(Config):
 class ProductionConfig(Config):
     PRODUCTION = True
     DEBUG = False
-    SQLALCHEMY_DATABASE_URI = os.environ['PRODUCTION_DATABASE_URL'].replace(
-        "://", "ql://", 1)
+    # SQLALCHEMY_DATABASE_URI = os.environ['PRODUCTION_DATABASE_URL'].replace("://", "ql://", 1)
+    # URL from Neon is not neccesary change :// by ql://
+    SQLALCHEMY_DATABASE_URI = os.environ['PRODUCTION_DATABASE_URL']
 
 
 class Settings(BaseSettings):
