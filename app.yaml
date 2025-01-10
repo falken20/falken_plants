@@ -9,7 +9,7 @@ entrypoint: gunicorn -b:$PORT 'falken_plants.app:create_app()'
 
 env_variables:
   LEVEL_LOG: ["INFO, WARNING, ERROR"]
-  CONFIG_MODE: "development" 
+  CONFIG_MODE: "production" 
 
   
 handlers:

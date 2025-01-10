@@ -6,6 +6,8 @@ from datetime import datetime
 from .logger import Log
 from .config import get_settings
 
+Log.debug("Loading cache.py")
+
 previous_cache = datetime.now()
 
 
@@ -24,7 +26,8 @@ def check_cache(seconds: int = 3600):  # 60 minutes default
     Log.debug(f"Previous cache: {previous_cache}", style="yellow")
     Log.debug(f"Current time: {datetime.now()}", style="yellow")
     difference = (datetime.now() - previous_cache).seconds
-    Log.info(f"Cache span: {int(difference)} seconds ({int(difference / 60)} minutes)", style="yellow")
+    Log.info(
+        f"Cache span: {int(difference)} seconds ({int(difference / 60)} minutes)", style="yellow")
     if difference > seconds:
         Log.info("Cleaning cache by expiration...", style="yellow")
         # calendar.cache_clear()

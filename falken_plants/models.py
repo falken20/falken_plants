@@ -18,6 +18,8 @@ from flask_validator import (ValidateString, ValidateInteger, ValidateEmail, Val
 from .logger import Log
 from .config import get_settings, print_settings_environment
 
+Log.debug("Loading models.py")
+
 db = SQLAlchemy()
 
 

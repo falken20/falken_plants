@@ -8,6 +8,8 @@ import sys
 from .logger import Log
 from .controllers import ControllerPlant
 
+Log.debug("Loading main.py")
+
 main = Blueprint('main', __name__)
 
 

@@ -8,6 +8,8 @@ from rich.style import Style
 from datetime import datetime
 from dotenv import load_dotenv, find_dotenv
 
+print("Loading logger.py")
+
 # Load .env file
 load_dotenv(find_dotenv())
 

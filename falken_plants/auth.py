@@ -7,6 +7,9 @@ from flask_login import login_user, login_required, logout_user
 from datetime import date
 
 from .models import db, User
+from .logger import Log
+
+Log.debug("Loading auth.py")
 
 auth = Blueprint('auth', __name__)
 

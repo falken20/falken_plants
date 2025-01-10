@@ -9,11 +9,12 @@ from pydantic.v1 import BaseSettings
 # from pydantic_settings import BaseSettings # New version
 import pyshorteners
 
-
 # Library to cache the data
 from functools import lru_cache
 
 from .logger import Log
+
+Log.debug("Loading config.py")
 
 __title__ = 'Falken Plants'
 __version__ = '1.0.0'
@@ -94,9 +95,11 @@ class Settings(BaseSettings):
     # find the corresponding environment variables.
     BASE_URL: str = "http://127.0.0.1:5000"
     LEVEL_LOG: list = ["INFO", "WARNING", "ERROR"]
-    SECRET_KEY: str = 'your-special-secret-key'
-    CONFIG_MODE: str = "development"
+    SECRET_KEY: str = os.getenv("SECRET_KEY", "your-special-secret-key")
+    CONFIG_MODE: str = os.getenv("CONFIG_MODE", "development")
     BASE_DIR = os.path.abspath(os.path.dirname(__file__))
+    FLASK_APP = os.getenv("FLASK_APP")
+    FLASK_DEBUG = os.getenv("FLASK_DEBUG")
     CONFIG_ENV = {
         "development": DevelopmentConfig,
         "testing": TestingConfig,

@@ -5,16 +5,20 @@ from flask import Flask
 import os
 from dotenv import load_dotenv, find_dotenv
 from flask_login import LoginManager
+import pprint
 
 from .logger import Log, console
 from .config import get_settings, print_app_config, print_settings_environment
 from .cache import check_cache
 from .models import db
 
+Log.debug("Loading app.py")
 
 # Set environment vars
 load_dotenv(find_dotenv())
 settings = get_settings()
+Log.debug(f"Settings: {settings}")
+# pprint.pprint(settings.dict())
 
 console.rule(settings.APP_DATA['title'] + " " +
              settings.APP_DATA['version'] + " by " + settings.APP_DATA['author'])
@@ -34,10 +38,10 @@ def create_app(config_mode="development"):
     app.config.from_object(settings.CONFIG_ENV[config_mode])
 
     app.config['TEMPLATE_AUTO_RELOAD'] = True
+    app.config['DEBUG'] = True if config_mode == "development" else False
 
-    Log.info(f"Running in '{config_mode}' mode", style="red bold")
-    Log.debug(
-        f"Debug: {app.config['DEBUG']} - Testing: {app.config['TESTING']}")
+    Log.info(
+        f"***************** Running in {config_mode.upper()} mode *****************", style="red bold")
 
     db.init_app(app)
 
@@ -78,4 +82,6 @@ def create_app(config_mode="development"):
     return app
 
 
+# If FLASK_DEBUG is True, the reloader will be enabled by default and the thread starts twice.
+Log.info("Creating app...")
 app = create_app(config_mode=settings.CONFIG_MODE)
