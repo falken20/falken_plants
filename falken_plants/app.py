@@ -5,7 +5,6 @@ from flask import Flask
 import os
 from dotenv import load_dotenv, find_dotenv
 from flask_login import LoginManager
-import pprint
 
 from .logger import Log, console
 from .config import get_settings, print_app_config, print_settings_environment
@@ -16,9 +15,10 @@ Log.debug("Loading app.py")
 
 # Set environment vars
 load_dotenv(find_dotenv())
+
 settings = get_settings()
-Log.debug(f"Settings: {settings}")
-# pprint.pprint(settings.dict())
+Log.debug("App Settings:")
+Log.info_dict(settings.dict())
 
 console.rule(settings.APP_DATA['title'] + " " +
              settings.APP_DATA['version'] + " by " + settings.APP_DATA['author'])

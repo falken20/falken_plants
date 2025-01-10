@@ -7,6 +7,7 @@ from rich.console import Console
 from rich.style import Style
 from datetime import datetime
 from dotenv import load_dotenv, find_dotenv
+import pprint
 
 print("Loading logger.py")
 
@@ -84,6 +85,15 @@ class Log():
                               f"\nFile: {sys.exc_info()[2].tb_frame.f_code.co_filename} ",
                               f"\nError: {format(err)}",
                               style=style)
+
+        except Exception as err:
+            Log.error("Error to print log", err, sys)
+
+    @staticmethod
+    def info_dict(dict_obj: dict, style=style_INFO):
+        try:
+            time = datetime.now().strftime("%Y/%m/%d %H:%M:%S")
+            pprint.pprint(dict_obj)
 
         except Exception as err:
             Log.error("Error to print log", err, sys)
