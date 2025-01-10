@@ -8,9 +8,9 @@ entrypoint: gunicorn -b:$PORT 'falken_plants.app:create_app()' # Beacause now is
 # No incluyas gunicorn en requirements.txt, a menos que especifiques el entrypoint
 
 env_variables:
-  FALKEN_VERSION: "1.0.0"
-  ENV_PRO: "Y"
   LEVEL_LOG: ["INFO, WARNING, ERROR"]
+  CONFIG_MODE: "development" 
+
   
 handlers:
 - url: /static
