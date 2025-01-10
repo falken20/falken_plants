@@ -40,8 +40,12 @@ def create_app(config_mode="development"):
     app.config['TEMPLATE_AUTO_RELOAD'] = True
     app.config['DEBUG'] = True if config_mode == "development" else False
 
-    Log.info(
-        f"***************** Running in {config_mode.upper()} mode *****************", style="red bold")
+    if config_mode == "production":
+        Log.info(
+            f"***************** Running in {config_mode.upper()} mode *****************", style="red bold")
+    else: 
+        Log.info(
+            f"***************** Running in {config_mode.upper()} mode *****************", style="green bold")
 
     db.init_app(app)
 
