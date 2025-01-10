@@ -29,6 +29,14 @@ LEVEL_LOG = os.getenv('LEVEL_LOG', "DEBUG, INFO, WARNING, ERROR")
 
 class Log():
     @staticmethod
+    def info_dict(dict_obj: dict):
+        try:
+            pprint.pprint(dict_obj)
+
+        except Exception as err:
+            Log.error("Error to print log", err, sys)
+
+    @staticmethod
     def debug(message, style=style_DEBUG):
         try:
             time = datetime.now().strftime("%Y/%m/%d %H:%M:%S")
@@ -85,15 +93,6 @@ class Log():
                               f"\nFile: {sys.exc_info()[2].tb_frame.f_code.co_filename} ",
                               f"\nError: {format(err)}",
                               style=style)
-
-        except Exception as err:
-            Log.error("Error to print log", err, sys)
-
-    @staticmethod
-    def info_dict(dict_obj: dict, style=style_INFO):
-        try:
-            time = datetime.now().strftime("%Y/%m/%d %H:%M:%S")
-            pprint.pprint(dict_obj)
 
         except Exception as err:
             Log.error("Error to print log", err, sys)
