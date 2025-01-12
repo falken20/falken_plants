@@ -9,7 +9,7 @@ from datetime import date
 from .models import db, User
 from .logger import Log
 
-Log.debug("Loading auth.py")
+print("Loading auth.py")
 
 auth = Blueprint('auth', __name__)
 

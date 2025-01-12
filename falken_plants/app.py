@@ -11,7 +11,7 @@ from .config import get_settings, print_app_config, print_settings_environment
 from .cache import check_cache
 from .models import db
 
-Log.debug("Loading app.py")
+print("Loading app.py")
 
 # Set environment vars
 load_dotenv(find_dotenv())
@@ -29,8 +29,10 @@ check_cache()
 basedir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 
-def create_app(config_mode="development"):
+def create_app():
     Log.info("***** Creating app...", style="red bold")
+
+    config_mode=settings.CONFIG_MODE
     Log.info(f"***** Running in {config_mode.upper()} mode", style="red bold")
 
     app = Flask(__name__, template_folder="../templates",
@@ -40,6 +42,7 @@ def create_app(config_mode="development"):
     app.config.from_object(settings.CONFIG_ENV[config_mode])
     app.config['TEMPLATE_AUTO_RELOAD'] = True
     app.config['DEBUG'] = True if config_mode == "development" else False
+    app.config['ENV'] = config_mode
 
     db.init_app(app)
 
@@ -83,4 +86,6 @@ def create_app(config_mode="development"):
 
 
 # If FLASK_DEBUG is True, the reloader will be enabled by default and the thread starts twice.
-app = create_app(config_mode=settings.CONFIG_MODE)
+if __name__ == '__main__':
+    Log.info("Initializing app...", style="red bold")
+    app = create_app()

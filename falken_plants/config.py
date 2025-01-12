@@ -14,7 +14,7 @@ from functools import lru_cache
 
 from .logger import Log
 
-Log.debug("Loading config.py")
+print("Loading config.py")
 
 __title__ = 'Falken Plants'
 __version__ = '1.0.0'
@@ -141,7 +141,7 @@ def print_app_config(app):
     Log.info("***** App Config:", style="red bold")
 
     # Simple way to print the app config
-    Log.info_dict(app.config)
+    Log.info_dict(dict(app.config))
 
     # More complex way to print the app config
     """

@@ -2,7 +2,7 @@ from flask_swagger_ui import get_swaggerui_blueprint
 
 from .logger import Log
 
-Log.debug("Loading swagger.py")
+print("Loading swagger.py")
 
 # endpoint we want swagger docs to be visible at
 SWAGGER_URL = "/swagger"

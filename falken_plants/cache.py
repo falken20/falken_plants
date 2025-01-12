@@ -6,7 +6,7 @@ from datetime import datetime
 from .logger import Log
 from .config import get_settings
 
-Log.debug("Loading cache.py")
+print("Loading cache.py")
 
 previous_cache = datetime.now()
 

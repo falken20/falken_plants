@@ -8,7 +8,7 @@ import pprint
 from .controllers import ControllerPlant
 from .logger import Log
 
-Log.debug("Loading urls.py")
+print("Loading urls.py")
 
 urls = Blueprint('urls', __name__)
 
