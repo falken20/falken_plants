@@ -17,7 +17,7 @@ Log.debug("Loading app.py")
 load_dotenv(find_dotenv())
 
 settings = get_settings()
-Log.debug("App Settings:")
+Log.info("***** Environment vars:", style="red bold")
 Log.info_dict(settings.dict())
 
 console.rule(settings.APP_DATA['title'] + " " +
@@ -30,22 +30,16 @@ basedir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 
 def create_app(config_mode="development"):
+    Log.info("***** Creating app...", style="red bold")
+    Log.info(f"***** Running in {config_mode.upper()} mode", style="red bold")
+
     app = Flask(__name__, template_folder="../templates",
                 static_folder="../static")
-    # print_settings_environment(settings)
 
     app.config.from_object(settings)
     app.config.from_object(settings.CONFIG_ENV[config_mode])
-
     app.config['TEMPLATE_AUTO_RELOAD'] = True
     app.config['DEBUG'] = True if config_mode == "development" else False
-
-    if config_mode == "production":
-        Log.info(
-            f"***************** Running in {config_mode.upper()} mode *****************", style="red bold")
-    else:
-        Log.info(
-            f"***************** Running in {config_mode.upper()} mode *****************", style="green bold")
 
     db.init_app(app)
 
@@ -83,9 +77,10 @@ def create_app(config_mode="development"):
     else:
         print_app_config(app)
 
+    Log.info("***** App created succesfully", style="red bold")
+
     return app
 
 
 # If FLASK_DEBUG is True, the reloader will be enabled by default and the thread starts twice.
-Log.info("Creating app...")
 app = create_app(config_mode=settings.CONFIG_MODE)

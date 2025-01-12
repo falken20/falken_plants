@@ -130,19 +130,29 @@ def get_settings() -> Settings:
 
 
 def print_settings_environment(environment: dict) -> None:
-    Log.info(f"Environment settings: {vars(environment)}")
+    # Log.info_dict(f"Environment settings: {vars(environment)}")
+    Log.info("Environment settings:")
+    Log.info_dict(environment)
 
 
 @lru_cache
 def print_app_config(app):
     """ Print the app config """
+    Log.info("***** App Config:", style="red bold")
+
+    # Simple way to print the app config
+    Log.info_dict(app.config)
+
+    # More complex way to print the app config
+    """
     for key, value in app.config.items():
         if isinstance(value, dict):
             for k, v in value.items():
                 if isinstance(v, type):
-                    Log.debug(
+                    Log.info(
                         f"app.config: {key}: {k} -> {v.SQLALCHEMY_DATABASE_URI}")
                 else:
-                    Log.debug(f"app.config: {key}: {k} -> {v}")
+                    Log.info(f"app.config: {key}: {k} -> {v}")
         else:
-            Log.debug(f"app.config: {key}: {value}")
+            Log.info(f"app.config: {key}: {value}")
+    """
