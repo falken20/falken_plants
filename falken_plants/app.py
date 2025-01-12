@@ -43,7 +43,7 @@ def create_app(config_mode="development"):
     if config_mode == "production":
         Log.info(
             f"***************** Running in {config_mode.upper()} mode *****************", style="red bold")
-    else: 
+    else:
         Log.info(
             f"***************** Running in {config_mode.upper()} mode *****************", style="green bold")
 
