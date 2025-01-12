@@ -98,8 +98,6 @@ class Settings(BaseSettings):
     SECRET_KEY: str = os.getenv("SECRET_KEY", "your-special-secret-key")
     CONFIG_MODE: str = os.getenv("CONFIG_MODE", "development")
     BASE_DIR = os.path.abspath(os.path.dirname(__file__))
-    FLASK_APP = os.getenv("FLASK_APP")
-    FLASK_DEBUG = os.getenv("FLASK_DEBUG")
     CONFIG_ENV = {
         "development": DevelopmentConfig,
         "testing": TestingConfig,
