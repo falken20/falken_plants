@@ -94,7 +94,7 @@ class Settings(BaseSettings):
     # pydantic will automatically assume those default values if it doesn’t
     # find the corresponding environment variables.
     BASE_URL: str = "http://127.0.0.1:5000"
-    LEVEL_LOG: list = ["INFO", "WARNING", "ERROR"]
+    LEVEL_LOG: str = os.getenv('LEVEL_LOG', "DEBUG, INFO, WARNING, ERROR")
     SECRET_KEY: str = os.getenv("SECRET_KEY", "your-special-secret-key")
     CONFIG_MODE: str = os.getenv("CONFIG_MODE", "development")
     BASE_DIR = os.path.abspath(os.path.dirname(__file__))
