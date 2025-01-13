@@ -15,7 +15,6 @@ from sqlalchemy import inspect
 from flask_validator import (ValidateString, ValidateInteger, ValidateEmail, ValidateLessThanOrEqual,
                              ValidateGreaterThanOrEqual, ValidateBoolean)
 
-from .logger import Log
 from .config import get_settings, print_settings_environment
 
 print("Loading models.py")
@@ -167,6 +166,18 @@ def init_db(app):
     logging.info("Init DB process starting...")
 
     try:
+        # Select environment to create the tables
+        environment = input("Select the environment to create the tables (development, testing, production): ")
+        if environment == "development":
+            app.config.from_object("falken_plants.config.DevelopmentConfig")
+        elif environment == "testing":
+            app.config.from_object("falken_plants.config.TestingConfig")
+        elif environment == "production":
+            app.config.from_object("falken_plants.config.ProductionConfig")
+        else:
+            logging.error("Environment not found")
+            raise ValueError("Environment not found")
+
         if input("Could you drop the tables if they exist(y/n)? ") in ["Y", "y"]:
             with app.app_context():
                 db.drop_all()
@@ -199,9 +210,9 @@ if __name__ == '__main__':  # pragma: no cover # To doesn't check in tests
     app.config.from_object(settings.CONFIG_ENV[settings.CONFIG_MODE])
     app.config['TEMPLATE_AUTO_RELOAD'] = True
 
-    Log.info(f"Running in '{settings.CONFIG_MODE}' mode", style="red bold")
-    Log.debug(f"Debug: {app.config['DEBUG']}")
-    Log.debug(f"Testing: {app.config['TESTING']}")
+    logging.info(f"Running in '{settings.CONFIG_MODE}' mode", style="red bold")
+    logging.debug(f"Debug: {app.config['DEBUG']}")
+    logging.debug(f"Testing: {app.config['TESTING']}")
     print_settings_environment(settings.CONFIG_ENV[settings.CONFIG_MODE])
 
     db.init_app(app)
