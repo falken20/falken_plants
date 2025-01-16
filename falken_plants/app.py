@@ -32,7 +32,7 @@ basedir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 def create_app():
     Log.info("***** Creating app...", style="red bold")
 
-    config_mode=settings.CONFIG_MODE
+    config_mode = settings.CONFIG_MODE
     Log.info(f"***** Running in {config_mode.upper()} mode", style="red bold")
 
     app = Flask(__name__, template_folder="../templates",

@@ -9,16 +9,24 @@ from falken_plants.models import db, User
 
 basedir = os.path.abspath(os.path.dirname(__file__))
 
+os.environ['CONFIG_MODE'] = 'testing'
+os.environ['LEVEL_LOG'] = 'INFO, WARNING, ERROR'
+os.environ['SECRET_KEY'] = 'secret_key_test'
+
+
 class BaseTestCase(unittest.TestCase):
-    mock_user = {'email': 'python@mail.com', 'name': 'python', 'password': 'password'}
-    mock_user_unknown = {'email': 'python@mail.com', 'name': 'python', 'password': 'error_password'}  
-    
+    mock_user = {'email': 'python@mail.com',
+                 'name': 'python', 'password': 'password'}
+    mock_user_unknown = {'email': 'python@mail.com',
+                         'name': 'python', 'password': 'error_password'}
+
     def setUp(self):
-        self.app = create_app(config_mode="testing")
-        self.app.config['SECRET_KEY'] = 'secret_key_test'
+        # self.app = create_app(config_mode="testing")
+        self.app = create_app()
+        # self.app.config['SECRET_KEY'] = 'secret_key_test'
         self.app.config['TESTING'] = True
         # self.app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + os.path.join(basedir, 'test.db')
-        
+
         self.config_login()
         self.client = self.app.test_client()
 
@@ -42,16 +50,17 @@ class BaseTestCase(unittest.TestCase):
         def load_user(user_id):
             # Since the user_id is just the primary key of our user table, use it in the query for the user
             return User.query.get(int(user_id))
-    
+
     @staticmethod
     def create_user(user: User = mock_user):
         new_user = User(email=user['email'], name=user['name'],
-                    password=generate_password_hash(user['password'], method='pbkdf2'),  # Before method='sha256'
-                    date_created=date.today())
+                        password=generate_password_hash(
+                            user['password'], method='pbkdf2'),  # Before method='sha256'
+                        date_created=date.today())
         db.session.add(new_user)
         db.session.commit()
         return new_user
-    
+
     @staticmethod
     def login_http(self):
         return self.client.post('/login', data=self.mock_user, follow_redirects=True)

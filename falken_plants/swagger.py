@@ -1,6 +1,5 @@
 from flask_swagger_ui import get_swaggerui_blueprint
 
-from .logger import Log
 
 print("Loading swagger.py")
 

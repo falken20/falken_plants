@@ -7,7 +7,6 @@ from flask_login import login_user, login_required, logout_user
 from datetime import date
 
 from .models import db, User
-from .logger import Log
 
 print("Loading auth.py")
 
