@@ -4,14 +4,15 @@ from flask_login import LoginManager
 from werkzeug.security import generate_password_hash
 from datetime import date
 
-from falken_plants.app import create_app
+# Set environment vars before import app
+os.environ['CONFIG_MODE'] = 'testing'
+os.environ['LEVEL_LOG'] = 'INFO, WARNING, ERROR'
+
+
+from falken_plants.app import create_app, settings
 from falken_plants.models import db, User
 
 basedir = os.path.abspath(os.path.dirname(__file__))
-
-os.environ['CONFIG_MODE'] = 'testing'
-os.environ['LEVEL_LOG'] = 'INFO, WARNING, ERROR'
-os.environ['SECRET_KEY'] = 'secret_key_test'
 
 
 class BaseTestCase(unittest.TestCase):
@@ -21,10 +22,13 @@ class BaseTestCase(unittest.TestCase):
                          'name': 'python', 'password': 'error_password'}
 
     def setUp(self):
-        # self.app = create_app(config_mode="testing")
+        print("*" * 80)
         self.app = create_app()
-        # self.app.config['SECRET_KEY'] = 'secret_key_test'
+        self.app.config['SECRET_KEY'] = 'secret_key_test'
         self.app.config['TESTING'] = True
+        self.app.config['LEVEL_LOG'] = 'INFO, WARNING, ERROR'
+        self.app.config['CONFIG_MODE'] = 'testing'
+        self.app.config['SQLALCHEMY_DATABASE_URI'] = settings.CONFIG_ENV['testing'].SQLALCHEMY_DATABASE_URI
         # self.app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + os.path.join(basedir, 'test.db')
 
         self.config_login()
