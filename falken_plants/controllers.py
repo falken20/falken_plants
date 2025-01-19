@@ -40,6 +40,7 @@ class ControllerPlant:
                      watering_summer: int = 1, watering_winter: int = 2,
                      spray: bool = False, direct_sun: int = 1,
                      image=None, user_id: int = None) -> Plant:
+        # TODO: Change params to a dict as in update_plant
         Log.info(
             f"Method {sys._getframe().f_code.co_filename}: {sys._getframe().f_code.co_name}")
         Log.info(f"Creating plant: {name}")
@@ -81,8 +82,8 @@ class ControllerPlant:
             plant.comment = plant_data["comment"]
             plant.watering_summer = int(plant_data["watering_summer"])
             plant.watering_winter = int(plant_data["watering_winter"])
-            plant.spray = True if plant_data.get(
-                "spray") is not None else False
+            plant.spray = False if bool(plant_data['spray']) is False else True
+            
             plant.direct_sun = int(plant_data["direct_sun"])
             plant.image = shorten_url(
                 plant_data["image"]) if plant_data["image"] != "" else None
