@@ -61,7 +61,7 @@ class TestControllerPlant(BaseTestCase):
         user = self.create_user()
         plant = ControllerPlant.create_plant(name='test_plant', name_tech='test_plant', comment='test_plant',
                                              watering_summer=1, watering_winter=1, spray=True, direct_sun=1, user_id=user.id)
-        plants = ControllerPlant.get_plants(user.id)
+        plants = ControllerPlant.list_all_plants(user.id)
         self.assertEqual(len(plants), 1)
         self.assertEqual(plants[0].name, plant.name)
 
@@ -115,7 +115,7 @@ class TestControllerPlant(BaseTestCase):
 
     def test_get_plants_no_user(self):
         user = self.create_user()
-        plants = ControllerPlant.get_plants(user_id=user.id)
+        plants = ControllerPlant.list_all_plants(user_id=user.id)
         self.assertEqual(len(plants), 0)
 
     def test_update_plant_no_user(self):
@@ -130,7 +130,7 @@ class TestControllerPlant(BaseTestCase):
 
     def test_get_plants_no_plants(self):
         user = self.create_user()
-        plants = ControllerPlant.get_plants(user.id)
+        plants = ControllerPlant.list_all_plants(user.id)
         self.assertFalse(plants)
 
     def test_get_plant_no_plant(self):
