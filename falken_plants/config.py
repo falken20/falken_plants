@@ -131,8 +131,7 @@ def get_settings() -> Settings:
 
 def print_settings_environment(environment: dict) -> None:
     # Log.info_dict(f"Environment settings: {vars(environment)}")
-    Log.info("Environment settings:")
-    Log.info_dict(environment)
+    Log.info_dict(vars(environment), level_log="DEBUG")
 
 
 @lru_cache
@@ -140,11 +139,7 @@ def print_app_config(app):
     """ Print the app config """
     Log.info("***** App Config:", style="red bold")
 
-    # Simple way to print the app config
-    Log.info_dict(dict(app.config))
-
-    # More complex way to print the app config
-    """
+    # More complex way to print the app config instead Log.info_dict(dict(app.config))
     for key, value in app.config.items():
         if isinstance(value, dict):
             for k, v in value.items():
@@ -155,4 +150,3 @@ def print_app_config(app):
                     Log.info(f"app.config: {key}: {k} -> {v}")
         else:
             Log.info(f"app.config: {key}: {value}")
-    """

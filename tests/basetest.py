@@ -4,13 +4,10 @@ from flask_login import LoginManager
 from werkzeug.security import generate_password_hash
 from datetime import date
 
-# Set environment vars before import app
-os.environ['CONFIG_MODE'] = 'testing'
-os.environ['LEVEL_LOG'] = 'INFO, WARNING, ERROR'
-
 
 from falken_plants.app import create_app, settings
 from falken_plants.models import db, User
+from falken_plants.logger import Log
 
 basedir = os.path.abspath(os.path.dirname(__file__))
 
@@ -26,10 +23,10 @@ class BaseTestCase(unittest.TestCase):
         self.app = create_app()
         self.app.config['SECRET_KEY'] = 'secret_key_test'
         self.app.config['TESTING'] = True
-        self.app.config['LEVEL_LOG'] = 'INFO, WARNING, ERROR'
         self.app.config['CONFIG_MODE'] = 'testing'
         self.app.config['SQLALCHEMY_DATABASE_URI'] = settings.CONFIG_ENV['testing'].SQLALCHEMY_DATABASE_URI
-        # self.app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + os.path.join(basedir, 'test.db')
+        Log.debug("***** BaseTest App config:", style="red bold")
+        Log.info_dict(dict(self.app.config), level_log="DEBUG")
 
         self.config_login()
         self.client = self.app.test_client()

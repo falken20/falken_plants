@@ -29,9 +29,10 @@ LEVEL_LOG = os.getenv('LEVEL_LOG', "DEBUG, INFO, WARNING, ERROR")
 
 class Log():
     @staticmethod
-    def info_dict(dict_obj: dict):
+    def info_dict(dict_obj: dict = None, level_log: str = "INFO"):
         try:
-            pprint.pprint(dict_obj)
+            if level_log in LEVEL_LOG.upper():
+                pprint.pprint(dict_obj)
 
         except Exception as err:
             Log.error("Error to print log", err, sys)
