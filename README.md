@@ -92,3 +92,4 @@ PRODUCTION_DATABASE_URL=
 - Help to apply Flask-Login (https://www.digitalocean.com/community/tutorials/how-to-add-authentication-to-your-app-with-flask-login)
 - Calendar component (https://fullcalendar.io/)
 - Swagger (https://diptochakrabarty.medium.com/flask-python-swagger-for-rest-apis-6efdf0100bd7)
+- pyshorteners: Library for shortener urls

@@ -63,14 +63,12 @@ class ControllerPlant:
         return plant
 
     @staticmethod
-    # def update_plant(plant_id: int, name: str, name_tech: str, comment: str, watering_summer: int,
-    # watering_winter: int, spray: bool, direct_sun: int, image: str, user_id: int) -> Plant:
     def update_plant(plant_data: dict, current_user) -> Plant:
         try:
             Log.info(
                 f"Method {sys._getframe().f_code.co_filename}: {sys._getframe().f_code.co_name}")
             Log.debug(f"Params method: {locals()}")
-            Log.debug("Plant data:")
+            Log.info(f"Plant data:")
             pprint.pprint(plant_data)
             plant = ControllerPlant.get_plant(plant_data["id"])
             if plant is None:
@@ -83,7 +81,7 @@ class ControllerPlant:
             plant.watering_summer = int(plant_data["watering_summer"])
             plant.watering_winter = int(plant_data["watering_winter"])
             plant.spray = False if bool(plant_data['spray']) is False else True
-            
+
             plant.direct_sun = int(plant_data["direct_sun"])
             plant.image = shorten_url(
                 plant_data["image"]) if plant_data["image"] != "" else None

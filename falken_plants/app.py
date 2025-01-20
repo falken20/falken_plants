@@ -7,7 +7,7 @@ from dotenv import load_dotenv, find_dotenv
 from flask_login import LoginManager
 
 from .logger import Log, console
-from .config import get_settings, print_app_config, print_settings_environment
+from .config import get_settings, print_settings_environment
 from .cache import check_cache
 from .models import db
 

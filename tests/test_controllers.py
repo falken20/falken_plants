@@ -101,6 +101,17 @@ class TestControllerPlant(BaseTestCase):
         self.assertFalse(plant_update.spray)
         self.assertEqual(plant_update.direct_sun, 2)
 
+    def test_update_plant_no_user(self):
+        user = self.create_user()
+        plant = ControllerPlant.create_plant(name='test_plant', name_tech='test_plant', comment='test_plant',
+                                             watering_summer=1, watering_winter=1, spray=True, direct_sun=1, user_id=user.id)
+
+        print(f"Plant: {plant.__dict__}")
+        
+        ControllerUser.delete_user(user.id)
+        self.assertRaises(
+            ValueError, ControllerPlant.update_plant, plant.__dict__, user.id)
+
     def test_delete_plant(self):
         user = self.create_user()
         plant = ControllerPlant.create_plant(name='test_plant', name_tech='test_plant', comment='test_plant',
@@ -125,21 +136,6 @@ class TestControllerPlant(BaseTestCase):
         plants = ControllerPlant.list_all_plants(user_id=user.id)
         self.assertEqual(len(plants), 0)
 
-    def test_update_plant_no_user(self):
-        user = self.create_user()
-        plant = ControllerPlant.create_plant(name='test_plant', name_tech='test_plant', comment='test_plant',
-                                             watering_summer=1, watering_winter=1, spray=True, direct_sun=1, user_id=user.id)
-        ControllerUser.delete_user(user.id)
-        plant.name = 'test_plant_update'
-        plant.name_tech = 'test_plant_update'
-        plant.comment = 'test_plant_update'
-        plant.watering_summer = 2
-        plant.watering_winter = 2
-        plant.spray = False
-        plant.direct_sun = 2
-        self.assertRaises(
-            ValueError, ControllerPlant.update_plant, plant.__dict__, user.id)
-
     def test_get_plants_no_plants(self):
         user = self.create_user()
         plants = ControllerPlant.list_all_plants(user.id)
@@ -155,7 +151,7 @@ class TestControllerPlant(BaseTestCase):
 
     def test_update_plant_no_plant(self):
         user = self.create_user()
-        mock_plant = {'name': 'test_plant_mock', 'name_tech': 'test_plant_mock', 'comment': 'test_plant_mock',
+        mock_plant = {'id': 100, 'name': 'test_plant_mock', 'name_tech': 'test_plant_mock', 'comment': 'test_plant_mock',
                       'watering_summer': 2, 'watering_winter': 2, 'spray': False, 'direct_sun': 2, 'user_id': user.id}
         plant_update = ControllerPlant.update_plant(mock_plant, user.id)
         self.assertFalse(plant_update)

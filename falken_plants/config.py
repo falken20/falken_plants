@@ -7,7 +7,7 @@ import os
 import sys
 from pydantic.v1 import BaseSettings
 # from pydantic_settings import BaseSettings # New version
-import pyshorteners
+# import pyshorteners
 
 # Library to cache the data
 from functools import lru_cache
