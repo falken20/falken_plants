@@ -202,6 +202,9 @@ def init_db(app):
         logging.error(f"Execution Error in init_db: {err}", exc_info=True)
 
 
+######################################################################
+# For execution in the console: python -m falken_plants.models       #
+######################################################################
 # FORMAT = '%(asctime)s %(levelname)s %(lineno)d %(filename)s %(funcName)s: %(message)s'
 # logging.basicConfig(level=logging.INFO, format=FORMAT)
 
