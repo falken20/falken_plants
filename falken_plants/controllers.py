@@ -68,7 +68,7 @@ class ControllerPlant:
             Log.info(
                 f"Method {sys._getframe().f_code.co_filename}: {sys._getframe().f_code.co_name}")
             Log.debug(f"Params method: {locals()}")
-            Log.info(f"Plant data:")
+            Log.info("Plant data:")
             pprint.pprint(plant_data)
             plant = ControllerPlant.get_plant(plant_data["id"])
             if plant is None:
@@ -162,9 +162,13 @@ class ControllerUser:
 
     @staticmethod
     def get_user(id: int):
-        Log.info(
-            f"Method {sys._getframe().f_code.co_filename}: {sys._getframe().f_code.co_name}")
-        return User.query.filter_by(id=id).first()
+        try:
+            Log.info(
+                f"Method {sys._getframe().f_code.co_filename}: {sys._getframe().f_code.co_name}")
+            return User.query.filter_by(id=id).first()
+        except Exception as e:
+            Log.error("Error in ControllerUser.get_user", err=e, sys=sys)
+            return None
 
     @staticmethod
     def get_user_email(email: str):

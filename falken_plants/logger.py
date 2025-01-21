@@ -95,5 +95,5 @@ class Log():
                               f"\nError: {format(err)}",
                               style=style)
 
-        except Exception as err:
-            Log.error("Error to print log", err, sys)
+        except Exception:
+            print("Error to print log")

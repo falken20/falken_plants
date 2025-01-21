@@ -43,10 +43,10 @@ class Plant(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey('t_user.id'), nullable=False)
 
     def __repr__(self) -> str:
-        return f"<Plant {self.name} - {self.name_tech}>"
+        return f"<Plant ({self.id} - {self.name} - {self.name_tech})>"
 
     def __str__(self) -> str:
-        return f"<Plant {self.name} - {self.name_tech}>"
+        return f"<Plant ({self.id} - {self.name} - {self.name_tech})>"
 
     # TODO: Doesn`t work default param y columns and it is neccesary to use __init__ method
     def __init__(self, name=None, name_tech=None, comment=None, watering_summer=1, watering_winter=2,
@@ -108,7 +108,7 @@ class Plant(db.Model):
             return value
 
     # Check to use serialize()
-    # How to serialize SqlAlchemy PostgreSQL query to JSON => https://stackoverflow.com/a/46180522
+    # How to serialize SqlAlchemy PostgreSQL query to JSON/dict => https://stackoverflow.com/a/46180522
     def serialize(self):
         return {c.key: getattr(self, c.key) for c in inspect(self).mapper.column_attrs}
 
@@ -123,7 +123,7 @@ class Calendar(db.Model):
         't_plant.id'), nullable=False)
 
     def __repr__(self) -> str:
-        return f"<Calendar {self.date_calendar}>"
+        return f"<Calendar ({self.date_calendar})>"
 
 
 # Flask-Login can manage user sessions. UserMixin will add Flask-Login attributes
@@ -140,10 +140,10 @@ class User(UserMixin, db.Model):
                              default=date.today, onupdate=date.today)
 
     def __repr__(self) -> str:
-        return f"<User {self.name}>"
+        return f"<User ({self.id} - {self.name})>"
 
     def __str__(self) -> str:
-        return "<User %r>" % self.name
+        return f"<User ({self.id} - {self.name})>"
 
     # Validations => https://flask-validator.readthedocs.io/en/latest/index.html
     # The __declare_last__() hook allows definition of a class level function that is
@@ -157,6 +157,11 @@ class User(UserMixin, db.Model):
                        "User name can't be empty or only spaces")
         ValidateString(cls.password, False, True,
                        "User password can't be empty or only spaces")
+
+    # Check to use serialize()
+    # How to serialize SqlAlchemy PostgreSQL query to JSON => https://stackoverflow.com/a/46180522
+    def serialize(self):
+        return {c.key: getattr(self, c.key) for c in inspect(self).mapper.column_attrs}
 
 
 def init_db(app):

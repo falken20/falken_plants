@@ -84,6 +84,7 @@ class TestControllerPlant(BaseTestCase):
         user = self.create_user()
         plant = ControllerPlant.create_plant(name='test_plant', name_tech='test_plant', comment='test_plant',
                                              watering_summer=1, watering_winter=1, spray=True, direct_sun=1, user_id=user.id)
+
         plant.name = 'test_plant_update'
         plant.name_tech = 'test_plant_update'
         plant.comment = 'test_plant_update'
@@ -91,8 +92,9 @@ class TestControllerPlant(BaseTestCase):
         plant.watering_winter = 2
         plant.spray = False
         plant.direct_sun = 2
-        plant_update = ControllerPlant.update_plant(plant.__dict__, user.id)
 
+        plant_update = ControllerPlant.update_plant(plant.__dict__, user.id)
+        
         self.assertEqual(plant_update.name, 'test_plant_update')
         self.assertEqual(plant_update.name_tech, 'test_plant_update')
         self.assertEqual(plant_update.comment, 'test_plant_update')
@@ -105,12 +107,8 @@ class TestControllerPlant(BaseTestCase):
         user = self.create_user()
         plant = ControllerPlant.create_plant(name='test_plant', name_tech='test_plant', comment='test_plant',
                                              watering_summer=1, watering_winter=1, spray=True, direct_sun=1, user_id=user.id)
-
-        print(f"Plant: {plant.__dict__}")
-        
-        ControllerUser.delete_user(user.id)
-        self.assertRaises(
-            ValueError, ControllerPlant.update_plant, plant.__dict__, user.id)
+        ControllerUser.delete_user(user.id)        
+        self.assertRaises(ValueError, ControllerPlant.update_plant, plant.serialize(), user.id)
 
     def test_delete_plant(self):
         user = self.create_user()
