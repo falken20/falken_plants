@@ -43,48 +43,45 @@ class TestControllerUser(BaseTestCase):
 
 class TestControllerPlant(BaseTestCase):
 
+    MOCK_PLANT = {'id': 100, 'name': 'test_plant_mock', 'name_tech': 'test_plant_mock', 'comment': 'test_plant_mock',
+                'watering_summer': 2, 'watering_winter': 2, 'spray': True, 'direct_sun': 2, 'image': ''}
+
     def test_create_plant(self):
         user = self.create_user()
-        plant = ControllerPlant.create_plant(name='test_plant', name_tech='test_plant', comment='test_plant',
-                                             watering_summer=1, watering_winter=1, spray=True, direct_sun=1, user_id=user.id)
+        plant = ControllerPlant.create_plant(self.MOCK_PLANT, user.id)
         self.assertTrue(plant.id)
-        self.assertEqual(plant.name, 'test_plant')
-        self.assertEqual(plant.name_tech, 'test_plant')
-        self.assertEqual(plant.comment, 'test_plant')
-        self.assertEqual(plant.watering_summer, 1)
-        self.assertEqual(plant.watering_winter, 1)
+        self.assertEqual(plant.name, self.MOCK_PLANT['name'])
+        self.assertEqual(plant.name_tech, self.MOCK_PLANT['name_tech'])
+        self.assertEqual(plant.comment, self.MOCK_PLANT['comment'])
+        self.assertEqual(plant.watering_summer, self.MOCK_PLANT['watering_summer'])
+        self.assertEqual(plant.watering_winter, self.MOCK_PLANT['watering_winter'])
         self.assertTrue(plant.spray)
-        self.assertEqual(plant.direct_sun, 1)
+        self.assertEqual(plant.direct_sun, self.MOCK_PLANT['direct_sun'])
         self.assertTrue(plant.date_created)
         self.assertEqual(plant.user_id, user.id)
 
     def test_get_plants(self):
         user = self.create_user()
-        plant = ControllerPlant.create_plant(name='test_plant', name_tech='test_plant', comment='test_plant',
-                                             watering_summer=1, watering_winter=1, spray=True, direct_sun=1, user_id=user.id)
+        plant = ControllerPlant.create_plant(self.MOCK_PLANT, user.id)
         plants = ControllerPlant.list_all_plants(user.id)
         self.assertEqual(len(plants), 1)
         self.assertEqual(plants[0].name, plant.name)
 
     def test_get_plant(self):
         user = self.create_user()
-        plant = ControllerPlant.create_plant(name='test_plant', name_tech='test_plant', comment='test_plant',
-                                             watering_summer=1, watering_winter=1, spray=True, direct_sun=1, user_id=user.id)
+        plant = ControllerPlant.create_plant(self.MOCK_PLANT, user.id)
         plant_get = ControllerPlant.get_plant(plant.id)
         self.assertEqual(plant_get.name, plant.name)
 
     def test_get_plant_name(self):
         user = self.create_user()
-        plant = ControllerPlant.create_plant(name='test_plant', name_tech='test_plant', comment='test_plant',
-                                             watering_summer=1, watering_winter=1, spray=True, direct_sun=1, user_id=user.id)
+        plant = ControllerPlant.create_plant(self.MOCK_PLANT, user.id)
         plant_get = ControllerPlant.get_plant_name(plant.name)
         self.assertEqual(plant_get.name, plant.name)
 
     def test_update_plant(self):
         user = self.create_user()
-        plant = ControllerPlant.create_plant(name='test_plant', name_tech='test_plant', comment='test_plant',
-                                             watering_summer=1, watering_winter=1, spray=True, direct_sun=1, user_id=user.id)
-
+        plant = ControllerPlant.create_plant(self.MOCK_PLANT, user.id)
         plant.name = 'test_plant_update'
         plant.name_tech = 'test_plant_update'
         plant.comment = 'test_plant_update'
@@ -105,29 +102,26 @@ class TestControllerPlant(BaseTestCase):
 
     def test_update_plant_no_user(self):
         user = self.create_user()
-        plant = ControllerPlant.create_plant(name='test_plant', name_tech='test_plant', comment='test_plant',
-                                             watering_summer=1, watering_winter=1, spray=True, direct_sun=1, user_id=user.id)
+        plant = ControllerPlant.create_plant(self.MOCK_PLANT, user.id)
         ControllerUser.delete_user(user.id)        
         self.assertRaises(ValueError, ControllerPlant.update_plant, plant.serialize(), user.id)
 
     def test_delete_plant(self):
         user = self.create_user()
-        plant = ControllerPlant.create_plant(name='test_plant', name_tech='test_plant', comment='test_plant',
-                                             watering_summer=1, watering_winter=1,
-                                             spray=True, direct_sun=1, user_id=user.id)
+        plant = ControllerPlant.create_plant(self.MOCK_PLANT, user.id)
         ControllerPlant.delete_plant(plant.id)
         self.assertFalse(Plant.query.filter_by(id=plant.id).first())
 
     def test_create_plant_no_name(self):
         user = self.create_user()
-        self.assertRaises(ValueError, ControllerPlant.create_plant, name='',
-                          name_tech='test_plant', comment='test_plant', user_id=user.id)
+        mock_plant = self.MOCK_PLANT
+        mock_plant['name'] = ''
+        self.assertRaises(ValueError, ControllerPlant.create_plant, mock_plant, user_id=user.id)
 
     def test_create_plant_no_user(self):
-        self.assertRaises(ValueError, ControllerPlant.create_plant, name='test_plant',
-                          name_tech='test_plant', comment='test_plant')
-        self.assertRaises(ValueError, ControllerPlant.create_plant, name='test_plant',
-                          name_tech='test_plant', comment='test_plant', user_id=5)
+        mock_plant = self.MOCK_PLANT
+        self.assertRaises(ValueError, ControllerPlant.create_plant, mock_plant)
+        self.assertRaises(ValueError, ControllerPlant.create_plant, mock_plant, user_id=5)
 
     def test_get_plants_no_user(self):
         user = self.create_user()
@@ -149,19 +143,12 @@ class TestControllerPlant(BaseTestCase):
 
     def test_update_plant_no_plant(self):
         user = self.create_user()
-        mock_plant = {'id': 100, 'name': 'test_plant_mock', 'name_tech': 'test_plant_mock', 'comment': 'test_plant_mock',
-                      'watering_summer': 2, 'watering_winter': 2, 'spray': False, 'direct_sun': 2, 'user_id': user.id}
-        plant_update = ControllerPlant.update_plant(mock_plant, user.id)
+        plant_update = ControllerPlant.update_plant(self.MOCK_PLANT, user.id)
         self.assertFalse(plant_update)
 
     def test_delete_plant_no_plant(self):
         plant_delete = ControllerPlant.delete_plant(10)
         self.assertFalse(plant_delete)
-
-    def test_create_plant_no_name(self):
-        user = self.create_user()
-        self.assertRaises(ValueError, ControllerPlant.create_plant, name='',
-                          name_tech='test_plant', comment='test_plant',)
 
 
 class TestControllerCalendar(BaseTestCase):

@@ -36,31 +36,40 @@ class ControllerPlant:
         return Plant.query.filter_by(name=plant_name).first()
 
     @staticmethod
-    def create_plant(name: str, name_tech: str, comment: str,
-                     watering_summer: int = 1, watering_winter: int = 2,
-                     spray: bool = False, direct_sun: int = 1,
-                     image=None, user_id: int = None) -> Plant:
-        # TODO: Change params to a dict as in update_plant
-        Log.info(
-            f"Method {sys._getframe().f_code.co_filename}: {sys._getframe().f_code.co_name}")
-        Log.info(f"Creating plant: {name}")
-        Log.debug(f"Params method: {locals()}")
-        # TODO: Check if the image is a valid URL
-        image = shorten_url(image) if image is not None else None
-        Log.debug(f"Image shortened: {image}")
-        spray = True if spray or spray == "1" else False
-        plant = Plant(name=name, name_tech=name_tech, comment=comment, watering_summer=int(watering_summer),
-                      watering_winter=int(watering_winter), spray=spray, direct_sun=int(direct_sun),
-                      image=image, date_created=date.today(), user_id=user_id)
-        if plant.name == "" or plant.name is None:
-            raise ValueError("Plant name can't be empty")
-        if plant.user_id == "" or plant.user_id is None:
-            raise ValueError("Plant user_id can't be empty")
-        if ControllerUser.get_user(plant.user_id) is None:
-            raise ValueError("Plant user_id doesn't exist")
-        db.session.add(plant)
-        db.session.commit()
-        return plant
+    def create_plant(plant_data: dict, current_user) -> Plant:
+        try:
+            Log.info(
+                f"Method {sys._getframe().f_code.co_filename}: {sys._getframe().f_code.co_name}")
+            Log.debug(f"Params method: {locals()}")
+            Log.info("Creating plant:")
+            pprint.pprint(plant_data)
+            # TODO: Check if the image is a valid URL
+            image=""
+            if "image" in plant_data:
+                image = shorten_url(
+                    plant_data["image"]) if plant_data["image"] is not None else ""
+            Log.debug(f"Image shortened: {image}")
+            spray = False
+            if "spray" in plant_data:
+                spray = False if bool(plant_data['spray']) is False else True
+
+            plant = Plant(name=plant_data["name"], name_tech=plant_data["name_tech"], comment=plant_data["comment"],
+                          watering_summer=int(plant_data["watering_summer"]), watering_winter=int(plant_data["watering_winter"]),
+                          spray=spray, direct_sun=int(plant_data["direct_sun"]), image=image, date_created=date.today(), user_id=current_user)
+
+            if plant.name == "" or plant.name is None:
+                raise ValueError("Plant name can't be empty")
+            if plant.user_id == "" or plant.user_id is None:
+                raise ValueError("Plant user_id can't be empty")
+            if ControllerUser.get_user(plant.user_id) is None:
+                raise ValueError("Plant user_id doesn't exist")
+            db.session.add(plant)
+            db.session.commit()
+            return plant
+        except Exception as err:
+            Log.error("Error in ControllerPlant.create_plant",
+                      err=err, sys=sys)
+            raise err
 
     @staticmethod
     def update_plant(plant_data: dict, current_user) -> Plant:
@@ -80,11 +89,14 @@ class ControllerPlant:
             plant.comment = plant_data["comment"]
             plant.watering_summer = int(plant_data["watering_summer"])
             plant.watering_winter = int(plant_data["watering_winter"])
-            plant.spray = False if bool(plant_data['spray']) is False else True
-
+            if "spray" in plant_data:
+                plant.spray = False if bool(
+                    plant_data['spray']) is False else True
+            else:
+                plant.spray = False
             plant.direct_sun = int(plant_data["direct_sun"])
             plant.image = shorten_url(
-                plant_data["image"]) if plant_data["image"] != "" else None
+                plant_data["image"]) if plant_data["image"] != "" else ""
             plant.user_id = current_user
             db.session.commit()
             return plant
