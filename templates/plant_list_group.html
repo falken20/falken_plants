@@ -9,7 +9,11 @@
         <div class="col p-2" style="min-width: 50%; max-width: 50%;">
             <div class="card h-100 p-1">
                 <div class="card-body p-0">
-                    <img src="{{ plant.image }}" height="75" style="max-width:100px;">
+                    {% if plant.image == "" %}
+                        <img src="/static/images/apple_touch_icon.png" height="75" style="max-width:100px;">
+                    {% else %}
+                        <img src="{{ plant.image }}"height="75" style="max-width:100px;">
+                    {% endif %}
                 </div>
                 <div class="card-body p-0">
                     <small style="font-weight: bold;">{{ plant.name }}</small>
