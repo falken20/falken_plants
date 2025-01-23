@@ -116,12 +116,12 @@ class TestControllerPlant(BaseTestCase):
         user = self.create_user()
         mock_plant = self.MOCK_PLANT
         mock_plant['name'] = ''
-        self.assertRaises(ValueError, ControllerPlant.create_plant, mock_plant, user_id=user.id)
+        self.assertRaises(ValueError, ControllerPlant.create_plant, mock_plant, current_user=user.id)
 
     def test_create_plant_no_user(self):
         mock_plant = self.MOCK_PLANT
-        self.assertRaises(ValueError, ControllerPlant.create_plant, mock_plant)
-        self.assertRaises(ValueError, ControllerPlant.create_plant, mock_plant, user_id=5)
+        self.assertRaises(ValueError, ControllerPlant.create_plant, mock_plant, current_user=None)
+        self.assertRaises(ValueError, ControllerPlant.create_plant, mock_plant, current_user=5)
 
     def test_get_plants_no_user(self):
         user = self.create_user()
@@ -152,10 +152,13 @@ class TestControllerPlant(BaseTestCase):
 
 
 class TestControllerCalendar(BaseTestCase):
+
+    MOCK_PLANT = {'id': 100, 'name': 'test_plant_mock', 'name_tech': 'test_plant_mock', 'comment': 'test_plant_mock',
+                'watering_summer': 2, 'watering_winter': 2, 'spray': True, 'direct_sun': 2, 'image': ''}
+
     def test_create_calendar(self):
         user = self.create_user()
-        plant = ControllerPlant.create_plant(name='test_plant', name_tech='test_plant', comment='test_plant',
-                                             watering_summer=1, watering_winter=1, spray=True, direct_sun=1, user_id=user.id)
+        plant = ControllerPlant.create_plant(self.MOCK_PLANT, current_user=user.id)
         calendar = ControllerCalendar.create_calendar(
             plant_id=plant.id, date_calendar=date.today(), water=True, fertilize=False)
         self.assertTrue(calendar)
@@ -164,8 +167,7 @@ class TestControllerCalendar(BaseTestCase):
 
     def test_get_calendar(self):
         user = self.create_user()
-        plant = ControllerPlant.create_plant(name='test_plant', name_tech='test_plant', comment='test_plant',
-                                             watering_summer=1, watering_winter=1, spray=True, direct_sun=1, user_id=user.id)
+        plant = ControllerPlant.create_plant(self.MOCK_PLANT, current_user=user.id)
         ControllerCalendar.create_calendar(
             plant_id=plant.id, date_calendar=date.today(), water=True, fertilize=False)
         calendar_get = ControllerCalendar.get_calendar(plant_id=plant.id)
@@ -174,9 +176,7 @@ class TestControllerCalendar(BaseTestCase):
 
     def test_get_calendar_date(self):
         user = self.create_user()
-        plant = ControllerPlant.create_plant(name='test_plant', name_tech='test_plant', comment='test_plant',
-                                             watering_summer=1, watering_winter=1,
-                                             spray=True, direct_sun=1, user_id=user.id)
+        plant = ControllerPlant.create_plant(self.MOCK_PLANT, current_user=user.id)
         ControllerCalendar.create_calendar(
             plant_id=plant.id, date_calendar=date.today(), water=True, fertilize=False)
         calendar_get = ControllerCalendar.get_calendar_date(
@@ -187,9 +187,7 @@ class TestControllerCalendar(BaseTestCase):
 
     def test_delete_calendar_date(self):
         user = self.create_user()
-        plant = ControllerPlant.create_plant(name='test_plant', name_tech='test_plant',
-                                             comment='test_plant', watering_summer=1, watering_winter=1,
-                                             spray=True, direct_sun=1, user_id=user.id)
+        plant = ControllerPlant.create_plant(self.MOCK_PLANT, current_user=user.id)
         ControllerCalendar.create_calendar(
             plant_id=plant.id, date_calendar=date.today(), water=True, fertilize=False)
         ControllerCalendar.delete_calendar_date(
@@ -204,9 +202,7 @@ class TestControllerCalendar(BaseTestCase):
 
     def test_delete_calendar_plant(self):
         user = self.create_user()
-        plant = ControllerPlant.create_plant(name='test_plant', name_tech='test_plant',
-                                             comment='test_plant', watering_summer=1, watering_winter=1,
-                                             spray=True, direct_sun=1, user_id=user.id)
+        plant = ControllerPlant.create_plant(self.MOCK_PLANT, current_user=user.id)
         ControllerCalendar.create_calendar(
             plant_id=plant.id, date_calendar=date.today(), water=True, fertilize=False)
         ControllerCalendar.delete_calendar_plant(plant_id=plant.id)

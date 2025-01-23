@@ -44,7 +44,7 @@ class ControllerPlant:
             Log.info("Creating plant:")
             pprint.pprint(plant_data)
             # TODO: Check if the image is a valid URL
-            image=""
+            image = ""
             if "image" in plant_data:
                 image = shorten_url(
                     plant_data["image"]) if plant_data["image"] is not None else ""
@@ -52,10 +52,15 @@ class ControllerPlant:
             spray = False
             if "spray" in plant_data:
                 spray = False if bool(plant_data['spray']) is False else True
-
-            plant = Plant(name=plant_data["name"], name_tech=plant_data["name_tech"], comment=plant_data["comment"],
-                          watering_summer=int(plant_data["watering_summer"]), watering_winter=int(plant_data["watering_winter"]),
-                          spray=spray, direct_sun=int(plant_data["direct_sun"]), image=image, date_created=date.today(), user_id=current_user)
+            plant = Plant(name=plant_data["name"],
+                          name_tech=plant_data["name_tech"],
+                          comment=plant_data["comment"],
+                          watering_summer=int(plant_data["watering_summer"]),
+                          watering_winter=int(plant_data["watering_winter"]),
+                          spray=spray,
+                          direct_sun=int(plant_data["direct_sun"]),
+                          image=image, date_created=date.today(),
+                          user_id=current_user)
 
             if plant.name == "" or plant.name is None:
                 raise ValueError("Plant name can't be empty")

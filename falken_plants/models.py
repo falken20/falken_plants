@@ -28,9 +28,9 @@ class Plant(db.Model):
     name = db.Column(db.String(100), nullable=False)
     name_tech = db.Column(db.String(100), nullable=True)
     comment = db.Column(db.String(200), nullable=True)
-    # Frequency per month (0-4)
+    # Frequency per month (1-4)
     watering_summer = db.Column(db.Integer, nullable=True, default=1)
-    # Frequency per month (0-4)
+    # Frequency per month (1-4)
     watering_winter = db.Column(db.Integer, nullable=True, default=2)
     spray = db.Column(db.Boolean, nullable=True, default=True)
     # Direct sun value 1: No, 2: Partial, 3: Yes
