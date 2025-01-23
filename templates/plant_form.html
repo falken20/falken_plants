@@ -26,33 +26,81 @@
         <div class="form-group col-sm">
           <label for="watering_summer">Watering Summer</label>
           <select class="form-control" name="watering_summer" id="watering_summer">
-            <option value="1" title="1 times a month" selected>1 wpm</option>
-            <option value="2" title="2 times a month">2 wpm</option>
-            <option value="3" title="3 times a month">3 wpm</option>
-            <option value="4" title="4 times a month">4 wpm</option>
+            {% if plant.watering_summer == 1 %}
+              <option value="1" title="1 times a month" selected>1 tpm</option>
+            {% else %}
+              <option value="1" title="1 times a month">1 tpm</option>
+            {% endif %}
+            {% if plant.watering_summer == 2 %}
+              <option value="2" title="2 times a month" selected>2 tpm</option>
+            {% else %}
+              <option value="2" title="2 times a month">2 tpm</option>
+            {% endif %}
+            {% if plant.watering_summer == 3 %}
+              <option value="3" title="3 times a month" selected>3 tpm</option>
+            {% else %}
+              <option value="3" title="3 times a month">3 tpm</option>
+            {% endif %}
+            {% if plant.watering_summer == 4 %}
+              <option value="4" title="4 times a month" selected>4 tpm</option>
+            {% else %}
+              <option value="4" title="4 times a month">4 tpm</option>
+            {% endif %}
           </select>
         </div>
         <div class="form-group col-sm">
           <label for="watering_winter">Watering Winter</label>
           <select class="form-control" name="watering_winter" id="watering_winter">
-            <option value="1" title="1 times a month">1 wpm</option>
-            <option value="2" title="2 times a month" selected>2 wpm</option>
-            <option value="3" title="3 times a month">3 wpm</option>
-            <option value="4" title="4 times a month">4 wpm</option>
+            {% if plant.watering_winter == 1 %}
+              <option value="1" title="1 times a month" selected>1 tpm</option>
+            {% else %}
+              <option value="1" title="1 times a month">1 tpm</option>
+            {% endif %}
+            {% if plant.watering_winter == 2 %}
+              <option value="2" title="2 times a month" selected>2 tpm</option>
+            {% else %}
+              <option value="2" title="2 times a month">2 tpm</option>
+            {% endif %}
+            {% if plant.watering_winter == 3 %}
+              <option value="3" title="3 times a month" selected>3 tpm</option>
+            {% else %}
+              <option value="3" title="3 times a month">3 tpm</option>
+            {% endif %}
+            {% if plant.watering_winter == 4 %}
+              <option value="4" title="4 times a month" selected>4 tpm</option>
+            {% else %}
+              <option value="4" title="4 times a month">4 tpm</option>
+            {% endif %}
           </select>
         </div>
         <div class="form-group col-sm">
           <label for="direct_sun">Direct Sun</label>
           <select class="form-control" name="direct_sun" id="direct_sun">
-            <option value="1" title="No sun">No</option>
-            <option value="2" title="Partial sun">Partial</option>
-            <option value="3" title="Sun">Yes</option>
+            {% if plant.direct_sun == 1 %}
+              <option value="1" title="No sun" selected>No</option>
+            {% else %}
+              <option value="1" title="No sun">No</option>
+            {% endif %}
+            {% if plant.direct_sun == 2 %}
+              <option value="2" title="Partial sun" selected>Partial</option>
+            {% else %}
+              <option value="2" title="Partial sun">Partial</option>
+            {% endif %}
+            {% if plant.direct_sun == 3 %}
+              <option value="3" title="Sun" selected>Yes</option>
+            {% else %}
+              <option value="3" title="Sun">Yes</option>
+            {% endif %}
           </select>
         </div>
       </div>
       <div class="form-group">
         <label for="spray">
-        <input type="checkbox" id="spray" name="spray" value="1" checked="true">
+          {% if plant.spray %}
+            <input type="checkbox" id="spray" name="spray" value="1" checked="true">
+          {% else %}
+            <input type="checkbox" id="spray" name="spray" value="1">
+          {% endif %}
         Spray</label>
       </div>
 

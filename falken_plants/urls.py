@@ -86,6 +86,7 @@ def view_update_plant(plant_id: int):
 
     plant = ControllerPlant.get_plant(plant_id)
     Log.debug(f"Plant to update: {plant}")
+    print(plant.__dict__)
 
     return render_template('plant_form.html', plant=plant, form_method="PUT")
 
@@ -115,15 +116,7 @@ def post_plant():
             plant = ControllerPlant.update_plant(request.form, current_user.id)
             Log.info(f"Plant updated: {plant}")
         else:  # Its a POST method
-            plant = ControllerPlant.create_plant(name=request.form['name'],
-                                                 name_tech=request.form['name_tech'],
-                                                 comment=request.form['comment'],
-                                                 watering_summer=request.form['watering_summer'],
-                                                 watering_winter=request.form['watering_winter'],
-                                                 spray=request.form['spray'],
-                                                 direct_sun=request.form['direct_sun'],
-                                                 image=request.form['image'],
-                                                 user_id=current_user.id)
+            plant = ControllerPlant.create_plant(request.form, current_user.id)
             Log.info(f"Plant created: {plant}")
     except Exception as e:
         Log.error("Error creating/update plant", err=e, sys=sys)

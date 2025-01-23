@@ -16,7 +16,11 @@
             <tr style="font-size:smaller;">
                 <div class="row">
                     <td style="width: 30%; text-align: center;">
-                        <img src="{{ plant.image }}" height="70">
+                        {% if plant.image == "" %}
+                            <img src="/static/images/apple_touch_icon.png" height="70">
+                        {% else %}
+                            <img src="{{ plant.image }}" height="70">
+                        {% endif %}
                     </td>
                     <td style="width:70%" colspan="2"> 
                         <div style="font-weight: bold;">
