@@ -114,8 +114,10 @@ class TestControllerPlant(BaseTestCase):
 
     def test_create_plant_no_name(self):
         user = self.create_user()
-        mock_plant = self.MOCK_PLANT
+        # Copy with copy() to avoid changing the original dict
+        mock_plant = self.MOCK_PLANT.copy()
         mock_plant['name'] = ''
+        print(f"================================= MOCK_PLANT: {mock_plant}")
         self.assertRaises(ValueError, ControllerPlant.create_plant, mock_plant, current_user=user.id)
 
     def test_create_plant_no_user(self):
