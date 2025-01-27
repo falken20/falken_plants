@@ -17,7 +17,8 @@ main = Blueprint('main', __name__)
 @main.route("/home", methods=('GET', 'POST'))
 @login_required
 def index():
-    Log.info(f"Method {sys._getframe().f_code.co_filename}: {sys._getframe().f_code.co_name}")
+    Log.info(
+        f"Method {sys._getframe().f_code.co_filename}: {sys._getframe().f_code.co_name}")
     Log.debug(f"Current user: {current_user}")
 
     all_plants = ControllerPlant.list_all_plants(current_user.id)
@@ -29,7 +30,8 @@ def index():
 @main.route('/show_grouped/')
 @login_required
 def show_grouped():
-    Log.info(f"Method {sys._getframe().f_code.co_filename}: {sys._getframe().f_code.co_name}")
+    Log.info(
+        f"Method {sys._getframe().f_code.co_filename}: {sys._getframe().f_code.co_name}")
     Log.debug(f"Current user: {current_user}")
 
     all_plants = ControllerPlant.list_all_plants(current_user.id)
@@ -40,7 +42,8 @@ def show_grouped():
 @main.route("/profile", methods=['GET'])
 @login_required
 def profile():
-    Log.info(f"Method {sys._getframe().f_code.co_filename}: {sys._getframe().f_code.co_name}")
+    Log.info(
+        f"Method {sys._getframe().f_code.co_filename}: {sys._getframe().f_code.co_name}")
     Log.debug(f"Current user: {current_user}")
 
     return render_template('profile.html', name=current_user.name, date_created=current_user.date_created)
@@ -49,7 +52,8 @@ def profile():
 @main.route("/search", methods=['GET', 'POST'])
 @login_required
 def search():
-    Log.info(f"Method {sys._getframe().f_code.co_filename}: {sys._getframe().f_code.co_name}")
+    Log.info(
+        f"Method {sys._getframe().f_code.co_filename}: {sys._getframe().f_code.co_name}")
     Log.debug(f"Current user: {current_user}")
 
     pass

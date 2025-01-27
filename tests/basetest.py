@@ -19,7 +19,7 @@ class BaseTestCase(unittest.TestCase):
                          'name': 'python', 'password': 'error_password'}
 
     def setUp(self):
-        print("*" * 80)
+        Log.info("***** Setting up BaseTestCase...", style="red bold")
         self.app = create_app()
         self.app.config['SECRET_KEY'] = 'secret_key_test'
         self.app.config['TESTING'] = True
@@ -36,6 +36,7 @@ class BaseTestCase(unittest.TestCase):
         db.create_all()
 
     def tearDown(self):
+        Log.info("***** Tearing down BaseTestCase...", style="red bold")
         db.session.remove()
         db.drop_all()
         self.app_context.pop()

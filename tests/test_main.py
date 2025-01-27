@@ -13,7 +13,7 @@ class User(UserMixin):
 class MainTestCase(BaseTestCase):
 
     def test_index(self):
-        self.app.register_blueprint(main_blueprint)
+        # self.app.register_blueprint(main_blueprint)
         self.app.config['TESTING'] = True
         with self.app.test_client() as client:
             response = client.get('/')
@@ -21,14 +21,14 @@ class MainTestCase(BaseTestCase):
             self.assertIn(b'plant_list.html', response.data)
 
     def test_show_grouped(self):
-        with self.app:
+        with self.app.test_client() as client:
             self.app.get('/login', follow_redirects=True)
             response = self.app.get('/show_grouped/')
             self.assertEqual(response.status_code, 200)
             self.assertIn(b'plant_list_group.html', response.data)
 
     def test_profile(self):
-        with self.app:
+        with self.app.test_client() as client:
             self.app.get('/login', follow_redirects=True)
             response = self.client.get('/profile')
             self.assertEqual(response.status_code, 200)
