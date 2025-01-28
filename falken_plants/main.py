@@ -47,13 +47,3 @@ def profile():
     Log.debug(f"Current user: {current_user}")
 
     return render_template('profile.html', name=current_user.name, date_created=current_user.date_created)
-
-
-@main.route("/search", methods=['GET', 'POST'])
-@login_required
-def search():
-    Log.info(
-        f"Method {sys._getframe().f_code.co_filename}: {sys._getframe().f_code.co_name}")
-    Log.debug(f"Current user: {current_user}")
-
-    pass
