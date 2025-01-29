@@ -36,10 +36,13 @@ class BaseTestCase(unittest.TestCase):
         db.create_all()
 
     def tearDown(self):
-        Log.info("***** Tearing down BaseTestCase...", style="red bold")
-        db.session.remove()
-        db.drop_all()
-        self.app_context.pop()
+        try:
+            Log.info("***** Tearing down BaseTestCase...", style="red bold")
+            db.session.remove()
+            db.drop_all()
+            self.app_context.pop()
+        except Exception as e:
+            Log.error("Error tearing down BaseTestCase", e, os)
 
     def config_login(self):
         # A user loader tells Flask-Login how to find a specific user from the ID that is stored in their

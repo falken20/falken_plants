@@ -41,7 +41,7 @@ def login_post():
         login_user(user, remember=remember)
         return redirect(url_for('main.profile'))
     except Exception as err:
-        Log.error("Error in login_post", err=err)
+        Log.error("Error in login_post", err=err, sys)
         return redirect(url_for('auth.login'))
 
 
@@ -82,7 +82,7 @@ def signup_post():
 
         return redirect(url_for('auth.login'))
     except Exception as err:
-        Log.error("Error in signup_post", err=err)
+        Log.error("Error in signup_post", err=err, sys)
         return redirect(url_for('auth.signup'))
 
 
