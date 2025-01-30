@@ -172,13 +172,16 @@ def init_db(app):
 
     try:
         # Select environment to create the tables
-        environment = input("Select the environment to create the tables (development, testing, production): ")
+        environment = input("Select the environment to create the tables (development, testing, production, exit): ")
         if environment == "development":
             app.config.from_object("falken_plants.config.DevelopmentConfig")
         elif environment == "testing":
             app.config.from_object("falken_plants.config.TestingConfig")
         elif environment == "production":
             app.config.from_object("falken_plants.config.ProductionConfig")
+        elif environment == "exit":
+            logging.info("Process finished")
+            return
         else:
             logging.error("Environment not found")
             raise ValueError("Environment not found")

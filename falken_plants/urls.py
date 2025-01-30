@@ -86,7 +86,6 @@ def view_update_plant(plant_id: int):
 
     plant = ControllerPlant.get_plant(plant_id)
     Log.debug(f"Plant to update: {plant}")
-    print(plant.__dict__)
 
     return render_template('plant_form.html', plant=plant, form_method="PUT")
 
