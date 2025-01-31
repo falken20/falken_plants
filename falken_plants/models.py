@@ -5,7 +5,7 @@
 # This file is to set all the db models and use the ORM flask_sqlalchemy
 # ######################################################################
 
-import logging
+# import logging
 from datetime import date
 from flask import Flask
 from flask_login import UserMixin
@@ -16,6 +16,7 @@ from flask_validator import (ValidateString, ValidateInteger, ValidateEmail, Val
                              ValidateGreaterThanOrEqual, ValidateBoolean)
 
 from .config import get_settings, print_settings_environment
+from .logger import Log
 
 print("Loading models.py")
 
@@ -168,11 +169,12 @@ def init_db(app):
     """
     Main process to create the needed tables for the application
     """
-    logging.info("Init DB process starting...")
+    Log.info("Init DB process starting...")
 
     try:
         # Select environment to create the tables
-        environment = input("Select the environment to create the tables (development, testing, production, exit): ")
+        environment = input(
+            "Select the environment to create the tables (development, testing, production, exit): ")
         if environment == "development":
             app.config.from_object("falken_plants.config.DevelopmentConfig")
         elif environment == "testing":
@@ -180,29 +182,29 @@ def init_db(app):
         elif environment == "production":
             app.config.from_object("falken_plants.config.ProductionConfig")
         elif environment == "exit":
-            logging.info("Process finished")
+            Log.info("Process finished")
             return
         else:
-            logging.error("Environment not found")
+            Log.error("Environment not found")
             raise ValueError("Environment not found")
 
         if input("Could you drop the tables if they exist(y/n)? ") in ["Y", "y"]:
             with app.app_context():
                 db.drop_all()
-            logging.info("Tables dropped")
+            Log.info("Tables dropped")
 
         if input("Could you create the tables(y/n)? ") in ["Y", "y"]:
-            logging.info("Creating tables...")
+            Log.info("Creating tables...")
             with app.app_context():
                 db.create_all()
 
         with app.app_context():
             db.session.commit()
 
-        logging.info("Process finished succesfully")
+        Log.info("Process finished succesfully")
 
     except Exception as err:  # pragma: no cover
-        logging.error(f"Execution Error in init_db: {err}", exc_info=True)
+        Log.error(f"Execution Error in init_db: {err}", exc_info=True)
 
 
 ######################################################################
@@ -211,8 +213,9 @@ def init_db(app):
 # FORMAT = '%(asctime)s %(levelname)s %(lineno)d %(filename)s %(funcName)s: %(message)s'
 # logging.basicConfig(level=logging.INFO, format=FORMAT)
 
+
 if __name__ == '__main__':  # pragma: no cover # To doesn't check in tests
-    logging.info("Preparing app vars...")
+    Log.info("Preparing app vars...")
     app = Flask(__name__)
 
     # Set environment vars
@@ -221,9 +224,9 @@ if __name__ == '__main__':  # pragma: no cover # To doesn't check in tests
     app.config.from_object(settings.CONFIG_ENV[settings.CONFIG_MODE])
     app.config['TEMPLATE_AUTO_RELOAD'] = True
 
-    logging.info(f"Running in '{settings.CONFIG_MODE}' mode", style="red bold")
-    logging.debug(f"Debug: {app.config['DEBUG']}")
-    logging.debug(f"Testing: {app.config['TESTING']}")
+    Log.info(f"Running in '{settings.CONFIG_MODE}' mode", style="red bold")
+    Log.debug(f"Debug: {app.config['DEBUG']}")
+    Log.debug(f"Testing: {app.config['TESTING']}")
     print_settings_environment(settings.CONFIG_ENV[settings.CONFIG_MODE])
 
     db.init_app(app)
