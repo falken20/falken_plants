@@ -233,3 +233,6 @@ if __name__ == '__main__':  # pragma: no cover # To doesn't check in tests
 
     db.init_app(app)
     init_db(app)
+
+
+# TODO: Review why the DB in development is deleted when running the tests
