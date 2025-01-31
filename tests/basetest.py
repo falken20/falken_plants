@@ -9,6 +9,8 @@ from falken_plants.app import create_app, settings
 from falken_plants.models import db, User
 from falken_plants.logger import Log
 
+print("Loading basetest.py")
+
 basedir = os.path.abspath(os.path.dirname(__file__))
 
 
