@@ -6,6 +6,7 @@
 # ######################################################################
 
 # import logging
+import sys
 from datetime import date
 from flask import Flask
 from flask_login import UserMixin
@@ -185,7 +186,7 @@ def init_db(app):
             Log.info("Process finished")
             return
         else:
-            Log.error("Environment not found")
+            Log.error("Environment not found", None, sys=sys)
             raise ValueError("Environment not found")
 
         if input("Could you drop the tables if they exist(y/n)? ") in ["Y", "y"]:
@@ -204,7 +205,8 @@ def init_db(app):
         Log.info("Process finished succesfully")
 
     except Exception as err:  # pragma: no cover
-        Log.error(f"Execution Error in init_db: {err}", exc_info=True)
+        # Log.error(f"Execution Error in init_db: {err}", exc_info=True)
+        Log.error("Execution Error in init_db", err, sys=sys)
 
 
 ######################################################################
