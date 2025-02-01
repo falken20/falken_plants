@@ -175,7 +175,7 @@ def init_db(app):
     try:
         # Select environment to create the tables
         environment = input(
-            "Select the environment to create the tables (development, testing, production, exit): ")
+            "Select the environment to create the tables (development, testing, production, exit):\n")
         if environment == "development":
             app.config.from_object("falken_plants.config.DevelopmentConfig")
         elif environment == "testing":
@@ -191,15 +191,20 @@ def init_db(app):
             raise ValueError(
                 f"Invalid input: Environment not found '{environment}'")
 
-        if input("Could you drop the tables if they exist(y/n)? ") in ["Y", "y"]:
+        Log.info(f"Running in '{environment}' mode")
+        Log.info(f"SQLALCHEMY_DATABASE_URI: {app.config['SQLALCHEMY_DATABASE_URI']}")
+
+        if input("Could you drop the tables if they exist(y/n)?\n") in ["Y", "y"]:
+            Log.info("Dropping tables...")
             with app.app_context():
                 db.drop_all()
             Log.info("Tables dropped")
 
-        if input("Could you create the tables(y/n)? ") in ["Y", "y"]:
+        if input("Could you create the tables(y/n)?\n") in ["Y", "y"]:
             Log.info("Creating tables...")
             with app.app_context():
                 db.create_all()
+            Log.info("Tables created")
 
         with app.app_context():
             db.session.commit()

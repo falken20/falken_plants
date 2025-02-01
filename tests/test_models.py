@@ -48,7 +48,7 @@ class TestInitDB(BaseTestCase):
         self.assertTrue(self.app)
 
     @patch('sys.stdin', StringIO('testing\nN\nN\n'))  # Simulate user input
-    def test_init_db(self):
+    def test_init_db_with_answer_N(self):
         init_db(self.app)
 
     @patch('sys.stdin', StringIO('testing\nY\nY\n'))  # Simulate user input

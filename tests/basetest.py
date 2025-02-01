@@ -32,6 +32,7 @@ class BaseTestCase(unittest.TestCase):
         self.app.config['SQLALCHEMY_DATABASE_URI'] = settings.CONFIG_ENV['testing'].SQLALCHEMY_DATABASE_URI
         Log.debug("***** BaseTest App config", style="red bold")
         # Log.info_dict(dict(self.app.config), level_log="DEBUG")
+        Log.debug(f"SQLALCHEMY_DATABASE_URI: {self.app.config['SQLALCHEMY_DATABASE_URI']}", style="red bold")
 
         self.config_login()
         self.client = self.app.test_client()
