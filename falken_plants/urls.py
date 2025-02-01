@@ -100,6 +100,7 @@ def post_plant():
     Log.info(f"Hidden Method HTTP: {request.form['_method']}")
 
     try:
+        plant = None
         # Log.debug(f"Request form: {request.form}")
         Log.info("Request form:")
         pprint.pprint(request.form)

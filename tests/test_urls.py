@@ -17,7 +17,8 @@ class TestUrls(basetest.BaseTestCase):
     def test_list_create_plants_post(self):
         self.create_user()
         self.login_http(self)
-        response = self.client.post('/plants', data={'name': 'Test Plant', '_method': 'POST'})
+        # response = self.client.post('/plants', data={'name': 'Test Plant', '_method': 'POST'})
+        response = self.client.post('/plants', data=self.MOCK_PLANT)
         # Assuming redirect after post
         self.assertEqual(response.status_code, 302)
 

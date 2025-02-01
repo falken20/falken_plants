@@ -19,6 +19,9 @@ class BaseTestCase(unittest.TestCase):
                  'name': 'python', 'password': 'password'}
     mock_user_unknown = {'email': 'python@mail.com',
                          'name': 'python', 'password': 'error_password'}
+    MOCK_PLANT = {'id': 100, 'name': 'test_plant_mock', 'name_tech': 'test_plant_mock', 'comment': 'test_plant_mock',
+                'watering_summer': 2, 'watering_winter': 2, 'spray': True, 'direct_sun': 2, 'image': '', 
+                '_method': 'POST'}
 
     def setUp(self):
         Log.info("***** Setting up BaseTestCase...", style="red bold")
