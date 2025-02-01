@@ -186,8 +186,10 @@ def init_db(app):
             Log.info("Process finished")
             return
         else:
-            Log.error("Environment not found", None, sys=sys)
-            raise ValueError("Environment not found")
+            Log.warning(
+                f"Invalid input: Environment not found '{environment}'")
+            raise ValueError(
+                f"Invalid input: Environment not found '{environment}'")
 
         if input("Could you drop the tables if they exist(y/n)? ") in ["Y", "y"]:
             with app.app_context():
@@ -233,6 +235,3 @@ if __name__ == '__main__':  # pragma: no cover # To doesn't check in tests
 
     db.init_app(app)
     init_db(app)
-
-
-# TODO: Review why the DB in development is deleted when running the tests

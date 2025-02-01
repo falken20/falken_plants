@@ -3,7 +3,7 @@
 import sys
 from flask import request, redirect, Blueprint, render_template
 from flask_login import login_required, current_user
-import pprint
+# import pprint
 
 from .controllers import ControllerPlant
 from .logger import Log
@@ -12,13 +12,15 @@ print("Loading urls.py")
 
 urls = Blueprint('urls', __name__)
 
+
 # API Plants
 
-
-@urls.route("/plants", methods=['GET', 'POST'])
+# PUT is not neccesary and not supported by HTML
+@urls.route("/plants", methods=['GET', 'POST', 'PUT'])
 @login_required
 def list_create_plants():
-    Log.info(f"Method {sys._getframe().f_code.co_filename}: {sys._getframe().f_code.co_name}")
+    Log.info(
+        f"Method {sys._getframe().f_code.co_filename}: {sys._getframe().f_code.co_name}")
     Log.info(f"Method HTTP: {request.method}")
     Log.debug(f"Current user: {current_user}")
 
@@ -34,7 +36,8 @@ def list_create_plants():
 @urls.route("/plants/<int:plant_id>", methods=['GET', 'PUT', 'DELETE'])
 @login_required
 def get_update_delete_plants(plant_id):
-    Log.info(f"Method {sys._getframe().f_code.co_filename}: {sys._getframe().f_code.co_name}")
+    Log.info(
+        f"Method {sys._getframe().f_code.co_filename}: {sys._getframe().f_code.co_name}")
     Log.info(f"Method HTTP: {request.method}")
     Log.debug(f"Current user: {current_user}")
 
@@ -55,7 +58,8 @@ def get_update_delete_plants(plant_id):
 @urls.route("/plants/<int:plant_id>/delete", methods=['GET'])
 @login_required
 def delete_plant(plant_id: int):
-    Log.info(f"Method {sys._getframe().f_code.co_filename}: {sys._getframe().f_code.co_name}")
+    Log.info(
+        f"Method {sys._getframe().f_code.co_filename}: {sys._getframe().f_code.co_name}")
     Log.info(f"Method HTTP: {request.method}")
     Log.debug(f"Current user: {current_user}")
 
@@ -70,7 +74,8 @@ def delete_plant(plant_id: int):
 @urls.route("/plants/create", methods=['GET'])
 @login_required
 def view_create_plant():
-    Log.info(f"Method {sys._getframe().f_code.co_filename}: {sys._getframe().f_code.co_name}")
+    Log.info(
+        f"Method {sys._getframe().f_code.co_filename}: {sys._getframe().f_code.co_name}")
     Log.info(f"Method HTTP: {request.method}")
     Log.debug(f"Current user: {current_user}")
 
@@ -80,7 +85,8 @@ def view_create_plant():
 @urls.route("/plants/update/<int:plant_id>", methods=['GET'])
 @login_required
 def view_update_plant(plant_id: int):
-    Log.info(f"Method {sys._getframe().f_code.co_filename}: {sys._getframe().f_code.co_name}")
+    Log.info(
+        f"Method {sys._getframe().f_code.co_filename}: {sys._getframe().f_code.co_name}")
     Log.info(f"Method HTTP: {request.method}")
     Log.debug(f"Current user: {current_user}")
 
@@ -95,15 +101,15 @@ def view_update_plant(plant_id: int):
 @login_required
 def post_plant():
     # Because HTML doesn't support PUT method, we use a hidden field to know if its a PUT method
-    Log.info(f"Method {sys._getframe().f_code.co_filename}: {sys._getframe().f_code.co_name}")
+    Log.info(
+        f"Method {sys._getframe().f_code.co_filename}: {sys._getframe().f_code.co_name}")
     Log.info(f"Method HTTP: {request.method}")
-    Log.info(f"Hidden Method HTTP: {request.form['_method']}")
-
     try:
+        Log.info(f"Hidden Method HTTP: {request.form['_method']}")
         plant = None
         # Log.debug(f"Request form: {request.form}")
-        Log.info("Request form:")
-        pprint.pprint(request.form)
+        Log.debug(f"Request form: {request.form}")
+        # pprint.pprint(request.form)
 
         # Because HTML doesn't support PUT method, we use a hidden field to know if its a PUT method
         if request.form['_method'] == "PUT":
@@ -127,26 +133,18 @@ def post_plant():
 
 @login_required
 def put_plant(plant_id: int):
-    Log.info(f"Method {sys._getframe().f_code.co_filename}: {sys._getframe().f_code.co_name}")
+    Log.info(
+        f"Method {sys._getframe().f_code.co_filename}: {sys._getframe().f_code.co_name}")
     Log.info(f"Method HTTP: {request.method}")
     Log.debug(f"Current user: {current_user}")
 
     try:
         # Log.debug(f"Request form: {request.form}")
-        Log.info("Request form:")
-        pprint.pprint(request.form)
+        Log.debug(f"Request form: {request.form}")
+        # pprint.pprint(request.form)
 
         plant_id = plant_id if plant_id else request.form['plant_id']
-        plant = ControllerPlant.update_plant(plant_id=plant_id,
-                                             name=request.form['name'],
-                                             name_tech=request.form['name_tech'],
-                                             comment=request.form['comment'],
-                                             watering_summer=request.form['watering_summer'],
-                                             watering_winter=request.form['watering_winter'],
-                                             spray=request.form['spray'],
-                                             direct_sun=request.form['direct_sun'],
-                                             image=request.form['image'],
-                                             user_id=current_user.id)
+        plant = ControllerPlant.update_plant(request.form, current_user.id)
         Log.info(f"Plant updated: {plant}")
     except Exception as e:
         Log.error("Error updating plant", err=e, sys=sys)

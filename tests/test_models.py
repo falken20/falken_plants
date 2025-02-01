@@ -47,14 +47,19 @@ class TestInitDB(BaseTestCase):
         self.assertTrue(db)
         self.assertTrue(self.app)
 
-    @patch('sys.stdin', StringIO('N\nN\n'))  # Simulate user input
+    @patch('sys.stdin', StringIO('testing\nN\nN\n'))  # Simulate user input
     def test_init_db(self):
         init_db(self.app)
 
-    @patch('sys.stdin', StringIO('Y\nY\n'))  # Simulate user input
+    @patch('sys.stdin', StringIO('testing\nY\nY\n'))  # Simulate user input
     def test_init_db_with_drops(self):
         init_db(self.app)
 
-    @patch('sys.stdin', StringIO('N\nY\n'))  # Simulate user input
+    @patch('sys.stdin', StringIO('testing\nN\nY\n'))  # Simulate user input
     def test_init_db_with_create(self):
         init_db(self.app)
+
+    @patch('sys.stdin', StringIO('XXXX\nY\nN\n'))  # Simulate user input
+    def test_init_db_with_wrong_input(self):
+        init_db(self.app)
+        self.assertRaises(ValueError)

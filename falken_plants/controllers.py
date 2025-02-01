@@ -1,6 +1,6 @@
 # by Richi Rod AKA @richionline / falken20
 from datetime import date
-import pprint
+# import pprint
 import sys
 
 from .models import db, Plant, Calendar, User
@@ -41,8 +41,8 @@ class ControllerPlant:
             Log.info(
                 f"Method {sys._getframe().f_code.co_filename}: {sys._getframe().f_code.co_name}")
             Log.debug(f"Params method: {locals()}")
-            Log.info("Creating plant:")
-            pprint.pprint(plant_data)
+            Log.debug(f"Creating plant: {plant_data}")
+            # pprint.pprint(plant_data)
             # TODO: Check if the image is a valid URL
             image = ""
             if "image" in plant_data:
@@ -82,8 +82,8 @@ class ControllerPlant:
             Log.info(
                 f"Method {sys._getframe().f_code.co_filename}: {sys._getframe().f_code.co_name}")
             Log.debug(f"Params method: {locals()}")
-            Log.info("Plant data:")
-            pprint.pprint(plant_data)
+            Log.debug(f"Creating plant: {plant_data}")
+            # pprint.pprint(plant_data)
             plant = ControllerPlant.get_plant(plant_data["id"])
             if plant is None:
                 return None
