@@ -25,7 +25,7 @@ class BaseTestCase(unittest.TestCase):
 
     def setUp(self):
         Log.info("***** Setting up BaseTestCase...", style="red bold")
-        self.app = create_app()
+        self.app = create_app() 
         self.app.config['SECRET_KEY'] = 'secret_key_test'
         self.app.config['TESTING'] = True
         self.app.config['CONFIG_MODE'] = 'testing'
@@ -39,13 +39,14 @@ class BaseTestCase(unittest.TestCase):
 
         self.app_context = self.app.app_context()
         self.app_context.push()
+
         db.create_all()
 
     def tearDown(self):
         try:
             Log.info("***** Tearing down BaseTestCase...", style="red bold")
             db.session.remove()
-            db.drop_all()
+            db.drop_all() # TODO: Check if this is necessary
             self.app_context.pop()
         except Exception as e:
             Log.error("Error tearing down BaseTestCase", e, os)
