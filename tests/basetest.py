@@ -3,6 +3,7 @@ import os
 from flask_login import LoginManager
 from werkzeug.security import generate_password_hash
 from datetime import date
+from flask_sqlalchemy import SQLAlchemy
 
 
 from falken_plants.app import create_app, settings
@@ -20,12 +21,12 @@ class BaseTestCase(unittest.TestCase):
     mock_user_unknown = {'email': 'python@mail.com',
                          'name': 'python', 'password': 'error_password'}
     MOCK_PLANT = {'id': 100, 'name': 'test_plant_mock', 'name_tech': 'test_plant_mock', 'comment': 'test_plant_mock',
-                'watering_summer': 2, 'watering_winter': 2, 'spray': True, 'direct_sun': 2, 'image': '', 
-                '_method': 'POST'}
+                  'watering_summer': 2, 'watering_winter': 2, 'spray': True, 'direct_sun': 2, 'image': '',
+                  '_method': 'POST'}
 
     def setUp(self):
         Log.info("***** Setting up BaseTestCase...", style="red bold")
-        self.app = create_app() 
+        self.app = create_app()
         self.app.config['SECRET_KEY'] = 'secret_key_test'
         self.app.config['TESTING'] = True
         self.app.config['CONFIG_MODE'] = 'testing'
@@ -33,21 +34,22 @@ class BaseTestCase(unittest.TestCase):
         self.app.config['SQLALCHEMY_DATABASE_URI'] = settings.CONFIG_ENV['testing'].SQLALCHEMY_DATABASE_URI
         Log.debug("***** BaseTest App config", style="red bold")
         # Log.info_dict(dict(self.app.config), level_log="DEBUG")
-        Log.debug(f"SQLALCHEMY_DATABASE_URI: {self.app.config['SQLALCHEMY_DATABASE_URI']}", style="red bold")
+        Log.debug(
+            f"SQLALCHEMY_DATABASE_URI: {self.app.config['SQLALCHEMY_DATABASE_URI']}", style="red bold")
 
         self.config_login()
         self.client = self.app.test_client()
 
         self.app_context = self.app.app_context()
         self.app_context.push()
-        
+
         db.create_all()
 
     def tearDown(self):
         try:
             Log.info("***** Tearing down BaseTestCase...", style="red bold")
             db.session.remove()
-            db.drop_all() # TODO: Check if this is necessary
+            db.drop_all()  # TODO: Check if this is necessary
             self.app_context.pop()
         except Exception as e:
             Log.error("Error tearing down BaseTestCase", e, os)
