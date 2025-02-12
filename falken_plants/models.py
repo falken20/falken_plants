@@ -194,6 +194,8 @@ def init_db(app):
         Log.info(f"Running in '{environment}' mode")
         Log.info(f"SQLALCHEMY_DATABASE_URI: {app.config['SQLALCHEMY_DATABASE_URI']}")
 
+        # TODO: It doesnt matter the environment, it always will be created in the development mode or .env environment var
+
         if input("Could you drop the tables if they exist(y/n)?\n") in ["Y", "y"]:
             Log.info("Dropping tables...")
             with app.app_context():

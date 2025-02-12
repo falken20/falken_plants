@@ -29,7 +29,7 @@ check_cache()
 basedir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 
-def create_app():
+def create_app(test_config=None):
     try:
         Log.info("***** Creating app...", style="red bold")
 
@@ -38,9 +38,13 @@ def create_app():
 
         app = Flask(__name__, template_folder="../templates",
                     static_folder="../static")
-
         app.config.from_object(settings)
+
+        # If we are executing tests, we will use the test configuration
+        if test_config is not None:
+            config_mode = test_config
         app.config.from_object(settings.CONFIG_ENV[config_mode])
+
         app.config['TEMPLATE_AUTO_RELOAD'] = True
         app.config['DEBUG'] = True if config_mode == "development" else False
         app.config['ENV'] = config_mode

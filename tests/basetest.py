@@ -43,13 +43,14 @@ class BaseTestCase(unittest.TestCase):
         self.app_context = self.app.app_context()
         self.app_context.push()
 
+        # TODO: Change the URI to a test database
         db.create_all()
 
     def tearDown(self):
         try:
             Log.info("***** Tearing down BaseTestCase...", style="red bold")
             db.session.remove()
-            db.drop_all()  # TODO: Check if this is necessary
+            db.drop_all()  
             self.app_context.pop()
         except Exception as e:
             Log.error("Error tearing down BaseTestCase", e, os)
