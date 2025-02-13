@@ -42,8 +42,9 @@ def create_app(test_config=None):
 
         # If we are executing tests, we will use the test configuration
         if test_config is not None:
-            config_mode = test_config
-        app.config.from_object(settings.CONFIG_ENV[config_mode])
+            app.config.from_object(test_config)
+        else:
+            app.config.from_object(settings.CONFIG_ENV[config_mode])
 
         app.config['TEMPLATE_AUTO_RELOAD'] = True
         app.config['DEBUG'] = True if config_mode == "development" else False

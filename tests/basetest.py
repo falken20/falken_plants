@@ -26,7 +26,9 @@ class BaseTestCase(unittest.TestCase):
 
     def setUp(self):
         Log.info("***** Setting up BaseTestCase...", style="red bold")
-        self.app = create_app()
+
+        # Create a new Flask application for testing
+        self.app = create_app(settings.CONFIG_ENV['testing'])
         self.app.config['SECRET_KEY'] = 'secret_key_test'
         self.app.config['TESTING'] = True
         self.app.config['CONFIG_MODE'] = 'testing'
@@ -43,7 +45,6 @@ class BaseTestCase(unittest.TestCase):
         self.app_context = self.app.app_context()
         self.app_context.push()
 
-        # TODO: Change the URI to a test database
         db.create_all()
 
     def tearDown(self):
