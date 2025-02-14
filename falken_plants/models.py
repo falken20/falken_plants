@@ -173,29 +173,6 @@ def init_db(app):
     Log.info("Init DB process starting...")
 
     try:
-        # Select environment to create the tables
-        environment = input(
-            "Select the environment to create the tables (development, testing, production, exit):\n")
-        if environment == "development":
-            app.config.from_object("falken_plants.config.DevelopmentConfig")
-        elif environment == "testing":
-            app.config.from_object("falken_plants.config.TestingConfig")
-        elif environment == "production":
-            app.config.from_object("falken_plants.config.ProductionConfig")
-        elif environment == "exit":
-            Log.info("Process finished")
-            return
-        else:
-            Log.warning(
-                f"Invalid input: Environment not found '{environment}'")
-            raise ValueError(
-                f"Invalid input: Environment not found '{environment}'")
-
-        Log.info(f"Running in '{environment}' mode")
-        Log.info(f"SQLALCHEMY_DATABASE_URI: {app.config['SQLALCHEMY_DATABASE_URI']}")
-
-        # TODO: It doesnt matter the environment, it always will be created in the development mode or .env environment var
-
         if input("Could you drop the tables if they exist(y/n)?\n") in ["Y", "y"]:
             Log.info("Dropping tables...")
             with app.app_context():
@@ -224,21 +201,45 @@ def init_db(app):
 # FORMAT = '%(asctime)s %(levelname)s %(lineno)d %(filename)s %(funcName)s: %(message)s'
 # logging.basicConfig(level=logging.INFO, format=FORMAT)
 
-
 if __name__ == '__main__':  # pragma: no cover # To doesn't check in tests
-    Log.info("Preparing app vars...")
-    app = Flask(__name__)
+    try:
+        Log.info("Preparing app vars...")
+        app = Flask(__name__)
 
-    # Set environment vars
-    settings = get_settings()
-    app.config.from_object(settings)
-    app.config.from_object(settings.CONFIG_ENV[settings.CONFIG_MODE])
-    app.config['TEMPLATE_AUTO_RELOAD'] = True
+        # Set environment vars
+        settings = get_settings()
+        app.config.from_object(settings)
 
-    Log.info(f"Running in '{settings.CONFIG_MODE}' mode", style="red bold")
-    Log.debug(f"Debug: {app.config['DEBUG']}")
-    Log.debug(f"Testing: {app.config['TESTING']}")
-    print_settings_environment(settings.CONFIG_ENV[settings.CONFIG_MODE])
+        # Select environment to create the tables
+        environment = input(
+            "Select the environment to create the tables (development, testing, production, exit):\n")
+        if environment == "development":
+            app.config.from_object("falken_plants.config.DevelopmentConfig")
+        elif environment == "testing":
+            app.config.from_object("falken_plants.config.TestingConfig")
+        elif environment == "production":
+            app.config.from_object("falken_plants.config.ProductionConfig")
+        elif environment == "exit":
+            Log.info("Process finished")
+            exit(0)
+        else:
+            Log.warning(
+                f"Invalid input: Environment not found '{environment}'")
+            raise ValueError(
+                f"Invalid input: Environment not found '{environment}'")
 
-    db.init_app(app)
-    init_db(app)
+        # app.config.from_object(settings.CONFIG_ENV[settings.CONFIG_MODE])
+        app.config['TEMPLATE_AUTO_RELOAD'] = True
+
+        settings.CONFIG_MODE = environment
+        Log.info(f"Running in '{environment}' mode", style="red bold")
+        Log.debug(f"Debug: {app.config['DEBUG']}")
+        Log.debug(f"Testing: {app.config['TESTING']}")
+        Log.info(f"SQLALCHEMY_DATABASE_URI: {app.config['SQLALCHEMY_DATABASE_URI']}")
+
+        db.init_app(app)
+        init_db(app)
+
+    except Exception as err:
+        Log.error("Error in models.py", err, sys=sys)
+        exit(1)
