@@ -42,7 +42,6 @@ def get_update_delete_plants(plant_id):
     Log.debug(f"Current user: {current_user}")
 
     if request.method == 'GET':
-        # TODO: Make it work and make form read_only
         plant = ControllerPlant.get_plant(plant_id)
         return render_template('plant_form.html', plant=plant, form_method="GET")
     elif request.method == 'PUT':

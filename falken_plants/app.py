@@ -85,7 +85,7 @@ def create_app(test_config=None):
         app.register_blueprint(swagger_ui_blueprint, url_prefix=SWAGGER_URL)
         Log.debug(f"Running Swagger in {SWAGGER_URL}")
 
-        if config_mode == "testing":
+        if config_mode == "testing" or test_config is not None:
             Log.info("***** App config TESTING mode:", style="red bold")
             print_settings_environment(settings.CONFIG_ENV["testing"])
         else:

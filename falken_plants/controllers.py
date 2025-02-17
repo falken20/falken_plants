@@ -43,7 +43,6 @@ class ControllerPlant:
             Log.debug(f"Params method: {locals()}")
             Log.debug(f"Creating plant: {plant_data}")
             # pprint.pprint(plant_data)
-            # TODO: Check if the image is a valid URL
             image = ""
             if "image" in plant_data:
                 image = shorten_url(
