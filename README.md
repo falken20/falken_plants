@@ -4,7 +4,7 @@
 <img src="./static/images/logo_app.png" alt="drawing" width="400"/>
 <a href="https://richionline-portfolio.nw.r.appspot.com"><img src="https://richionline-portfolio.nw.r.appspot.com/static/assets/falken_logo.ico" width=40 alt="Personal Portfolio web"></a>
 
-![Version](https://img.shields.io/badge/version-1.7.0-blue) ![GitHub language count](https://img.shields.io/github/languages/count/falken20/falken_plants) ![GitHub Top languaje](https://img.shields.io/github/languages/top/falken20/falken_plants) ![Test coverage](https://img.shields.io/badge/test%20coverage-91%25-green) ![GitHub License](https://img.shields.io/github/license/falken20/falken_plants)[![Python used version](https://img.shields.io/static/v1?label=python&message=3.8&color=blue&logo=python&logoColor=white)
+![Version](https://img.shields.io/badge/version-1.1.0-blue) ![GitHub language count](https://img.shields.io/github/languages/count/falken20/falken_plants) ![GitHub Top languaje](https://img.shields.io/github/languages/top/falken20/falken_plants) ![Test coverage](https://img.shields.io/badge/test%20coverage-91%25-green) ![GitHub License](https://img.shields.io/github/license/falken20/falken_plants)[![Python used version](https://img.shields.io/static/v1?label=python&message=3.8&color=blue&logo=python&logoColor=white)
 
   
 [![Richi web](https://img.shields.io/badge/web-richionline-blue)](https://richionline-portfolio.nw.r.appspot.com) [![Twitter](https://img.shields.io/twitter/follow/richionline?style=social)](https://twitter.com/richionline)
@@ -70,6 +70,7 @@ PRODUCTION_DATABASE_URL=
 ---
 
 ##### Versions
+- 1.1.0 Stable version with manage errors and UX improvements
 - 1.0.0 Basic Version
 
 
